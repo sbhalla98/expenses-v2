@@ -2,8 +2,16 @@ import { z } from "zod";
 
 export type FormFieldType = "number" | "text" | "radio" | "select" | "date";
 
+export type FormFieldNameType =
+  | "amount"
+  | "description"
+  | "paidBy"
+  | "paidFor"
+  | "category"
+  | "date";
+
 export type FormField = {
-  name: string;
+  name: FormFieldNameType;
   label: string;
   type: FormFieldType;
   defaultValue: any;

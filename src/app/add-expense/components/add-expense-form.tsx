@@ -28,33 +28,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FORM_FIELDS } from "../constants";
+import { FORM_FIELDS, FormFieldNameType } from "../constants";
 
 const formSchema = z.object(
   FORM_FIELDS.reduce((schema, field) => {
     schema[field.name] = field.validation;
     return schema;
-  }, {})
+  }, {} as Record<FormFieldNameType, any>)
 );
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function AddExpenseForm() {
   const { toast } = useToast();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: FORM_FIELDS.reduce((defaults, field) => {
       defaults[field.name] = field.defaultValue || "";
       return defaults;
-    }, {}),
+    }, {} as Record<FormFieldNameType, string | number>),
   });
-
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = form;
 
   const onSubmit = (data: FormValues) => {
     console.log("Expense Submitted: ", data);
@@ -71,7 +65,7 @@ export default function AddExpenseForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {FORM_FIELDS.map((field) => (
               <FormField
                 key={field.name}
@@ -83,22 +77,32 @@ export default function AddExpenseForm() {
                     <FormLabel>{field.label}</FormLabel>
                     <FormControl>
                       <>
-                        {field.type === "number" || field.type === "text" ? (
+                        {field.type === "text" ? (
+                          <Input {...formField} />
+                        ) : null}
+
+                        {field.type === "number" ? (
                           <Input
-                            type={field.type}
-                            {...register(field.name, {
-                              valueAsNumber: field.type === "number",
-                            })}
+                            type="number"
+                            {...formField}
+                            // https://github.com/shadcn-ui/ui/issues/421
+                            onChange={(event) =>
+                              formField.onChange(+event.target.value)
+                            }
                           />
                         ) : null}
+
                         {field.type === "radio" ? (
                           <RadioGroup
                             onValueChange={formField.onChange}
                             defaultValue={field.defaultValue}
                             className="flex flex-col space-y-1"
                           >
-                            {field.options.map((option) => (
-                              <FormItem className="flex items-center space-x-3 space-y-0">
+                            {field.options?.map((option) => (
+                              <FormItem
+                                key={option}
+                                className="flex items-center space-x-3 space-y-0"
+                              >
                                 <FormControl>
                                   <RadioGroupItem value={option} />
                                 </FormControl>
@@ -118,7 +122,7 @@ export default function AddExpenseForm() {
                               />
                             </SelectTrigger>
                             <SelectContent>
-                              {field.options.map((option) => (
+                              {field.options?.map((option) => (
                                 <SelectItem key={option} value={option}>
                                   {option}
                                 </SelectItem>
