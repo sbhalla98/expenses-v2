@@ -1,8 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -19,7 +26,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FORM_FIELDS } from "../constants";
 
@@ -34,18 +41,20 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function AddExpenseForm() {
   const { toast } = useToast();
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: FORM_FIELDS.reduce((defaults, field) => {
       defaults[field.name] = field.defaultValue || "";
       return defaults;
     }, {}),
   });
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const onSubmit = (data: FormValues) => {
     console.log("Expense Submitted: ", data);
@@ -61,101 +70,106 @@ export default function AddExpenseForm() {
         <CardTitle>Add Your Expenses</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {FORM_FIELDS.map((field) => (
-            <div key={field.name}>
-              <Label htmlFor={field.name}>{field.label}</Label>
-              {field.type === "number" || field.type === "text" ? (
-                <Input
+        <Form {...form}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {FORM_FIELDS.map((field) => (
+              <div key={field.name}>
+                <FormField
+                  key={field.name}
+                  control={form.control}
+                  name={field.name}
                   id={field.name}
-                  type={field.type}
-                  {...register(field.name, {
-                    valueAsNumber: field.type === "number",
-                  })}
-                  className="mt-2"
-                />
-              ) : null}
+                  render={({ field: formField }) => (
+                    <FormItem>
+                      <FormLabel>{field.label}</FormLabel>
+                      <FormControl>
+                        <>
+                          {field.type === "number" || field.type === "text" ? (
+                            <Input
+                              type={field.type}
+                              {...register(field.name, {
+                                valueAsNumber: field.type === "number",
+                              })}
+                            />
+                          ) : null}
+                          {field.type === "radio" ? (
+                            <RadioGroup
+                              onValueChange={formField.onChange}
+                              defaultValue={field.defaultValue}
+                              className="flex flex-col space-y-1"
+                            >
+                              {field.options.map((option) => (
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                    <RadioGroupItem value={option} />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {option}
+                                  </FormLabel>
+                                </FormItem>
+                              ))}
+                            </RadioGroup>
+                          ) : null}
 
-              {field.type === "radio" ? (
-                <RadioGroup
-                  className="space-y-2"
-                  defaultValue={field.defaultValue}
-                >
-                  {field.options.map((option) => (
-                    <div className="flex items-center space-x-2" key={option}>
-                      <RadioGroupItem
-                        value={option}
-                        id={`${field.name}-${option}`}
-                        {...register(field.name)}
-                        d
-                      />
-                      <Label htmlFor={`${field.name}-${option}`}>
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              ) : null}
+                          {field.type === "select" ? (
+                            <Select onValueChange={formField.onChange}>
+                              <SelectTrigger className="mt-2">
+                                <SelectValue
+                                  placeholder={`Select ${field.label}`}
+                                />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {field.options.map((option) => (
+                                  <SelectItem key={option} value={option}>
+                                    {option}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : null}
 
-              {field.type === "select" ? (
-                <Controller
-                  name={field.name}
-                  control={control}
-                  render={({ field: selectField }) => (
-                    <Select onValueChange={selectField.onChange}>
-                      <SelectTrigger className="mt-2">
-                        <SelectValue placeholder={`Select ${field.label}`} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {field.options.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                          {field.type === "date" ? (
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className="w-full mt-2"
+                                >
+                                  {formField.value
+                                    ? format(formField.value, "dd/MM/yyyy")
+                                    : `Select ${field.label}`}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <Calendar
+                                  mode="single"
+                                  selected={formField.value}
+                                  onSelect={formField.onChange}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          ) : null}
+                        </>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
-              ) : null}
 
-              {field.type === "date" ? (
-                <Controller
-                  name={field.name}
-                  control={control}
-                  render={({ field: dateField }) => (
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-full mt-2">
-                          {dateField.value
-                            ? format(dateField.value, "dd/MM/yyyy")
-                            : `Select ${field.label}`}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <Calendar
-                          mode="single"
-                          selected={dateField.value}
-                          onSelect={dateField.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  )}
-                />
-              ) : null}
+                {errors[field.name] && (
+                  <p className="text-red-500 text-sm">
+                    {errors[field.name]?.message}
+                  </p>
+                )}
+              </div>
+            ))}
 
-              {errors[field.name] && (
-                <p className="text-red-500 text-sm">
-                  {errors[field.name]?.message}
-                </p>
-              )}
-            </div>
-          ))}
-
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-        </form>
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );
