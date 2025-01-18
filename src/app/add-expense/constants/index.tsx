@@ -1,6 +1,17 @@
 import { z } from "zod";
 
-export const FORM_FIELDS = [
+export type FormFieldType = "number" | "text" | "radio" | "select" | "date";
+
+export type FormField = {
+  name: string;
+  label: string;
+  type: FormFieldType;
+  defaultValue: any;
+  validation: z.ZodTypeAny;
+  options?: string[]; // Optional field for radio/select options
+};
+
+export const FORM_FIELDS: FormField[] = [
   {
     name: "amount",
     label: "Amount",
@@ -31,7 +42,7 @@ export const FORM_FIELDS = [
     name: "paidFor",
     label: "Paid For",
     type: "radio",
-    defaultValue: "Vishal",
+    defaultValue: "Both",
     options: ["Vishal", "Sonali", "Both"],
     validation: z.enum(["Vishal", "Sonali", "Both"], {
       errorMap: () => ({ message: "Please select who it was paid for" }),
@@ -56,6 +67,7 @@ export const FORM_FIELDS = [
       "Birthday",
       "Vacation",
     ],
+    defaultValue: "Food",
     validation: z.enum(
       [
         "Food",
