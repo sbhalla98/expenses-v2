@@ -66,97 +66,101 @@ export default function AddExpenseForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {FORM_FIELDS.map((field) => (
-              <FormField
-                key={field.name}
-                control={form.control}
-                name={field.name}
-                id={field.name}
-                render={({ field: formField }) => (
-                  <FormItem>
-                    <FormLabel>{field.label}</FormLabel>
-                    <FormControl>
-                      <>
-                        {field.type === "text" ? (
-                          <Input {...formField} />
-                        ) : null}
+            {FORM_FIELDS.map((field) => {
+              const { name, type, label, options } = field;
+              return (
+                <FormField
+                  key={name}
+                  control={form.control}
+                  name={name}
+                  render={({ field: formField }) => (
+                    <FormItem>
+                      <FormLabel>{label}</FormLabel>
+                      <FormControl>
+                        <>
+                          {type === "text" ? <Input {...formField} /> : null}
 
-                        {field.type === "number" ? (
-                          <Input
-                            type="number"
-                            {...formField}
-                            // https://github.com/shadcn-ui/ui/issues/421
-                            onChange={(event) =>
-                              formField.onChange(+event.target.value)
-                            }
-                          />
-                        ) : null}
+                          {type === "number" ? (
+                            <Input
+                              type="number"
+                              {...formField}
+                              // https://github.com/shadcn-ui/ui/issues/421
+                              onChange={(event) =>
+                                formField.onChange(+event.target.value)
+                              }
+                            />
+                          ) : null}
 
-                        {field.type === "radio" ? (
-                          <RadioGroup
-                            onValueChange={formField.onChange}
-                            defaultValue={field.defaultValue}
-                            className="flex flex-col space-y-1"
-                          >
-                            {field.options?.map((option) => (
-                              <FormItem
-                                key={option}
-                                className="flex items-center space-x-3 space-y-0"
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value={option} />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {option}
-                                </FormLabel>
-                              </FormItem>
-                            ))}
-                          </RadioGroup>
-                        ) : null}
-
-                        {field.type === "select" ? (
-                          <Select onValueChange={formField.onChange}>
-                            <SelectTrigger className="mt-2">
-                              <SelectValue
-                                placeholder={`Select ${field.label}`}
-                              />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {field.options?.map((option) => (
-                                <SelectItem key={option} value={option}>
-                                  {option}
-                                </SelectItem>
+                          {type === "radio" ? (
+                            <RadioGroup
+                              onValueChange={formField.onChange}
+                              className="flex flex-col space-y-1"
+                              {...formField}
+                            >
+                              {options?.map((option) => (
+                                <FormItem
+                                  key={option}
+                                  className="flex items-center space-x-3 space-y-0"
+                                >
+                                  <FormControl>
+                                    <RadioGroupItem value={option} />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {option}
+                                  </FormLabel>
+                                </FormItem>
                               ))}
-                            </SelectContent>
-                          </Select>
-                        ) : null}
+                            </RadioGroup>
+                          ) : null}
 
-                        {field.type === "date" ? (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button variant="outline" className="w-full mt-2">
-                                {formField.value
-                                  ? format(formField.value, "dd/MM/yyyy")
-                                  : `Select ${field.label}`}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <Calendar
-                                mode="single"
-                                selected={formField.value}
-                                onSelect={formField.onChange}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        ) : null}
-                      </>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
+                          {type === "select" ? (
+                            <Select
+                              onValueChange={formField.onChange}
+                              {...formField}
+                            >
+                              <SelectTrigger className="mt-2">
+                                <SelectValue placeholder={`Select ${label}`} />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {options?.map((option) => (
+                                  <SelectItem key={option} value={option}>
+                                    {option}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : null}
+
+                          {type === "date" ? (
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className="w-full mt-2"
+                                >
+                                  {formField.value
+                                    ? format(formField.value, "dd/MM/yyyy")
+                                    : `Select ${label}`}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <Calendar
+                                  mode="single"
+                                  selected={formField.value}
+                                  onSelect={formField.onChange}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          ) : null}
+                        </>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              );
+            })}
 
             <Button type="submit" className="w-full">
               Submit
