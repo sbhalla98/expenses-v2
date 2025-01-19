@@ -24,7 +24,6 @@ const GroupedExpenseList: React.FC<{
     amount: number;
     data: Expense[];
   }[];
-  groupKey: string;
 }> = ({ groupedExpenses }) => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
