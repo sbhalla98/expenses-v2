@@ -1,34 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FORM_FIELDS, FormFieldNameType } from "../constants";
+import CustomFormField from "./custom-form-field";
 
 const formSchema = z.object(
   FORM_FIELDS.reduce((schema, field) => {
@@ -59,7 +37,7 @@ export default function AddExpenseForm() {
   };
 
   return (
-    <Card className="max-w-md mx-auto mt-10">
+    <Card className="max-w-md mx-auto mt-10 h-full">
       <CardHeader>
         <CardTitle>Add Your Expenses</CardTitle>
       </CardHeader>
@@ -69,95 +47,13 @@ export default function AddExpenseForm() {
             {FORM_FIELDS.map((field) => {
               const { name, type, label, options } = field;
               return (
-                <FormField
+                <CustomFormField
                   key={name}
-                  control={form.control}
                   name={name}
-                  render={({ field: formField }) => (
-                    <FormItem>
-                      <FormLabel>{label}</FormLabel>
-                      <FormControl>
-                        <>
-                          {type === "text" ? <Input {...formField} /> : null}
-
-                          {type === "number" ? (
-                            <Input
-                              type="number"
-                              {...formField}
-                              // https://github.com/shadcn-ui/ui/issues/421
-                              onChange={(event) =>
-                                formField.onChange(+event.target.value)
-                              }
-                            />
-                          ) : null}
-
-                          {type === "radio" ? (
-                            <RadioGroup
-                              onValueChange={formField.onChange}
-                              className="flex flex-col space-y-1"
-                              {...formField}
-                            >
-                              {options?.map((option) => (
-                                <FormItem
-                                  key={option}
-                                  className="flex items-center space-x-3 space-y-0"
-                                >
-                                  <FormControl>
-                                    <RadioGroupItem value={option} />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    {option}
-                                  </FormLabel>
-                                </FormItem>
-                              ))}
-                            </RadioGroup>
-                          ) : null}
-
-                          {type === "select" ? (
-                            <Select
-                              onValueChange={formField.onChange}
-                              {...formField}
-                            >
-                              <SelectTrigger className="mt-2">
-                                <SelectValue placeholder={`Select ${label}`} />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {options?.map((option) => (
-                                  <SelectItem key={option} value={option}>
-                                    {option}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          ) : null}
-
-                          {type === "date" ? (
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  className="w-full mt-2"
-                                >
-                                  {formField.value
-                                    ? format(formField.value, "dd/MM/yyyy")
-                                    : `Select ${label}`}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent>
-                                <Calendar
-                                  mode="single"
-                                  selected={formField.value}
-                                  onSelect={formField.onChange}
-                                  initialFocus
-                                />
-                              </PopoverContent>
-                            </Popover>
-                          ) : null}
-                        </>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  type={type}
+                  label={label}
+                  options={options}
+                  control={form.control}
                 />
               );
             })}
