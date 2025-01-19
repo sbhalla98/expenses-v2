@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getAmountLabel, getGroupedByDate } from "@/lib/utils";
+import { getAmountLabel } from "@/lib/utils";
 import React from "react";
 import ExpenseList from "./expense-list";
 
@@ -19,16 +19,17 @@ export type Expense = {
 };
 
 const GroupedExpenseList: React.FC<{
-  expenses: Expense[];
+  groupedExpenses: {
+    title: string;
+    amount: number;
+    data: Expense[];
+  }[];
   groupKey: string;
-}> = ({ expenses }) => {
-  const groupedData = getGroupedByDate(expenses);
-
+}> = ({ groupedExpenses }) => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Expense List</h2>
-      {expenses.length > 0 ? (
-        groupedData.map((group) => (
+      {groupedExpenses.length > 0 ? (
+        groupedExpenses.map((group) => (
           <div key={group.title}>
             <Accordion type="single" collapsible defaultValue="item-1">
               <AccordionItem value="item-1">

@@ -49,6 +49,16 @@ export const getGroupedByDate = (expenses: Expense[]) => {
   }));
 };
 
+export const getGroupedByKey = (expenses: Expense[], key: keyof Expense) => {
+  const groupedData = groupByKey(expenses, key);
+
+  return Object.keys(groupedData).map((key) => ({
+    title: key,
+    data: groupedData[key],
+    amount: getExpenseAmount(groupedData[key]),
+  }));
+};
+
 export const getCurrentMonthExpenses = (
   expenses: Expense[],
   date: Date = new Date()
