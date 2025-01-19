@@ -1,3 +1,10 @@
+import {
+  EXPENSE_CATEGORY_OPTIONS,
+  EXPENSE_CATEGORY_VALUES,
+  PAID_BY_OPTIONS,
+  PAID_FOR_OPTIONS,
+  PERSONS,
+} from "@/lib/constants";
 import { z } from "zod";
 
 export type FormFieldType = "number" | "text" | "radio" | "select" | "date";
@@ -40,9 +47,9 @@ export const FORM_FIELDS: FormField[] = [
     name: "paidBy",
     label: "Paid By",
     type: "radio",
-    options: ["Vishal", "Sonali"],
-    defaultValue: "Vishal",
-    validation: z.enum(["Vishal", "Sonali"], {
+    options: PAID_BY_OPTIONS,
+    defaultValue: PERSONS.PERSON1,
+    validation: z.enum(PAID_BY_OPTIONS as [string, ...string[]], {
       errorMap: () => ({ message: "Please select who paid" }),
     }),
   },
@@ -50,9 +57,9 @@ export const FORM_FIELDS: FormField[] = [
     name: "paidFor",
     label: "Paid For",
     type: "radio",
-    defaultValue: "Both",
-    options: ["Vishal", "Sonali", "Both"],
-    validation: z.enum(["Vishal", "Sonali", "Both"], {
+    defaultValue: PERSONS.BOTH,
+    options: PAID_FOR_OPTIONS,
+    validation: z.enum(PAID_FOR_OPTIONS as [string, ...string[]], {
       errorMap: () => ({ message: "Please select who it was paid for" }),
     }),
   },
@@ -60,42 +67,11 @@ export const FORM_FIELDS: FormField[] = [
     name: "category",
     label: "Category",
     type: "select",
-    options: [
-      "Food",
-      "Social",
-      "Transportation",
-      "Household",
-      "Apparel",
-      "Beauty",
-      "Health",
-      "Education",
-      "Gift",
-      "Home",
-      "Shopping",
-      "Birthday",
-      "Vacation",
-    ],
-    defaultValue: "Food",
-    validation: z.enum(
-      [
-        "Food",
-        "Social",
-        "Transportation",
-        "Household",
-        "Apparel",
-        "Beauty",
-        "Health",
-        "Education",
-        "Gift",
-        "Home",
-        "Shopping",
-        "Birthday",
-        "Vacation",
-      ],
-      {
-        errorMap: () => ({ message: "Please select a category" }),
-      }
-    ),
+    options: EXPENSE_CATEGORY_OPTIONS,
+    defaultValue: EXPENSE_CATEGORY_VALUES.FOOD,
+    validation: z.enum(EXPENSE_CATEGORY_OPTIONS as [string, ...string[]], {
+      errorMap: () => ({ message: "Please select a category" }),
+    }),
   },
   {
     name: "date",
