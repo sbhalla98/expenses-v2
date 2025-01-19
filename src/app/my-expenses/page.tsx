@@ -1,8 +1,8 @@
 "use client";
 
-import ExpenseList from "./components/expense-list";
+import GroupedExpenseList from "./components/grouped-expense-list";
 import { sample } from "./constants";
 
 export default function MyExpenses() {
-  return <ExpenseList expenses={sample} />;
+  return <GroupedExpenseList expenses={sample} groupKey="date" />;
 }

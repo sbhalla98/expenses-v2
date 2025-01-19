@@ -12,21 +12,22 @@ export type Expense = {
 };
 
 const ExpenseList: React.FC<{ expenses: Expense[] }> = ({ expenses }) => {
+  const sortedExpenses = expenses.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Expense List</h2>
+    <>
       {expenses.length > 0 ? (
-        <ul className="grid grid-cols-1  gap-6">
-          {expenses.map((expense) => (
+        <ul className="grid grid-cols-1 gap-6">
+          {sortedExpenses.map((expense) => (
             <ExpenseItem expense={expense} key={expense.id} />
           ))}
         </ul>
       ) : (
-        <p className="text-center text-gray-500 mt-10">
-          No expenses added yet. Start tracking your expenses!
-        </p>
+        <p className="text-center text-gray-500 mt-10">No expenses.</p>
       )}
-    </div>
+    </>
   );
 };
 
