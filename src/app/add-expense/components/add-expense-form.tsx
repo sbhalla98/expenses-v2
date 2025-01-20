@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,12 +14,14 @@ const formSchema = z.object(
   }, {} as Record<FormFieldNameType, any>)
 );
 
-type FormValues = z.infer<typeof formSchema>;
+export type AddExpensesFormValues = z.infer<typeof formSchema>;
 
-export default function AddExpenseForm() {
-  const { toast } = useToast();
-
-  const form = useForm<FormValues>({
+export default function AddExpenseForm({
+  onAddExpense,
+}: {
+  onAddExpense: (expense: AddExpensesFormValues) => void;
+}) {
+  const form = useForm<AddExpensesFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: FORM_FIELDS.reduce((defaults, field) => {
       defaults[field.name] = field.defaultValue || "";
@@ -28,12 +29,8 @@ export default function AddExpenseForm() {
     }, {} as Record<FormFieldNameType, string | number>),
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Expense Submitted: ", data);
-    toast({
-      title: "Form Submitted",
-      description: JSON.stringify(data, null, 2),
-    });
+  const onSubmit = (data: AddExpensesFormValues) => {
+    onAddExpense(data);
   };
 
   return (

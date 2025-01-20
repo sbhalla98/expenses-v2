@@ -17,9 +17,7 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
   }
 
   return (
-    <div
-      className={`flex justify-between items-center p-4 border-b border-gray-200`}
-    >
+    <div className="flex justify-between items-center p-4 border-b border-gray-200">
       <div className="flex flex-col gap-1">
         <span className="text-sm font-semibold text-gray-700">{category}</span>
         <span className="text-xs text-gray-500">{description}</span>
