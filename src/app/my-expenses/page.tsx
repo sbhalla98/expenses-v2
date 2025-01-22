@@ -2,6 +2,7 @@
 
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
 import { useToast } from "@/hooks/use-toast";
+import apiClient from "@/lib/axios";
 import { sample } from "@/lib/constants";
 import { getGroupedByDate } from "@/lib/utils";
 import { useEffect } from "react";
@@ -12,9 +13,8 @@ export default function MyExpenses() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch("/api/get-expenses");
-      const data = await response.json();
-      console.log(data);
+      const response = await apiClient.get("/api/get-expenses");
+      console.log(response);
     } catch (err) {
       toast({
         title: "An error occurred",
