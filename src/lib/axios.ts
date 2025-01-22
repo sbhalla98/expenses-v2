@@ -1,9 +1,20 @@
 import axios from "axios";
 
-// Get userId (example: from environment variables, cookies, or session)
+// Function to get userId from localStorage
 const getUserId = () => {
-  // Replace this with your logic to fetch the userId
-  return localStorage.getItem("userId") || "9876";
+  try {
+    const config = localStorage.getItem("config");
+    if (config) {
+      const parsedConfig = JSON.parse(config);
+      if (parsedConfig?.state?.userId) {
+        return parsedConfig.state.userId;
+      }
+    }
+  } catch (error) {
+    console.error("Error retrieving userId from localStorage:", error);
+  }
+  // Fallback userId if not found or an error occurs
+  return "9876";
 };
 
 const apiClient = axios.create({});

@@ -1,70 +1,90 @@
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Skeleton } from "@/components/ui/skeleton";
-import { FORM_FIELDS, FormFieldNameType } from "@/lib/constants";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import useConfigStore from "@/store/use-config-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import CustomFormField from "./custom-form-field";
+import { Input } from "../ui/input";
 
-const formSchema = z.object(
-  FORM_FIELDS.reduce(
-    (schema, field) => {
-      schema[field.name] = field.validation;
-      return schema;
-    },
-    {} as Record<FormFieldNameType, any>,
-  ),
-);
+const formSchema = z.object({
+  person1: z.string().min(1, "Person 1 name is required"),
+  person2: z.string().min(1, "Person 2 name is required"),
+  userId: z.string().min(1, "User id is required"),
+});
 
-export type AddExpensesFormValues = z.infer<typeof formSchema>;
+export type ConfirmFormValues = z.infer<typeof formSchema>;
 
-export default function ConfigForm({
-  onAddExpense,
-  loading,
-}: {
-  onAddExpense: (expense: AddExpensesFormValues) => void;
-  loading: boolean;
-}) {
-  const form = useForm<AddExpensesFormValues>({
+export default function ConfigForm() {
+  const configStore = useConfigStore();
+
+  const form = useForm<ConfirmFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: FORM_FIELDS.reduce(
-      (defaults, field) => {
-        defaults[field.name] = field.defaultValue || "";
-        return defaults;
-      },
-      {} as Record<FormFieldNameType, string | number>,
-    ),
+    defaultValues: {
+      person1: configStore.PERSON1,
+      person2: configStore.PERSON2,
+      userId: configStore.userId || "",
+    },
   });
 
-  const onSubmit = (data: AddExpensesFormValues) => {
-    onAddExpense(data);
+  const onSubmit = (data: ConfirmFormValues) => {
+    configStore.setLabels(data.person1, data.person2);
+    configStore.setUserId(data.userId);
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
-        {FORM_FIELDS.map((field) => {
-          const { name, type, label, options } = field;
-          return (
-            <CustomFormField
-              key={name}
-              name={name}
-              type={type}
-              label={label}
-              options={options}
-              control={form.control}
-            />
-          );
-        })}
+        <FormField
+          control={form.control}
+          name={"person1"}
+          render={({ field: formField }) => (
+            <FormItem>
+              <FormLabel>Person 1 Name</FormLabel>
+              <FormControl>
+                <Input {...formField} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={"person2"}
+          render={({ field: formField }) => (
+            <FormItem>
+              <FormLabel>Person 2 Name</FormLabel>
+              <FormControl>
+                <Input {...formField} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-        {loading ? (
-          <Skeleton className="w-full h-[36px] rounded-md" />
-        ) : (
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-        )}
+        <FormField
+          control={form.control}
+          name={"userId"}
+          render={({ field: formField }) => (
+            <FormItem>
+              <FormLabel>user id</FormLabel>
+              <FormControl>
+                <Input {...formField} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="w-full">
+          Submit
+        </Button>
       </form>
     </Form>
   );

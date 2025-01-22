@@ -13,8 +13,8 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
     expense ?? {};
 
   const getPaidByLabel = () => {
-    if (paidBy === PERSON1) return `${PERSON1} paid`;
-    if (paidBy === PERSON2) return `${PERSON2} paid`;
+    if (paidBy === PERSONS.PERSON1) return `${PERSON1} paid`;
+    if (paidBy === PERSONS.PERSON2) return `${PERSON2} paid`;
     return `${paidBy} paid`;
   };
   const paidByLabel = getPaidByLabel();

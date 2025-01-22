@@ -15,20 +15,25 @@ export type Expense = {
 export type ConfigStore = {
   [PERSONS.PERSON1]: string;
   [PERSONS.PERSON2]: string;
+  userId?: string;
   setLabels: (person1: string, person2: string) => void;
+  setUserId: (userId: string) => void;
 };
 
 export const useConfigStore = create<ConfigStore>()(
   persist(
     (set) => {
       return {
-        [PERSONS.PERSON1]: "Vishal",
-        [PERSONS.PERSON2]: "Sonali",
+        [PERSONS.PERSON1]: "John",
+        [PERSONS.PERSON2]: "Mary",
         setLabels: (person1, person2) => {
           set({
             [PERSONS.PERSON1]: person1,
             [PERSONS.PERSON2]: person2,
           });
+        },
+        setUserId: (userId) => {
+          set({ userId });
         },
       };
     },
