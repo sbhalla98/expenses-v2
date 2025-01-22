@@ -44,14 +44,7 @@ export default function MyExpenses() {
   return (
     <div>
       <h1 className="text-2xl font-semibold text-gray-800 p-6">My Expenses</h1>
-      <MonthSelector
-        changeMonth={changeMonth}
-        title="Current Month"
-        subTitle={currentDate.toLocaleString("default", {
-          month: "long",
-          year: "numeric",
-        })}
-      />
+      <MonthSelector date={currentDate} changeMonth={changeMonth} />
       <GroupedExpenseList groupedExpenses={getGroupedByDate(visibleExpenses)} />
     </div>
   );
