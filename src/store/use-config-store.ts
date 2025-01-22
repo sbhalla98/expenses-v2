@@ -35,8 +35,8 @@ export const useConfigStore = create<ConfigStore>()(
     {
       name: "config",
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );
 
 export default useConfigStore;

@@ -11,7 +11,7 @@ type PaidByStatsProps = {
 export default function PaidByStats({ expenses }: PaidByStatsProps) {
   const groupedData = getGroupedByKey(expenses, "paidBy");
   const sortedGroupedData = groupedData.sort(
-    (a, b) => getExpenseAmount(b.data) - getExpenseAmount(a.data)
+    (a, b) => getExpenseAmount(b.data) - getExpenseAmount(a.data),
   );
 
   return <GroupedExpenseList groupedExpenses={sortedGroupedData} />;

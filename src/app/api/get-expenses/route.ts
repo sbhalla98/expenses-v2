@@ -14,7 +14,7 @@ export async function GET(request: Request): Promise<NextResponse> {
   } catch (e) {
     return NextResponse.json(
       { success: false, message: "Error fetching expense list!", details: e },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

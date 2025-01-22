@@ -17,7 +17,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch (e) {
     return NextResponse.json(
       { success: false, message: "Error adding expense", details: e },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

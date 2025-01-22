@@ -39,7 +39,7 @@ export default function PaidForStats({ expenses }: PaidForStatsProps) {
 
   const groupedData = getGroupedByKey(processExpensesResult, "paidFor");
   const sortedGroupedData = groupedData.sort(
-    (a, b) => getExpenseAmount(b.data) - getExpenseAmount(a.data)
+    (a, b) => getExpenseAmount(b.data) - getExpenseAmount(a.data),
   );
 
   return <GroupedExpenseList groupedExpenses={sortedGroupedData} />;
