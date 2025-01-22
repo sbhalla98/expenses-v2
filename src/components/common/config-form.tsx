@@ -1,4 +1,3 @@
-import CustomFormField from "@/components/common/custom-form-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -6,6 +5,7 @@ import { FORM_FIELDS, FormFieldNameType } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import CustomFormField from "./custom-form-field";
 
 const formSchema = z.object(
   FORM_FIELDS.reduce(
@@ -19,7 +19,7 @@ const formSchema = z.object(
 
 export type AddExpensesFormValues = z.infer<typeof formSchema>;
 
-export default function AddExpenseForm({
+export default function ConfigForm({
   onAddExpense,
   loading,
 }: {
