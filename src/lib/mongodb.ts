@@ -11,14 +11,9 @@ let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 // Add a custom property to the global interface for TypeScript
+// Extend the global object to include _mongoClientPromise
 declare global {
-  // This avoids conflicts with other global types
-  // and ensures global._mongoClientPromise is correctly typed
-  namespace NodeJS {
-    interface Global {
-      _mongoClientPromise?: Promise<MongoClient>;
-    }
-  }
+  const _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
 if (process.env.NODE_ENV === "development") {
