@@ -2,18 +2,21 @@
 
 import MonthSelector from "@/components/common/month-selector";
 import { useState } from "react";
-import CategoryStats from "./components/category-stats";
-import PaidByStats from "./components/paid-by-stats";
-import PaidForStats from "./components/paid-for-stats";
 
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
+import { STATS_CATEGORIES } from "@/lib/constants";
 import { getCurrentMonthExpenses } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
+import CategorySelector from "./components/category-selector";
 
 export default function Statistics() {
   const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [category, setCategory] = useState(0);
+
+  const { label, Component } =
+    STATS_CATEGORIES[category] ?? STATS_CATEGORIES[0];
 
   const changeMonth = (increment: number) => {
     const newDate = new Date(currentDate);
@@ -40,16 +43,26 @@ export default function Statistics() {
   const allExpenses = data?.data ?? [];
   const visibleExpenses = getCurrentMonthExpenses(allExpenses, currentDate);
 
+  const handleCategoryChange = (index: number) => {
+    setCategory((prev) => {
+      const newIndex = prev + index;
+      if (newIndex < 0) return STATS_CATEGORIES.length - 1;
+      if (newIndex >= STATS_CATEGORIES.length) return 0;
+      return newIndex;
+    });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
+    <div className="size-full flex flex-col">
       <MonthSelector date={currentDate} changeMonth={changeMonth} />
-      <CategoryStats expenses={visibleExpenses} />
-      <PaidByStats expenses={visibleExpenses} />
-      <PaidForStats expenses={visibleExpenses} />
+      <CategorySelector category={label} setCategory={handleCategoryChange} />
+      <div className="flex-1 max-w-[100vw]">
+        <Component expenses={visibleExpenses} />
+      </div>
     </div>
   );
 }

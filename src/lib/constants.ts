@@ -1,3 +1,6 @@
+import CategoryStats from "@/app/(screens)/statistics/components/category-stats";
+import PaidByStats from "@/app/(screens)/statistics/components/paid-by-stats";
+import PaidForStats from "@/app/(screens)/statistics/components/paid-for-stats";
 import { ChartColumnBig, ListCollapse, SquarePlus } from "lucide-react";
 
 export enum PERSONS {
@@ -164,4 +167,10 @@ export const BOTTOM_BAR_LINKS = [
     title: "Statistics",
     icon: ChartColumnBig,
   },
+];
+
+export const STATS_CATEGORIES = [
+  { label: "Category", Component: CategoryStats },
+  { label: "Paid By", Component: PaidByStats },
+  { label: "Paid For", Component: PaidForStats },
 ];

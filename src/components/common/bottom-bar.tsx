@@ -13,11 +13,11 @@ const Bottombar = () => {
   return (
     <section className="fixed bottom-0 z-10 w-full bg-black backdrop-blur-lg text-white">
       <div className="flex items-center justify-between gap-3 px-4 py-2">
-        {BOTTOM_BAR_LINKS.map(({ label, route, icon: Icon }) => {
+        {BOTTOM_BAR_LINKS.map(({ route, icon: Icon }) => {
           const isActive = isActiveRoute(route);
 
           return (
-            <Link key={label} href={route}>
+            <Link key={route} href={route}>
               <Button size="icon" variant={isActive ? "default" : "ghost"}>
                 <Icon className="scale-150" />
               </Button>
