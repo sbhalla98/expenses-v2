@@ -44,7 +44,7 @@ export default function MyExpenses() {
   return (
     <div className="size-full flex flex-col">
       <MonthSelector date={currentDate} changeMonth={changeMonth} />
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         <GroupedExpenseList
           groupedExpenses={getGroupedByDate(visibleExpenses)}
         />

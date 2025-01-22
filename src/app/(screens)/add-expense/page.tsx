@@ -34,5 +34,9 @@ export default function AddExpense() {
     mutate(expense as Expense);
   };
 
-  return <AddExpenseForm onAddExpense={onAddExpense} loading={isPending} />;
+  return (
+    <div className="size-full flex flex-col overflow-y-auto">
+      <AddExpenseForm onAddExpense={onAddExpense} loading={isPending} />
+    </div>
+  );
 }

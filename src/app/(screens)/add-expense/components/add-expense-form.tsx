@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,34 +42,30 @@ export default function AddExpenseForm({
   };
 
   return (
-    <Card className="max-w-md mx-auto mt-10 h-full">
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {FORM_FIELDS.map((field) => {
-              const { name, type, label, options } = field;
-              return (
-                <CustomFormField
-                  key={name}
-                  name={name}
-                  type={type}
-                  label={label}
-                  options={options}
-                  control={form.control}
-                />
-              );
-            })}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
+        {FORM_FIELDS.map((field) => {
+          const { name, type, label, options } = field;
+          return (
+            <CustomFormField
+              key={name}
+              name={name}
+              type={type}
+              label={label}
+              options={options}
+              control={form.control}
+            />
+          );
+        })}
 
-            {loading ? (
-              <Skeleton className="w-full h-[36px] rounded-md" />
-            ) : (
-              <Button type="submit" className="w-full">
-                Submit
-              </Button>
-            )}
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+        {loading ? (
+          <Skeleton className="w-full h-[36px] rounded-md" />
+        ) : (
+          <Button type="submit" className="w-full">
+            Submit
+          </Button>
+        )}
+      </form>
+    </Form>
   );
 }

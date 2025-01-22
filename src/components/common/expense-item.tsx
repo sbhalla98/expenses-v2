@@ -1,5 +1,6 @@
 import { PERSONS } from "@/lib/constants";
 import { getAmountLabel } from "@/lib/utils";
+import useConfigStore from "@/store/use-config-store";
 import { Expense } from "./expense-list";
 
 type ExpenseItemProps = {
@@ -7,10 +8,16 @@ type ExpenseItemProps = {
 };
 
 export function ExpenseItem({ expense }: ExpenseItemProps) {
+  const { PERSON1, PERSON2 } = useConfigStore();
   const { category, amount, description, date, paidBy, paidFor } =
     expense ?? {};
 
-  const paidByLabel = paidBy ? `${paidBy} paid` : "";
+  const getPaidByLabel = () => {
+    if (paidBy === PERSON1) return `${PERSON1} paid`;
+    if (paidBy === PERSON2) return `${PERSON2} paid`;
+    return `${paidBy} paid`;
+  };
+  const paidByLabel = getPaidByLabel();
   const dateLabel = new Date(date)?.toLocaleDateString();
 
   const getBgColor = () => {

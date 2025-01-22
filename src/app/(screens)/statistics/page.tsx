@@ -60,7 +60,7 @@ export default function Statistics() {
     <div className="size-full flex flex-col">
       <MonthSelector date={currentDate} changeMonth={changeMonth} />
       <CategorySelector category={label} setCategory={handleCategoryChange} />
-      <div className="flex-1 max-w-[100vw]">
+      <div className="flex-1 max-w-[100vw] overflow-y-auto">
         <Component expenses={visibleExpenses} />
       </div>
     </div>
