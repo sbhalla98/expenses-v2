@@ -46,7 +46,6 @@ export default function Statistics() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-800 p-6">Statistics</h1>
       <MonthSelector date={currentDate} changeMonth={changeMonth} />
       <CategoryStats expenses={visibleExpenses} />
       <PaidByStats expenses={visibleExpenses} />

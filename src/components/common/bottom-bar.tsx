@@ -9,7 +9,7 @@ const Bottombar = () => {
   const pathName = usePathname();
 
   return (
-    <section className="absolute bottom-0 z-10 w-full bg-black p-4 backdrop-blur-lg xs:px-7 text-white">
+    <section className="fixed bottom-0 z-10 w-full bg-black p-4 backdrop-blur-lg xs:px-7 text-white">
       <div className="flex items-center justify-between gap-3 xs:gap-5">
         {BOTTOM_BAR_LINKS.map((link) => {
           const isActive =

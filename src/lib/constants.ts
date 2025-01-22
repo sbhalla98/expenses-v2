@@ -151,15 +151,18 @@ export const BOTTOM_BAR_LINKS = [
     route: "add-expense",
     label: "Add Expense",
     imgURL: "/icons/plus.svg",
+    title: "Add Expense",
   },
   {
     route: "my-expenses",
     label: "Expenses",
     imgURL: "/icons/expenses.svg",
+    title: "Track Expenses",
   },
   {
     route: "statistics",
     label: "Stats",
     imgURL: "/icons/stats.svg",
+    title: "Statistics",
   },
 ];
