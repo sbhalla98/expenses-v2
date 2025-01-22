@@ -145,3 +145,21 @@ export const sample = [
     id: "1733550824595",
   },
 ];
+
+export const BOTTOM_BAR_LINKS = [
+  {
+    route: "add-expense",
+    label: "Add Expense",
+    imgURL: "/icons/plus.svg",
+  },
+  {
+    route: "my-expenses",
+    label: "Expenses",
+    imgURL: "/icons/expenses.svg",
+  },
+  {
+    route: "statistics",
+    label: "Stats",
+    imgURL: "/icons/stats.svg",
+  },
+];

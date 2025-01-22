@@ -1,3 +1,4 @@
+import Bottombar from "@/components/common/bottom-bar";
 import { Toaster } from "@/components/ui/toaster";
 import ReactQueryProvider from "@/lib/utils/react-query-provider";
 import type { Metadata } from "next";
@@ -30,8 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
         <ReactQueryProvider>
-          <div className="max-w-[400px] mx-auto h-screen bg-white">
+          <div className="max-w-[400px] mx-auto h-screen bg-white relative">
             {children}
+            <Bottombar />
           </div>
           <Toaster />
         </ReactQueryProvider>
