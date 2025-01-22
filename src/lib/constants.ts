@@ -1,3 +1,5 @@
+import { ChartColumnBig, ListCollapse, SquarePlus } from "lucide-react";
+
 export enum PERSONS {
   PERSON1 = "PERSON1",
   PERSON2 = "PERSON2",
@@ -149,20 +151,17 @@ export const sample = [
 export const BOTTOM_BAR_LINKS = [
   {
     route: "add-expense",
-    label: "Add Expense",
-    imgURL: "/icons/plus.svg",
     title: "Add Expense",
+    icon: SquarePlus,
   },
   {
     route: "my-expenses",
-    label: "Expenses",
-    imgURL: "/icons/expenses.svg",
     title: "Track Expenses",
+    icon: ListCollapse,
   },
   {
     route: "statistics",
-    label: "Stats",
-    imgURL: "/icons/stats.svg",
     title: "Statistics",
+    icon: ChartColumnBig,
   },
 ];

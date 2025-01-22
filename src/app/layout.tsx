@@ -34,7 +34,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <main className="flex flex-row">
             <Header />
-            <section className="flex min-h-screen flex-1 flex-col items-center justify-center bg-gray-100 relative pb-20 pt-14 max-w-[400px] mx-auto">
+            <section className="flex min-h-screen flex-1 flex-col items-center justify-center bg-gray-100 relative py-14 max-w-[400px] mx-auto">
               {children}
             </section>
             <Bottombar />
