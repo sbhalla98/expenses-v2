@@ -24,8 +24,8 @@ export const useConfigStore = create<ConfigStore>()(
   persist(
     (set) => {
       return {
-        [PERSONS.PERSON1]: "John",
-        [PERSONS.PERSON2]: "Mary",
+        [PERSONS?.PERSON1]: "John",
+        [PERSONS?.PERSON2]: "Mary",
         setLabels: (person1, person2) => {
           set({
             [PERSONS.PERSON1]: person1,
