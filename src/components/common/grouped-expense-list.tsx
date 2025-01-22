@@ -26,14 +26,14 @@ const GroupedExpenseList: React.FC<{
   }[];
 }> = ({ groupedExpenses }) => {
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="flex flex-col">
       {groupedExpenses.length > 0 ? (
         groupedExpenses.map((group) => (
-          <div key={group.title}>
+          <article key={group.title}>
             <Accordion type="single" collapsible defaultValue="item-1">
               <AccordionItem value="item-1">
-                <AccordionTrigger>
-                  <h3 className="text-xl font-semibold text-gray-800">
+                <AccordionTrigger className="px-4 ">
+                  <h3 className="text-md font-semibold">
                     {group.title} {getAmountLabel(group.amount)}
                   </h3>
                 </AccordionTrigger>
@@ -42,7 +42,7 @@ const GroupedExpenseList: React.FC<{
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-          </div>
+          </article>
         ))
       ) : (
         <p className="text-center text-gray-500 mt-10">

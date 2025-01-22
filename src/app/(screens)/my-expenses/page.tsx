@@ -42,9 +42,13 @@ export default function MyExpenses() {
   }
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="size-full flex flex-col">
       <MonthSelector date={currentDate} changeMonth={changeMonth} />
-      <GroupedExpenseList groupedExpenses={getGroupedByDate(visibleExpenses)} />
+      <div className="flex-1">
+        <GroupedExpenseList
+          groupedExpenses={getGroupedByDate(visibleExpenses)}
+        />
+      </div>
     </div>
   );
 }

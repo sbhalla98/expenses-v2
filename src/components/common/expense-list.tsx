@@ -19,7 +19,7 @@ const ExpenseList: React.FC<{ expenses: Expense[] }> = ({ expenses }) => {
   return (
     <>
       {expenses.length > 0 ? (
-        <ul className="grid grid-cols-1 gap-6">
+        <ul className="flex flex-col">
           {sortedExpenses.map((expense, index) => (
             <ExpenseItem expense={expense} key={expense.id + index} />
           ))}
