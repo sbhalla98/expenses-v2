@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/toaster";
+import ReactQueryProvider from "@/lib/utils/react-query-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -28,10 +29,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
-        <div className="max-w-[400px] mx-auto h-screen bg-white">
-          {children}
-        </div>
-        <Toaster />
+        <ReactQueryProvider>
+          <div className="max-w-[400px] mx-auto h-screen bg-white">
+            {children}
+          </div>
+          <Toaster />
+        </ReactQueryProvider>
       </body>
     </html>
   );

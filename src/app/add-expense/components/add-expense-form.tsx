@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
+import { Skeleton } from "@/components/ui/skeleton";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,25 +9,33 @@ import { FORM_FIELDS, FormFieldNameType } from "../constants";
 import CustomFormField from "./custom-form-field";
 
 const formSchema = z.object(
-  FORM_FIELDS.reduce((schema, field) => {
-    schema[field.name] = field.validation;
-    return schema;
-  }, {} as Record<FormFieldNameType, any>)
+  FORM_FIELDS.reduce(
+    (schema, field) => {
+      schema[field.name] = field.validation;
+      return schema;
+    },
+    {} as Record<FormFieldNameType, any>,
+  ),
 );
 
 export type AddExpensesFormValues = z.infer<typeof formSchema>;
 
 export default function AddExpenseForm({
   onAddExpense,
+  loading,
 }: {
   onAddExpense: (expense: AddExpensesFormValues) => void;
+  loading: boolean;
 }) {
   const form = useForm<AddExpensesFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: FORM_FIELDS.reduce((defaults, field) => {
-      defaults[field.name] = field.defaultValue || "";
-      return defaults;
-    }, {} as Record<FormFieldNameType, string | number>),
+    defaultValues: FORM_FIELDS.reduce(
+      (defaults, field) => {
+        defaults[field.name] = field.defaultValue || "";
+        return defaults;
+      },
+      {} as Record<FormFieldNameType, string | number>,
+    ),
   });
 
   const onSubmit = (data: AddExpensesFormValues) => {
@@ -55,9 +64,13 @@ export default function AddExpenseForm({
               );
             })}
 
-            <Button type="submit" className="w-full">
-              Submit
-            </Button>
+            {loading ? (
+              <Skeleton className="w-full h-[36px] rounded-md" />
+            ) : (
+              <Button type="submit" className="w-full">
+                Submit
+              </Button>
+            )}
           </form>
         </Form>
       </CardContent>
