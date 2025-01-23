@@ -25,14 +25,21 @@ export type AddExpensesFormValues = z.infer<typeof formSchema>;
 
 interface AddExpenseFormProps {
   initialValues?: Partial<AddExpensesFormValues>;
+  id?: string;
+  onSuccess?: () => void;
 }
 
 export default function AddExpenseForm({
   initialValues = {},
+  id,
+  onSuccess,
 }: AddExpenseFormProps) {
   const { toast } = useToast();
 
   const handleAddExpense = async (expense: Expense) => {
+    if (id) {
+      return await apiClient.post(`/api/edit-expense`, { ...expense, id });
+    }
     return await apiClient.post("/api/add-expense", expense);
   };
   const { mutate, isPending } = useMutation<unknown, Error, Expense>({
@@ -46,9 +53,10 @@ export default function AddExpenseForm({
     onSuccess: () => {
       form.reset();
       toast({
-        title: "Expense added!",
-        description: "Your expense has been added successfully.",
+        title: `Expense ${id ? "updated" : "added"}!`,
+        description: `Your expense has been ${id ? "updated" : "added"} successfully.`,
       });
+      onSuccess?.();
     },
   });
 

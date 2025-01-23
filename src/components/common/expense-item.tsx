@@ -8,6 +8,7 @@ import {
 import { PERSONS } from "@/lib/constants";
 import { getAmountLabel } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
+import { useState } from "react";
 import AddExpenseForm from "./add-expense-form";
 import { Expense } from "./expense-list";
 
@@ -16,6 +17,8 @@ type ExpenseItemProps = {
 };
 
 export function ExpenseItem({ expense }: ExpenseItemProps) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { PERSON1, PERSON2 } = useConfigStore();
   const { category, amount, description, date, paidBy, paidFor } =
     expense ?? {};
@@ -40,30 +43,35 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
 
   return (
     <>
-      <div
-        className={`flex justify-between items-center p-2 border-b border-separate ${getBgColor()}`}
-      >
-        <div className="flex flex-col gap-1">
-          <span className="text-sm font-semibold text-gray-700">
-            {category}
-          </span>
-          <span className="text-xs text-gray-500">{description}</span>
-          <span className="text-xs text-gray-500">{dateLabel}</span>
-        </div>
-        <div className="flex flex-col items-end gap-1">
-          <span className="text-xs text-gray-500">{paidByLabel}</span>
-          <span className="text-lg font-bold text-gray-800">
-            {getAmountLabel(amount)}
-          </span>
-        </div>
-      </div>
-      <Dialog>
-        <DialogTrigger>Open</DialogTrigger>
+      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+        <DialogTrigger asChild>
+          <div
+            className={`flex justify-between items-center p-2 border-b border-separate ${getBgColor()}`}
+          >
+            <div className="flex flex-col gap-1">
+              <span className="text-sm font-semibold text-gray-700">
+                {category}
+              </span>
+              <span className="text-xs text-gray-500">{description}</span>
+              <span className="text-xs text-gray-500">{dateLabel}</span>
+            </div>
+            <div className="flex flex-col items-end gap-1">
+              <span className="text-xs text-gray-500">{paidByLabel}</span>
+              <span className="text-lg font-bold text-gray-800">
+                {getAmountLabel(amount)}
+              </span>
+            </div>
+          </div>
+        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Expense</DialogTitle>
           </DialogHeader>
-          <AddExpenseForm initialValues={expense} />
+          <AddExpenseForm
+            initialValues={{ ...expense, date: new Date(expense.date) }}
+            id={expense.id}
+            onSuccess={() => setModalOpen(false)}
+          />
         </DialogContent>
       </Dialog>
     </>
