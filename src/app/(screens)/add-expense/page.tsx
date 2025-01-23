@@ -1,6 +1,6 @@
 "use client";
 
-import AddExpenseForm from "./components/add-expense-form";
+import AddExpenseForm from "@/components/common/add-expense-form";
 
 export default function AddExpense() {
   return (
