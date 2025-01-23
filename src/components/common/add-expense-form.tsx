@@ -23,7 +23,13 @@ const formSchema = z.object(
 
 export type AddExpensesFormValues = z.infer<typeof formSchema>;
 
-export default function AddExpenseForm() {
+interface AddExpenseFormProps {
+  initialValues?: Partial<AddExpensesFormValues>;
+}
+
+export default function AddExpenseForm({
+  initialValues = {},
+}: AddExpenseFormProps) {
   const { toast } = useToast();
 
   const handleAddExpense = async (expense: Expense) => {
@@ -48,13 +54,16 @@ export default function AddExpenseForm() {
 
   const form = useForm<AddExpensesFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: FORM_FIELDS.reduce(
-      (defaults, field) => {
-        defaults[field.name] = field.defaultValue || "";
-        return defaults;
-      },
-      {} as Record<FormFieldNameType, string | number>,
-    ),
+    defaultValues: {
+      ...FORM_FIELDS.reduce(
+        (defaults, field) => {
+          defaults[field.name] = field.defaultValue || "";
+          return defaults;
+        },
+        {} as Record<FormFieldNameType, string | number>,
+      ),
+      ...initialValues,
+    },
   });
 
   const onSubmit = (data: AddExpensesFormValues) => {

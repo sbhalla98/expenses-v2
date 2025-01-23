@@ -63,7 +63,7 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
           <DialogHeader>
             <DialogTitle>Edit Expense</DialogTitle>
           </DialogHeader>
-          <AddExpenseForm />
+          <AddExpenseForm initialValues={expense} />
         </DialogContent>
       </Dialog>
     </>
