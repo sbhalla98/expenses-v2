@@ -275,9 +275,15 @@ export const FORM_FIELDS: FormField[] = [
     type: "select",
     options: EXPENSE_CATEGORY_OPTIONS,
     defaultValue: EXPENSE_CATEGORY_VALUES.FOOD,
-    validation: z.enum(EXPENSE_CATEGORY_OPTIONS as [string, ...string[]], {
-      errorMap: () => ({ message: "Please select a category" }),
-    }),
+    validation: z.enum(
+      EXPENSE_CATEGORY_OPTIONS.map((item) => item.value) as [
+        string,
+        ...string[],
+      ],
+      {
+        errorMap: () => ({ message: "Please select a category" }),
+      },
+    ),
   },
   {
     name: "amount",
