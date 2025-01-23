@@ -64,20 +64,22 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="h-4/5">
           <DialogHeader>
             <DialogTitle>Edit Expense</DialogTitle>
+          </DialogHeader>
+
+          <div className="overflow-y-auto">
+            <AddExpenseForm
+              initialValues={{ ...expense, date: new Date(expense.date) }}
+              id={expense.id}
+              onSuccess={() => setModalOpen(false)}
+            />
             <DeleteExpenseButton
               id={expense.id}
               onSuccess={() => setModalOpen(false)}
             />
-          </DialogHeader>
-
-          <AddExpenseForm
-            initialValues={{ ...expense, date: new Date(expense.date) }}
-            id={expense.id}
-            onSuccess={() => setModalOpen(false)}
-          />
+          </div>
         </DialogContent>
       </Dialog>
     </>

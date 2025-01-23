@@ -44,13 +44,11 @@ const DeleteExpenseButton = ({ id, onSuccess }: DeleteExpenseButtonProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          size="icon"
-          className="absolute top-2 left-2"
-        >
-          <Trash2 />
-        </Button>
+        <div className="px-4">
+          <Button variant="destructive" className="w-full">
+            Delete <Trash2 />
+          </Button>
+        </div>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
