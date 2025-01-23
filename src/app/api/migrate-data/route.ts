@@ -10,7 +10,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const db = client.db("expenses-v2");
     const collection = db.collection("expenses2");
     const id = uuidv4();
-    const userId = request.headers.get("user-id") || "9876";
+    const userId = request.headers.get("user-id") || "test-id";
 
     const reqBody = body.map((item: any) => {
       return { ...item, id: uuidv4(), userId };

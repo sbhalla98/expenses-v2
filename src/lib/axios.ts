@@ -14,7 +14,7 @@ const getUserId = () => {
     console.error("Error retrieving userId from localStorage:", error);
   }
   // Fallback userId if not found or an error occurs
-  return "9876";
+  return "test-id";
 };
 
 const apiClient = axios.create({});
