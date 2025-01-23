@@ -21,7 +21,11 @@ const formSchema = z.object({
 
 export type ConfirmFormValues = z.infer<typeof formSchema>;
 
-export default function ConfigForm() {
+export default function ConfigForm({
+  onSubmitForm,
+}: {
+  onSubmitForm: () => void;
+}) {
   const configStore = useConfigStore();
 
   const form = useForm<ConfirmFormValues>({
@@ -36,6 +40,7 @@ export default function ConfigForm() {
   const onSubmit = (data: ConfirmFormValues) => {
     configStore.setLabels(data.person1, data.person2);
     configStore.setUserId(data.userId);
+    onSubmitForm();
   };
 
   return (
