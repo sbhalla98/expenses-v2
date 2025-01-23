@@ -10,6 +10,7 @@ import { getAmountLabel } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
 import { useState } from "react";
 import AddExpenseForm from "./add-expense-form";
+import DeleteExpenseButton from "./delete-expense-button";
 import { Expense } from "./expense-list";
 
 type ExpenseItemProps = {
@@ -66,7 +67,12 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Expense</DialogTitle>
+            <DeleteExpenseButton
+              id={expense.id}
+              onSuccess={() => setModalOpen(false)}
+            />
           </DialogHeader>
+
           <AddExpenseForm
             initialValues={{ ...expense, date: new Date(expense.date) }}
             id={expense.id}
