@@ -27,7 +27,10 @@ interface CustomFormFieldProps {
   name: string;
   type: string;
   label: string;
-  options?: string[];
+  options?: {
+    value: string;
+    label: string;
+  }[];
   control: any;
 }
 
@@ -64,13 +67,15 @@ const CustomFormField = ({
               >
                 {options?.map((option) => (
                   <FormItem
-                    key={option}
+                    key={option.value}
                     className="flex items-center space-x-3 space-y-0"
                   >
                     <FormControl>
-                      <RadioGroupItem value={option} />
+                      <RadioGroupItem value={option.value} />
                     </FormControl>
-                    <FormLabel className="font-normal">{option}</FormLabel>
+                    <FormLabel className="font-normal">
+                      {option.label}
+                    </FormLabel>
                   </FormItem>
                 ))}
               </RadioGroup>
@@ -83,8 +88,8 @@ const CustomFormField = ({
                 </SelectTrigger>
                 <SelectContent>
                   {options?.map((option) => (
-                    <SelectItem key={option} value={option}>
-                      {option}
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

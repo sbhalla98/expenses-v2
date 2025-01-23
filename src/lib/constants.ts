@@ -7,12 +7,15 @@ export enum PERSONS {
   BOTH = "Both",
 }
 
-export const PAID_BY_OPTIONS = [PERSONS.PERSON1, PERSONS.PERSON2];
+export const PAID_BY_OPTIONS = [
+  { value: PERSONS.PERSON1, label: PERSONS.PERSON1 },
+  { value: PERSONS.PERSON2, label: PERSONS.PERSON2 },
+];
 
 export const PAID_FOR_OPTIONS = [
-  PERSONS.PERSON1,
-  PERSONS.BOTH,
-  PERSONS.PERSON2,
+  { value: PERSONS.PERSON1, label: PERSONS.PERSON1 },
+  { value: PERSONS.BOTH, label: PERSONS.BOTH },
+  { value: PERSONS.PERSON2, label: PERSONS.PERSON2 },
 ];
 
 export enum EXPENSE_CATEGORY_VALUES {
@@ -32,19 +35,58 @@ export enum EXPENSE_CATEGORY_VALUES {
 }
 
 export const EXPENSE_CATEGORY_OPTIONS = [
-  EXPENSE_CATEGORY_VALUES.FOOD,
-  EXPENSE_CATEGORY_VALUES.SOCIAL,
-  EXPENSE_CATEGORY_VALUES.TRANSPORTATION,
-  EXPENSE_CATEGORY_VALUES.HOUSEHOLD,
-  EXPENSE_CATEGORY_VALUES.APPAREL,
-  EXPENSE_CATEGORY_VALUES.BEAUTY,
-  EXPENSE_CATEGORY_VALUES.HEALTH,
-  EXPENSE_CATEGORY_VALUES.EDUCATION,
-  EXPENSE_CATEGORY_VALUES.GIFT,
-  EXPENSE_CATEGORY_VALUES.HOME,
-  EXPENSE_CATEGORY_VALUES.SHOPPING,
-  EXPENSE_CATEGORY_VALUES.BIRTHDAY,
-  EXPENSE_CATEGORY_VALUES.VACATION,
+  {
+    value: EXPENSE_CATEGORY_VALUES.FOOD,
+    label: EXPENSE_CATEGORY_VALUES.FOOD,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.SOCIAL,
+    label: EXPENSE_CATEGORY_VALUES.SOCIAL,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.TRANSPORTATION,
+    label: EXPENSE_CATEGORY_VALUES.TRANSPORTATION,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.HOUSEHOLD,
+    label: EXPENSE_CATEGORY_VALUES.HOUSEHOLD,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.APPAREL,
+    label: EXPENSE_CATEGORY_VALUES.APPAREL,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.BEAUTY,
+    label: EXPENSE_CATEGORY_VALUES.BEAUTY,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.HEALTH,
+    label: EXPENSE_CATEGORY_VALUES.HEALTH,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.EDUCATION,
+    label: EXPENSE_CATEGORY_VALUES.EDUCATION,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.GIFT,
+    label: EXPENSE_CATEGORY_VALUES.GIFT,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.HOME,
+    label: EXPENSE_CATEGORY_VALUES.HOME,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.SHOPPING,
+    label: EXPENSE_CATEGORY_VALUES.SHOPPING,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.BIRTHDAY,
+    label: EXPENSE_CATEGORY_VALUES.BIRTHDAY,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.VACATION,
+    label: EXPENSE_CATEGORY_VALUES.VACATION,
+  },
 ];
 
 export const sample = [
@@ -183,7 +225,10 @@ export type FormField = {
   type: FormFieldType;
   defaultValue: any;
   validation: z.ZodTypeAny;
-  options?: string[]; // Optional field for radio/select options
+  options?: {
+    value: string;
+    label: string;
+  }[]; // Optional field for radio/select options
 };
 
 export const FORM_FIELDS: FormField[] = [
@@ -204,9 +249,12 @@ export const FORM_FIELDS: FormField[] = [
     type: "radio",
     options: PAID_BY_OPTIONS,
     defaultValue: PERSONS.PERSON1,
-    validation: z.enum(PAID_BY_OPTIONS as [string, ...string[]], {
-      errorMap: () => ({ message: "Please select who paid" }),
-    }),
+    validation: z.enum(
+      PAID_BY_OPTIONS.map((item) => item.value) as [string, ...string[]],
+      {
+        errorMap: () => ({ message: "Please select who paid" }),
+      },
+    ),
   },
   {
     name: "paidFor",
@@ -214,9 +262,12 @@ export const FORM_FIELDS: FormField[] = [
     type: "radio",
     defaultValue: PERSONS.BOTH,
     options: PAID_FOR_OPTIONS,
-    validation: z.enum(PAID_FOR_OPTIONS as [string, ...string[]], {
-      errorMap: () => ({ message: "Please select who it was paid for" }),
-    }),
+    validation: z.enum(
+      PAID_FOR_OPTIONS.map((item) => item.value) as [string, ...string[]],
+      {
+        errorMap: () => ({ message: "Please select who it was paid for" }),
+      },
+    ),
   },
   {
     name: "category",

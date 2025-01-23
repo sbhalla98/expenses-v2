@@ -4,8 +4,8 @@ import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
-import { FORM_FIELDS, FormFieldNameType } from "@/lib/constants";
-import { Expense } from "@/store/use-config-store";
+import { FORM_FIELDS, FormFieldNameType, PERSONS } from "@/lib/constants";
+import useConfigStore, { Expense } from "@/store/use-config-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ export default function AddExpenseForm({
   onSuccess,
 }: AddExpenseFormProps) {
   const { toast } = useToast();
+  const configStore = useConfigStore();
 
   const handleAddExpense = async (expense: Expense) => {
     if (id) {
@@ -78,18 +79,29 @@ export default function AddExpenseForm({
     mutate(data as Expense);
   };
 
+  const getLabel = (label: string) => {
+    if (label === PERSONS.PERSON1 || label === PERSONS.PERSON2) {
+      return configStore[PERSONS.PERSON1];
+    }
+    return label;
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
         {FORM_FIELDS.map((field) => {
           const { name, type, label, options } = field;
+
           return (
             <CustomFormField
               key={name}
               name={name}
               type={type}
-              label={label}
-              options={options}
+              label={getLabel(label)}
+              options={options?.map((option) => ({
+                ...option,
+                label: getLabel(option.label),
+              }))}
               control={form.control}
             />
           );
