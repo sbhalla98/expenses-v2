@@ -5,10 +5,18 @@ import { useState } from "react";
 
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
-import { STATS_CATEGORIES } from "@/lib/constants";
 import { getCurrentMonthExpenses } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import CategorySelector from "./components/category-selector";
+import CategoryStats from "./components/category-stats";
+import PaidByStats from "./components/paid-by-stats";
+import PaidForStats from "./components/paid-for-stats";
+
+const STATS_CATEGORIES = [
+  { label: "Category", Component: CategoryStats },
+  { label: "Paid By", Component: PaidByStats },
+  { label: "Paid For", Component: PaidForStats },
+];
 
 export default function Statistics() {
   const { toast } = useToast();
