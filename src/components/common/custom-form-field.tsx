@@ -72,7 +72,11 @@ const CustomFormField = ({
                   >
                     <TabsList className="w-full">
                       {options?.map((option) => (
-                        <TabsTrigger className="flex-1" value={option.value}>
+                        <TabsTrigger
+                          className="flex-1"
+                          value={option.value}
+                          key={option.value}
+                        >
                           {option.label}
                         </TabsTrigger>
                       ))}
