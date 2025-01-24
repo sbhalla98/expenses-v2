@@ -13,7 +13,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -21,7 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
+import { Controller } from "react-hook-form";
 
 interface CustomFormFieldProps {
   name: string;
@@ -60,25 +61,25 @@ const CustomFormField = ({
             )}
 
             {type === "radio" && (
-              <RadioGroup
-                onValueChange={formField.onChange}
-                className="flex flex-col space-y-1"
-                {...formField}
-              >
-                {options?.map((option) => (
-                  <FormItem
-                    key={option.value}
-                    className="flex items-center space-x-3 space-y-0"
+              <Controller
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <Tabs
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    className="w-full"
                   >
-                    <FormControl>
-                      <RadioGroupItem value={option.value} />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      {option.label}
-                    </FormLabel>
-                  </FormItem>
-                ))}
-              </RadioGroup>
+                    <TabsList className="w-full">
+                      {options?.map((option) => (
+                        <TabsTrigger className="flex-1" value={option.value}>
+                          {option.label}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                  </Tabs>
+                )}
+              />
             )}
 
             {type === "select" && (
