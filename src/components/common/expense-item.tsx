@@ -14,6 +14,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
+import { Card, CardContent } from "@/components/ui/card";
+
 type ExpenseItemProps = {
   expense: Expense;
 };
@@ -46,23 +48,23 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
   return (
     <Drawer open={modalOpen} onOpenChange={setModalOpen}>
       <DrawerTrigger asChild>
-        <div
-          className={`flex justify-between items-center p-2 border-b border-separate ${getBgColor()}`}
-        >
-          <div className="flex flex-col gap-1">
-            <span className="text-sm font-semibold text-gray-700">
-              {category}
-            </span>
-            <span className="text-xs text-gray-500">{description}</span>
-            <span className="text-xs text-gray-500">{dateLabel}</span>
-          </div>
-          <div className="flex flex-col items-end gap-1">
-            <span className="text-xs text-gray-500">{paidByLabel}</span>
-            <span className="text-lg font-bold text-gray-800">
-              {getAmountLabel(amount)}
-            </span>
-          </div>
-        </div>
+        <Card className={`${getBgColor()} p-2`}>
+          <CardContent className="p-0 flex justify-between items-center">
+            <div className="flex flex-col gap-1">
+              <span className="text-sm font-semibold text-gray-700">
+                {category}
+              </span>
+              <span className="text-xs text-gray-500">{description}</span>
+              <span className="text-xs text-gray-500">{dateLabel}</span>
+            </div>
+            <div className="flex flex-col items-end gap-1">
+              <span className="text-xs text-gray-500">{paidByLabel}</span>
+              <span className="text-md font-bold text-gray-800">
+                {getAmountLabel(amount)}
+              </span>
+            </div>
+          </CardContent>
+        </Card>
       </DrawerTrigger>
       <DrawerContent className="max-h-[80%]">
         <DrawerHeader>
