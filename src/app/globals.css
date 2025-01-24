@@ -3,7 +3,20 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: UberMoveMedium, Arial, Helvetica, sans-serif;
+}
+@font-face {
+  font-family: "UberMoveMedium";
+  src: url("../../public/UberMoveMedium.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "UberMoveBold";
+  src: url("../../public/UberMoveBold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @layer base {
