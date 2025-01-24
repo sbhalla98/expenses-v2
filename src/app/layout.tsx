@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
         <ReactQueryProvider>
-          <main className="flex flex-row">
+          <main className="flex flex-row" data-vaul-drawer-wrapper>
             <Header />
             <section className="flex min-h-screen max-h-screen flex-1 flex-col items-center justify-center bg-gray-100 relative py-14 max-w-[400px] mx-auto overflow-hidden">
               {children}

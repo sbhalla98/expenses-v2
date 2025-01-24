@@ -1,10 +1,3 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { PERSONS } from "@/lib/constants";
 import { getAmountLabel } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
@@ -12,6 +5,14 @@ import { useState } from "react";
 import AddExpenseForm from "./add-expense-form";
 import DeleteExpenseButton from "./delete-expense-button";
 import { Expense } from "./expense-list";
+
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 type ExpenseItemProps = {
   expense: Expense;
@@ -43,45 +44,42 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
   }
 
   return (
-    <>
-      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogTrigger asChild>
-          <div
-            className={`flex justify-between items-center p-2 border-b border-separate ${getBgColor()}`}
-          >
-            <div className="flex flex-col gap-1">
-              <span className="text-sm font-semibold text-gray-700">
-                {category}
-              </span>
-              <span className="text-xs text-gray-500">{description}</span>
-              <span className="text-xs text-gray-500">{dateLabel}</span>
-            </div>
-            <div className="flex flex-col items-end gap-1">
-              <span className="text-xs text-gray-500">{paidByLabel}</span>
-              <span className="text-lg font-bold text-gray-800">
-                {getAmountLabel(amount)}
-              </span>
-            </div>
+    <Drawer open={modalOpen} onOpenChange={setModalOpen}>
+      <DrawerTrigger asChild>
+        <div
+          className={`flex justify-between items-center p-2 border-b border-separate ${getBgColor()}`}
+        >
+          <div className="flex flex-col gap-1">
+            <span className="text-sm font-semibold text-gray-700">
+              {category}
+            </span>
+            <span className="text-xs text-gray-500">{description}</span>
+            <span className="text-xs text-gray-500">{dateLabel}</span>
           </div>
-        </DialogTrigger>
-        <DialogContent className="h-4/5">
-          <DialogHeader>
-            <DialogTitle>Edit Expense</DialogTitle>
-          </DialogHeader>
-
-          <div className="overflow-y-auto">
-            <AddExpenseForm
-              initialValues={{ ...expense, date: new Date(expense.date) }}
-              id={expense.id}
-              onSuccess={() => setModalOpen(false)}
-            />
-            <DeleteExpenseButton
-              id={expense.id}
-              onSuccess={() => setModalOpen(false)}
-            />
+          <div className="flex flex-col items-end gap-1">
+            <span className="text-xs text-gray-500">{paidByLabel}</span>
+            <span className="text-lg font-bold text-gray-800">
+              {getAmountLabel(amount)}
+            </span>
           </div>
-        </DialogContent>
-      </Dialog>
-    </>
+        </div>
+      </DrawerTrigger>
+      <DrawerContent className="max-h-[80%]">
+        <DrawerHeader>
+          <DrawerTitle>Edit Expense</DrawerTitle>
+        </DrawerHeader>
+        <div className="overflow-y-auto pb-12">
+          <AddExpenseForm
+            initialValues={{ ...expense, date: new Date(expense.date) }}
+            id={expense.id}
+            onSuccess={() => setModalOpen(false)}
+          />
+          <DeleteExpenseButton
+            id={expense.id}
+            onSuccess={() => setModalOpen(false)}
+          />
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }
