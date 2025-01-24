@@ -1,7 +1,6 @@
 import CustomFormField from "@/components/common/custom-form-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
 import { FORM_FIELDS, FormFieldNameType, PERSONS } from "@/lib/constants";
@@ -81,7 +80,7 @@ export default function AddExpenseForm({
 
   const getLabel = (label: string) => {
     if (label === PERSONS.PERSON1 || label === PERSONS.PERSON2) {
-      return configStore[PERSONS.PERSON1];
+      return configStore[label];
     }
     return label;
   };
@@ -107,13 +106,9 @@ export default function AddExpenseForm({
           );
         })}
 
-        {isPending ? (
-          <Skeleton className="w-full h-[36px] rounded-md" />
-        ) : (
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-        )}
+        <Button type="submit" className="w-full" disabled={isPending}>
+          Submit
+        </Button>
       </form>
     </Form>
   );
