@@ -2,6 +2,7 @@
 
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
 import MonthSelector from "@/components/common/month-selector";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
 import {
@@ -45,7 +46,23 @@ export default function MyExpenses() {
   const currentExpense = getAmountLabel(getExpenseAmount(visibleExpenses));
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="size-full flex flex-col">
+        <div className="p-2">
+          <Skeleton className="h-12 " />
+        </div>
+        <div className="p-4">
+          <Skeleton className="h-4" />
+        </div>
+        {Array(10)
+          .fill(null)
+          .map((_, index) => (
+            <div className="mt-2 mx-2">
+              <Skeleton className="h-[68px] rounded-xl" />
+            </div>
+          ))}
+      </div>
+    );
   }
 
   return (

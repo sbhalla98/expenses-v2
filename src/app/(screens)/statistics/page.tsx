@@ -3,9 +3,14 @@
 import MonthSelector from "@/components/common/month-selector";
 import { useState } from "react";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
-import { getCurrentMonthExpenses } from "@/lib/utils";
+import {
+  getAmountLabel,
+  getCurrentMonthExpenses,
+  getExpenseAmount,
+} from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import CategorySelector from "./components/category-selector";
 import CategoryStats from "./components/category-stats";
@@ -52,6 +57,7 @@ export default function Statistics() {
 
   const allExpenses = data?.data ?? [];
   const visibleExpenses = getCurrentMonthExpenses(allExpenses, currentDate);
+  const currentExpense = getAmountLabel(getExpenseAmount(visibleExpenses));
 
   const handleCategoryChange = (index: number) => {
     setCategory((prev) => {
@@ -63,12 +69,38 @@ export default function Statistics() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="size-full flex flex-col">
+        <div className="p-2">
+          <Skeleton className="h-12 " />
+        </div>
+        <div className="p-2">
+          <Skeleton className="h-9" />
+        </div>
+        <div className="p-2">
+          <Skeleton className="h-[210px]" />
+        </div>
+        <div className="p-4">
+          <Skeleton className="h-4" />
+        </div>
+        {Array(10)
+          .fill(null)
+          .map((_, index) => (
+            <div className="mt-2 mx-2">
+              <Skeleton className="h-[68px] rounded-xl" />
+            </div>
+          ))}
+      </div>
+    );
   }
 
   return (
     <div className="size-full flex flex-col">
-      <MonthSelector date={currentDate} changeMonth={changeMonth} />
+      <MonthSelector
+        date={currentDate}
+        changeMonth={changeMonth}
+        description={currentExpense}
+      />
       <CategorySelector category={label} setCategory={handleCategoryChange} />
       <div className="flex-1 max-w-[100vw] overflow-y-auto">
         <Component expenses={visibleExpenses} />
