@@ -4,7 +4,12 @@ import GroupedExpenseList from "@/components/common/grouped-expense-list";
 import MonthSelector from "@/components/common/month-selector";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
-import { getCurrentMonthExpenses, getGroupedByDate } from "@/lib/utils";
+import {
+  getAmountLabel,
+  getCurrentMonthExpenses,
+  getExpenseAmount,
+  getGroupedByDate,
+} from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -36,6 +41,8 @@ export default function MyExpenses() {
 
   const allExpenses = data?.data ?? [];
   const visibleExpenses = getCurrentMonthExpenses(allExpenses, currentDate);
+  const groupedByDate = getGroupedByDate(visibleExpenses);
+  const currentExpense = getAmountLabel(getExpenseAmount(visibleExpenses));
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -43,11 +50,13 @@ export default function MyExpenses() {
 
   return (
     <div className="size-full flex flex-col">
-      <MonthSelector date={currentDate} changeMonth={changeMonth} />
+      <MonthSelector
+        date={currentDate}
+        changeMonth={changeMonth}
+        description={currentExpense}
+      />
       <div className="flex-1 overflow-y-auto">
-        <GroupedExpenseList
-          groupedExpenses={getGroupedByDate(visibleExpenses)}
-        />
+        <GroupedExpenseList groupedExpenses={groupedByDate} />
       </div>
     </div>
   );

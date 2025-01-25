@@ -4,11 +4,13 @@ import { Button } from "../ui/button";
 type MonthSelectorProps = {
   date: Date;
   changeMonth: (number: number) => void;
+  description?: string;
 };
 
 export default function MonthSelector({
   date,
   changeMonth,
+  description,
 }: MonthSelectorProps) {
   const month = date?.toLocaleString("default", {
     month: "long",
@@ -20,7 +22,10 @@ export default function MonthSelector({
       <Button variant="outline" size="icon" onClick={() => changeMonth(-1)}>
         <ArrowLeft />
       </Button>
-      <p className="font-semibold text-primary flex-1 text-center">{month}</p>
+      <div className="flex-1 text-center flex flex-col">
+        <span className="font-semibold text-primary">{month}</span>
+        <span className="font-semibold text-primary">{description}</span>
+      </div>
       <Button variant="outline" size="icon" onClick={() => changeMonth(1)}>
         <ArrowRight />
       </Button>
