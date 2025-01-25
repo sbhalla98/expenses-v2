@@ -113,7 +113,13 @@ export const BOTTOM_BAR_LINKS = [
   },
 ];
 
-export type FormFieldType = "number" | "text" | "radio" | "select" | "date";
+export type FormFieldType =
+  | "number"
+  | "text"
+  | "radio"
+  | "select"
+  | "date"
+  | "textarea";
 
 export type FormFieldNameType =
   | "amount"
@@ -201,7 +207,7 @@ export const FORM_FIELDS: FormField[] = [
   {
     name: "description",
     label: "Description",
-    type: "text",
+    type: "textarea",
     defaultValue: "",
     validation: z.string().min(1, "Description is required"),
   },
