@@ -14,9 +14,9 @@ import PaidByStats from "./components/paid-by-stats";
 import PaidForStats from "./components/paid-for-stats";
 
 const STATS_CATEGORIES = [
-  { label: "Category", Component: CategoryStats },
-  { label: "Paid By", Component: PaidByStats },
-  { label: "Paid For", Component: PaidForStats },
+  { label: "Category Breakup", Component: CategoryStats },
+  { label: "Spent By Breakup", Component: PaidByStats },
+  { label: "Individual Expense Breakup", Component: PaidForStats },
   { label: "Five Days Breakup", Component: FiveDayStats },
 ];
 
