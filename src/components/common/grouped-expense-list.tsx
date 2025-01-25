@@ -24,13 +24,18 @@ const GroupedExpenseList: React.FC<{
     amount: number;
     data: Expense[];
   }[];
-}> = ({ groupedExpenses }) => {
+  expandedView?: boolean;
+}> = ({ groupedExpenses, expandedView = true }) => {
   return (
     <div className="flex flex-col">
       {groupedExpenses.length > 0 ? (
         groupedExpenses.map((group) => (
           <article key={group.title}>
-            <Accordion type="single" collapsible defaultValue="item-1">
+            <Accordion
+              type="single"
+              collapsible
+              defaultValue={expandedView ? "item-1" : "none"}
+            >
               <AccordionItem value="item-1">
                 <AccordionTrigger className="px-4 ">
                   <h3 className="text-md font-semibold">

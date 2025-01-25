@@ -7,9 +7,13 @@ import useConfigStore, { Expense } from "@/store/use-config-store";
 
 type PaidForStatsProps = {
   expenses: Expense[];
+  expandedView?: boolean;
 };
 
-export default function PaidForStats({ expenses }: PaidForStatsProps) {
+export default function PaidForStats({
+  expenses,
+  expandedView = true,
+}: PaidForStatsProps) {
   const configStore = useConfigStore();
 
   const getTitle = (title: string) => {
@@ -54,5 +58,10 @@ export default function PaidForStats({ expenses }: PaidForStatsProps) {
       title: getTitle(group.title),
     }));
 
-  return <GroupedExpenseList groupedExpenses={sortedGroupedData} />;
+  return (
+    <GroupedExpenseList
+      groupedExpenses={sortedGroupedData}
+      expandedView={expandedView}
+    />
+  );
 }
