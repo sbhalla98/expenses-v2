@@ -1,6 +1,7 @@
 "use client";
 
 import AddExpenseForm from "@/components/common/add-expense-form";
+import DeleteExpenseButton from "@/components/common/delete-expense-button";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -32,6 +33,10 @@ export default function EditExpense() {
     return <div>Loading ...</div>;
   }
 
+  if (!id || !data) {
+    return <div>Error</div>;
+  }
+
   const initialValues = {
     ...(data?.data ?? {}),
     date: new Date(data?.data?.date ?? new Date()),
@@ -40,6 +45,7 @@ export default function EditExpense() {
   return (
     <div className="size-full flex flex-col overflow-y-auto">
       <AddExpenseForm initialValues={initialValues} id={id} />
+      <DeleteExpenseButton id={id} />
     </div>
   );
 }
