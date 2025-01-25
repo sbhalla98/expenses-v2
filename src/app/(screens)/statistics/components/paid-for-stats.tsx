@@ -4,15 +4,18 @@ import GroupedExpenseList from "@/components/common/grouped-expense-list";
 import { PERSONS } from "@/lib/constants";
 import { getExpenseAmount, getGroupedByKey } from "@/lib/utils";
 import useConfigStore, { Expense } from "@/store/use-config-store";
+import PaidForChart from "./paid-for-chart";
 
 type PaidForStatsProps = {
   expenses: Expense[];
   expandedView?: boolean;
+  showChart?: boolean;
 };
 
 export default function PaidForStats({
   expenses,
   expandedView = true,
+  showChart = true,
 }: PaidForStatsProps) {
   const configStore = useConfigStore();
 
@@ -23,7 +26,7 @@ export default function PaidForStats({
     return title;
   };
 
-  const processExpenses = () => {
+  const processExpenses = (expenses: Expense[]) => {
     const result: Expense[] = [];
     expenses.forEach((expense) => {
       if (expense.paidFor !== PERSONS.BOTH) {
@@ -48,7 +51,8 @@ export default function PaidForStats({
 
     return result;
   };
-  const processExpensesResult = processExpenses();
+
+  const processExpensesResult = processExpenses(expenses);
 
   const groupedData = getGroupedByKey(processExpensesResult, "paidFor");
   const sortedGroupedData = groupedData
@@ -59,9 +63,12 @@ export default function PaidForStats({
     }));
 
   return (
-    <GroupedExpenseList
-      groupedExpenses={sortedGroupedData}
-      expandedView={expandedView}
-    />
+    <>
+      {showChart && <PaidForChart expenses={processExpensesResult} />}
+      <GroupedExpenseList
+        groupedExpenses={sortedGroupedData}
+        expandedView={expandedView}
+      />
+    </>
   );
 }

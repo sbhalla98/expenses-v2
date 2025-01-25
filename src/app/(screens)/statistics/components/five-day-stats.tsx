@@ -89,7 +89,11 @@ export default function FiveDayStats({ expenses }: FiveDayStatsProps) {
               </h3>
             </AccordionTrigger>
             <AccordionContent>
-              <PaidForStats expenses={section.data} expandedView={false} />
+              <PaidForStats
+                expenses={section.data}
+                expandedView={false}
+                showChart={false}
+              />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
