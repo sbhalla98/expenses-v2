@@ -7,6 +7,7 @@ import { FORM_FIELDS, FormFieldNameType, PERSONS } from "@/lib/constants";
 import useConfigStore, { Expense } from "@/store/use-config-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { CheckCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -24,7 +25,7 @@ export type AddExpensesFormValues = z.infer<typeof formSchema>;
 
 interface AddExpenseFormProps {
   initialValues?: Partial<AddExpensesFormValues>;
-  id?: string;
+  id?: string | null;
   onSuccess?: () => void;
 }
 
@@ -36,8 +37,10 @@ export default function AddExpenseForm({
   const { toast } = useToast();
   const configStore = useConfigStore();
 
+  const isEdit = !!id;
+
   const handleAddExpense = async (expense: Expense) => {
-    if (id) {
+    if (isEdit) {
       return await apiClient.post(`/api/edit-expense`, { ...expense, id });
     }
     return await apiClient.post("/api/add-expense", expense);
@@ -53,8 +56,8 @@ export default function AddExpenseForm({
     onSuccess: () => {
       form.reset();
       toast({
-        title: `Expense ${id ? "updated" : "added"}!`,
-        description: `Your expense has been ${id ? "updated" : "added"} successfully.`,
+        title: `Expense ${isEdit ? "updated" : "added"}!`,
+        description: `Your expense has been ${isEdit ? "updated" : "added"} successfully.`,
       });
       onSuccess?.();
     },
@@ -107,7 +110,8 @@ export default function AddExpenseForm({
         })}
 
         <Button type="submit" className="w-full" disabled={isPending}>
-          Submit
+          {isEdit ? "Save" : "Submit"}
+          <CheckCheck />
         </Button>
       </form>
     </Form>
