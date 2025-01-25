@@ -6,9 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { PERSONS } from "@/lib/constants";
-import { getAmountLabel, getExpenseAmount, getGroupedByKey } from "@/lib/utils";
-import useConfigStore, { Expense } from "@/store/use-config-store";
+import { getAmountLabel, getExpenseAmount } from "@/lib/utils";
+import { Expense } from "@/store/use-config-store";
 import PaidForStats from "./paid-for-stats";
 
 type FiveDayStatsProps = {
@@ -77,26 +76,7 @@ const getSections = (expenses: Expense[]) => {
 };
 
 export default function FiveDayStats({ expenses }: FiveDayStatsProps) {
-  const configStore = useConfigStore();
   const sections = getSections(expenses);
-
-  const getTitle = (title: string) => {
-    if (title === PERSONS.PERSON1 || title === PERSONS.PERSON2) {
-      return configStore[title];
-    }
-    return title;
-  };
-
-  const groupedData = getGroupedByKey(expenses, "paidBy");
-  const sortedGroupedData = groupedData
-    .sort((a, b) => getExpenseAmount(b.data) - getExpenseAmount(a.data))
-
-    .map((group) => ({
-      ...group,
-      title: getTitle(group.title),
-    }));
-
-  console.log("sections", sections, sortedGroupedData);
 
   return (
     <div>

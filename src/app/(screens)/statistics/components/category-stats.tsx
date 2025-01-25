@@ -21,13 +21,9 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  amount: {
+    label: "Amount",
     color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
   },
   label: {
     color: "hsl(var(--background))",
@@ -46,7 +42,7 @@ export default function CategoryStats({ expenses }: CategoryStatsProps) {
 
   const chartData = sortedGroupedData.map((group) => ({
     title: group.title,
-    desktop: getExpenseAmount(group.data),
+    amount: getExpenseAmount(group.data),
   }));
 
   return (
@@ -70,15 +66,15 @@ export default function CategoryStats({ expenses }: CategoryStatsProps) {
             tickFormatter={(value) => value.slice(0, 3)}
             hide
           />
-          <XAxis dataKey="desktop" type="number" hide />
+          <XAxis dataKey="amount" type="number" hide />
           <ChartTooltip
             cursor={false}
             content={<ChartTooltipContent indicator="line" />}
           />
           <Bar
-            dataKey="desktop"
+            dataKey="amount"
             layout="vertical"
-            fill="var(--color-desktop)"
+            fill="var(--color-amount)"
             radius={4}
           >
             <LabelList
