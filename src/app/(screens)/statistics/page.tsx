@@ -86,7 +86,7 @@ export default function Statistics() {
         {Array(10)
           .fill(null)
           .map((_, index) => (
-            <div className="mt-2 mx-2">
+            <div className="mt-2 mx-2" key={index}>
               <Skeleton className="h-[68px] rounded-xl" />
             </div>
           ))}
