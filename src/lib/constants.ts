@@ -1,4 +1,4 @@
-import { ChartColumnBig, ListCollapse, SquarePlus } from "lucide-react";
+import { ChartColumnBig, Edit, ListCollapse, SquarePlus } from "lucide-react";
 import { z } from "zod";
 
 export enum PERSONS {
@@ -206,6 +206,12 @@ export const BOTTOM_BAR_LINKS = [
     route: "statistics",
     title: "Statistics",
     icon: ChartColumnBig,
+  },
+  {
+    route: "edit-expense",
+    title: "Edit Expense",
+    icon: Edit,
+    hidden: true,
   },
 ];
 
