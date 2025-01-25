@@ -13,16 +13,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
 import { Controller } from "react-hook-form";
+import { Badge } from "../ui/badge";
 
 interface CustomFormFieldProps {
   name: string;
@@ -87,18 +81,26 @@ const CustomFormField = ({
             )}
 
             {type === "select" && (
-              <Select onValueChange={formField.onChange} {...formField}>
-                <SelectTrigger className="mt-2">
-                  <SelectValue placeholder={`Select ${label}`} />
-                </SelectTrigger>
-                <SelectContent>
-                  {options?.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Controller
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {options?.map((option) => {
+                      const isSelected = field.value.includes(option.value);
+                      return (
+                        <Badge
+                          key={option.value}
+                          variant={isSelected ? "default" : "outline"}
+                          onClick={() => field.onChange([option.value])}
+                        >
+                          {option.label}
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                )}
+              />
             )}
 
             {type === "date" && (
