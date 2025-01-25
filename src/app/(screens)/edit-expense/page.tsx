@@ -6,8 +6,9 @@ import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function EditExpense() {
+function EditExpense() {
   const { toast } = useToast();
 
   const searchParams = useSearchParams();
@@ -47,5 +48,13 @@ export default function EditExpense() {
       <AddExpenseForm initialValues={initialValues} id={id} />
       <DeleteExpenseButton id={id} />
     </div>
+  );
+}
+
+export default function EditExpensePage() {
+  return (
+    <Suspense>
+      <EditExpense />
+    </Suspense>
   );
 }
