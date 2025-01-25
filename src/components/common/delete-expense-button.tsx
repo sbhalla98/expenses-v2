@@ -1,19 +1,19 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
+
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 type DeleteExpenseButtonProps = {
   id: string;
@@ -42,32 +42,35 @@ const DeleteExpenseButton = ({ id, onSuccess }: DeleteExpenseButtonProps) => {
     },
   });
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
+    <Drawer>
+      <DrawerTrigger asChild>
         <div className="px-4">
           <Button variant="destructive" className="w-full">
             Delete <Trash2 />
           </Button>
         </div>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
+      </DrawerTrigger>
+      <DrawerContent className="max-h-[80%]">
+        <DrawerHeader>
+          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+          <DrawerDescription>
             This action cannot be undone. This will permanently delete your
             expense from our servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => mutate()} disabled={isPending}>
+          </DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter>
+          <Button
+            onClick={() => mutate()}
+            disabled={isPending}
+            variant="destructive"
+          >
             Continue
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+          <DrawerClose>Cancel</DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
-  return;
 };
 
 export default DeleteExpenseButton;
