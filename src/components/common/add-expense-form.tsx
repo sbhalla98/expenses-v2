@@ -54,7 +54,9 @@ export default function AddExpenseForm({
       });
     },
     onSuccess: () => {
-      form.reset();
+      if (!isEdit) {
+        form.reset();
+      }
       toast({
         title: `Expense ${isEdit ? "updated" : "added"}!`,
         description: `Your expense has been ${isEdit ? "updated" : "added"} successfully.`,

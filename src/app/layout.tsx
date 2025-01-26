@@ -34,7 +34,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <main className="flex flex-row" data-vaul-drawer-wrapper>
             <Header />
-            <section className="flex min-h-screen max-h-screen flex-1 flex-col items-center justify-center bg-white relative py-14 max-w-[400px] mx-auto overflow-hidden">
+            <section className="flex h-svh flex-1 flex-col items-center justify-center bg-white relative py-14 max-w-[400px] mx-auto overflow-hidden">
               {children}
             </section>
             <Bottombar />
