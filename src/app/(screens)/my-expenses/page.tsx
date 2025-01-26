@@ -72,7 +72,7 @@ export default function MyExpenses() {
         changeMonth={changeMonth}
         description={currentExpense}
       />
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-12">
         <GroupedExpenseList groupedExpenses={groupedByDate} />
       </div>
     </div>

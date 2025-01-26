@@ -1,3 +1,5 @@
+"use client";
+
 import CustomFormField from "@/components/common/custom-form-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";

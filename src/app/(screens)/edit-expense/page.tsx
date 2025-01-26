@@ -44,7 +44,7 @@ function EditExpense() {
   };
 
   return (
-    <div className="size-full flex flex-col overflow-y-auto">
+    <div className="size-full flex flex-col overflow-y-auto pb-12">
       <AddExpenseForm initialValues={initialValues} id={id} />
       <DeleteExpenseButton id={id} />
     </div>

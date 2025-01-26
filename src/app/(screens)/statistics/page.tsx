@@ -102,7 +102,7 @@ export default function Statistics() {
         description={currentExpense}
       />
       <CategorySelector category={label} setCategory={handleCategoryChange} />
-      <div className="flex-1 max-w-[100vw] overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-12">
         <Component expenses={visibleExpenses} />
       </div>
     </div>
