@@ -90,12 +90,12 @@ const CustomFormField = ({
                 render={({ field }) => (
                   <div className="flex gap-2 mt-2 flex-wrap">
                     {options?.map((option) => {
-                      const isSelected = field.value.includes(option.value);
+                      const isSelected = field.value === option.value;
                       return (
                         <Badge
                           key={option.value}
                           variant={isSelected ? "default" : "outline"}
-                          onClick={() => field.onChange([option.value])}
+                          onClick={() => field.onChange(option.value)}
                         >
                           {option.label}
                         </Badge>
