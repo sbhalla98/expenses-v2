@@ -11,17 +11,18 @@ import {
   getExpenseAmount,
   getGroupedByDate,
 } from "@/lib/utils";
+import useConfigStore from "@/store/use-config-store";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 
 export default function MyExpenses() {
   const { toast } = useToast();
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const { currentMonth: currentDateString, setCurrentMonth } = useConfigStore();
+  const currentDate = new Date(currentDateString);
 
   const changeMonth = (increment: number) => {
     const newDate = new Date(currentDate);
     newDate.setMonth(currentDate.getMonth() + increment);
-    setCurrentDate(newDate);
+    setCurrentMonth(newDate.toISOString());
   };
 
   const fetchExpenses = async () => {

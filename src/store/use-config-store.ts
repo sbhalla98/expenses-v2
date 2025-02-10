@@ -16,8 +16,10 @@ export type ConfigStore = {
   [PERSONS.PERSON1]: string;
   [PERSONS.PERSON2]: string;
   userId?: string;
+  currentMonth: string;
   setLabels: (person1: string, person2: string) => void;
   setUserId: (userId: string) => void;
+  setCurrentMonth: (date: string) => void;
 };
 
 export const useConfigStore = create<ConfigStore>()(
@@ -26,6 +28,7 @@ export const useConfigStore = create<ConfigStore>()(
       return {
         [PERSONS?.PERSON1]: "John",
         [PERSONS?.PERSON2]: "Mary",
+        currentMonth: new Date().toISOString(),
         setLabels: (person1, person2) => {
           set({
             [PERSONS.PERSON1]: person1,
@@ -34,6 +37,11 @@ export const useConfigStore = create<ConfigStore>()(
         },
         setUserId: (userId) => {
           set({ userId });
+        },
+        setCurrentMonth: (date) => {
+          set({
+            currentMonth: date,
+          });
         },
       };
     },
