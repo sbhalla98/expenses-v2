@@ -26,7 +26,7 @@ function EditExpense() {
     }
   };
   const { isLoading, data } = useQuery({
-    queryKey: ["expense"],
+    queryKey: ["expense", id],
     queryFn: fetchExpense,
   });
 
