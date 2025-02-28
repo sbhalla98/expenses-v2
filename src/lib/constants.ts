@@ -20,6 +20,7 @@ export const PAID_FOR_OPTIONS = [
 
 export enum EXPENSE_CATEGORY_VALUES {
   FOOD = "Food",
+  GROCERY = "Grocery",
   SOCIAL = "Social",
   TRANSPORTATION = "Transportation",
   HOUSEHOLD = "Household",

@@ -28,11 +28,19 @@ export default function PaidForChart({ expenses }: PaidForChartProps) {
   const getChartData = (expenses: Expense[]) =>
     getGroupedByKey(expenses, "category").map((group) => {
       const groupedByPaidFor = getGroupedByKey(group.data, "paidFor");
-      return {
-        category: group.title,
-        [PERSONS.PERSON1]: Math.trunc(groupedByPaidFor[0]?.amount ?? 0),
-        [PERSONS.PERSON2]: Math.trunc(groupedByPaidFor[1]?.amount ?? 0),
-      };
+      if (groupedByPaidFor[0]?.title === PERSONS.PERSON1) {
+        return {
+          category: group.title,
+          [PERSONS.PERSON1]: Math.trunc(groupedByPaidFor[0]?.amount ?? 0),
+          [PERSONS.PERSON2]: Math.trunc(groupedByPaidFor[1]?.amount ?? 0),
+        };
+      } else {
+        return {
+          category: group.title,
+          [PERSONS.PERSON2]: Math.trunc(groupedByPaidFor[0]?.amount ?? 0),
+          [PERSONS.PERSON1]: Math.trunc(groupedByPaidFor[1]?.amount ?? 0),
+        };
+      }
     });
 
   const chartConfig = {
