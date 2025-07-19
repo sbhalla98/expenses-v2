@@ -33,6 +33,8 @@ export enum EXPENSE_CATEGORY_VALUES {
   SHOPPING = "Shopping",
   BIRTHDAY = "Birthday",
   VACATION = "Vacation",
+  MARRIAGE = "Marriage",
+  OTHER = "Other",
 }
 
 export const EXPENSE_CATEGORY_OPTIONS = [
@@ -87,6 +89,14 @@ export const EXPENSE_CATEGORY_OPTIONS = [
   {
     value: EXPENSE_CATEGORY_VALUES.VACATION,
     label: EXPENSE_CATEGORY_VALUES.VACATION,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.MARRIAGE,
+    label: EXPENSE_CATEGORY_VALUES.MARRIAGE,
+  },
+  {
+    value: EXPENSE_CATEGORY_VALUES.OTHER,
+    label: EXPENSE_CATEGORY_VALUES.OTHER,
   },
 ];
 
