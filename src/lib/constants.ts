@@ -3,6 +3,7 @@ import {
   Edit,
   ListCollapse,
   Repeat,
+  Search,
   SquarePlus,
 } from "lucide-react";
 import { z } from "zod";
@@ -146,6 +147,11 @@ export const BOTTOM_BAR_LINKS = [
     route: "recurring-expenses",
     title: "Recurring",
     icon: Repeat,
+  },
+  {
+    route: "search",
+    title: "Search",
+    icon: Search,
   },
 ];
 
