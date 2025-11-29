@@ -169,7 +169,7 @@ export type FormField = {
   name: FormFieldNameType;
   label: string;
   type: FormFieldType;
-  defaultValue: any;
+  defaultValue: string | number | Date;
   validation: z.ZodTypeAny;
   options?: {
     value: string;

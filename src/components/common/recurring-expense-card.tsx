@@ -2,14 +2,14 @@ import DeleteRecurringExpenseButton from "@/components/common/delete-recurring-e
 import { Button } from "@/components/ui/button";
 import { PERSONS } from "@/lib/constants";
 import { getAmountLabel } from "@/lib/utils";
-import useConfigStore from "@/store/use-config-store";
+import useConfigStore, { RecurringExpense } from "@/store/use-config-store";
 import { format } from "date-fns";
 import { Pencil } from "lucide-react";
 
 interface RecurringExpenseCardProps {
-  expense: any;
+  expense: RecurringExpense;
   index: number;
-  onEdit: (expense: any) => void;
+  onEdit: (expense: RecurringExpense) => void;
 }
 
 export default function RecurringExpenseCard({

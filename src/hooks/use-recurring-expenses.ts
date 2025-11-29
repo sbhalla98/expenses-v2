@@ -1,5 +1,6 @@
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
+import { RecurringExpense } from "@/store/use-config-store";
 import { useQuery } from "@tanstack/react-query";
 
 export const useRecurringExpenses = () => {
@@ -18,7 +19,7 @@ export const useRecurringExpenses = () => {
     }
   };
 
-  return useQuery({
+  return useQuery<RecurringExpense[]>({
     queryKey: ["recurring-expenses"],
     queryFn: fetchRecurringExpenses,
   });

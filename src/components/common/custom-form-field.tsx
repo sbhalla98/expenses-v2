@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/popover";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { Badge } from "../ui/badge";
 import { Textarea } from "../ui/textarea";
 
@@ -27,7 +27,7 @@ interface CustomFormFieldProps {
     value: string;
     label: string;
   }[];
-  control: any;
+  control: Control<any>;
 }
 
 const CustomFormField = ({

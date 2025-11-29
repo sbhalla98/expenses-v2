@@ -61,7 +61,7 @@ export default function AddExpenseForm({
           defaults[field.name] = field.defaultValue || "";
           return defaults;
         },
-        {} as Record<FormFieldNameType, string | number>,
+        {} as Record<FormFieldNameType, string | number | Date>,
       ),
       ...initialValues,
     },

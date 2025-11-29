@@ -12,13 +12,15 @@ import {
 } from "@/components/ui/drawer";
 import { useRecurringExpenses } from "@/hooks/use-recurring-expenses";
 import { PERSONS } from "@/lib/constants";
-import useConfigStore from "@/store/use-config-store";
+import useConfigStore, { RecurringExpense } from "@/store/use-config-store";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function RecurringExpensesPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const [editingExpense, setEditingExpense] = useState<any>(null);
+  const [editingExpense, setEditingExpense] = useState<RecurringExpense | null>(
+    null,
+  );
   const configStore = useConfigStore();
   const { data, isLoading } = useRecurringExpenses();
 
@@ -29,7 +31,7 @@ export default function RecurringExpensesPage() {
     return label;
   };
 
-  const handleEdit = (expense: any) => {
+  const handleEdit = (expense: RecurringExpense) => {
     setEditingExpense(expense);
     setIsOpen(true);
   };
@@ -93,11 +95,11 @@ export default function RecurringExpensesPage() {
         ) : (
           data
             ?.sort(
-              (a: any, b: any) =>
+              (a: RecurringExpense, b: RecurringExpense) =>
                 new Date(b.nextPaymentDate).getTime() -
                 new Date(a.nextPaymentDate).getTime(),
             )
-            .map((expense: any, index: number) => (
+            .map((expense: RecurringExpense, index: number) => (
               <RecurringExpenseCard
                 key={expense.id}
                 expense={expense}
