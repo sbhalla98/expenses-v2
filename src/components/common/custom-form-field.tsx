@@ -45,14 +45,19 @@ const CustomFormField = ({
         <FormLabel>{label}</FormLabel>
         <FormControl>
           <>
-            {type === "text" && <Input {...formField} />}
+            {type === "text" && <Input {...formField} className="h-12 text-base" />}
 
-            {type === "textarea" && <Textarea {...formField} />}
+            {type === "textarea" && (
+              <Textarea {...formField} className="min-h-[100px] text-base" />
+            )}
 
             {type === "number" && (
               <Input
                 type="number"
+                inputMode="decimal"
+                pattern="[0-9]*"
                 {...formField}
+                className="h-12 text-lg font-medium"
                 onChange={(event) => formField.onChange(+event.target.value)}
               />
             )}
@@ -67,10 +72,10 @@ const CustomFormField = ({
                     onValueChange={field.onChange}
                     className="w-full"
                   >
-                    <TabsList className="w-full">
+                    <TabsList className="w-full h-12">
                       {options?.map((option) => (
                         <TabsTrigger
-                          className="flex-1"
+                          className="flex-1 h-10 text-sm"
                           value={option.value}
                           key={option.value}
                         >
@@ -95,6 +100,11 @@ const CustomFormField = ({
                         <Badge
                           key={option.value}
                           variant={isSelected ? "default" : "outline"}
+                          className={`text-sm py-1.5 px-3 cursor-pointer transition-all ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground shadow-md scale-105"
+                              : "hover:bg-secondary/50"
+                          }`}
                           onClick={() => field.onChange(option.value)}
                         >
                           {option.label}
@@ -109,10 +119,13 @@ const CustomFormField = ({
             {type === "date" && (
               <Popover modal={true}>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full mt-2">
+                  <Button
+                    variant="outline"
+                    className="w-full mt-2 h-12 text-base justify-start text-left font-normal"
+                  >
                     {formField.value &&
                     !isNaN(new Date(formField.value).getTime())
-                      ? format(formField.value, "dd/MM/yyyy")
+                      ? format(formField.value, "PPP")
                       : `Select ${label}`}
                   </Button>
                 </PopoverTrigger>

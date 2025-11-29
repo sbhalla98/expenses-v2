@@ -76,7 +76,7 @@ export default function AddExpenseForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-4 pb-24">
         {FORM_FIELDS.map((field) => {
           const { name, type, label, options } = field;
 
@@ -95,10 +95,12 @@ export default function AddExpenseForm({
           );
         })}
 
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isEdit ? "Save" : "Submit"}
-          <CheckCheck />
-        </Button>
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t z-10 md:relative md:border-t-0 md:bg-transparent md:p-0">
+          <Button type="submit" className="w-full h-12 text-lg" disabled={isPending}>
+            {isEdit ? "Save Changes" : "Add Expense"}
+            <CheckCheck className="ml-2 h-5 w-5" />
+          </Button>
+        </div>
       </form>
     </Form>
   );
