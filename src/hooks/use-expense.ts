@@ -9,7 +9,9 @@ export const useExpense = (id: string | null) => {
   const fetchExpense = async () => {
     if (!id) return null;
     try {
-      const response = await apiClient.get(`${API_ROUTES.GET_EXPENSE}?id=${id}`);
+      const response = await apiClient.get(
+        `${API_ROUTES.GET_EXPENSE}?id=${id}`,
+      );
       return response.data;
     } catch (err) {
       toast(TOAST_MESSAGES.GENERIC_ERROR);

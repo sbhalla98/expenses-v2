@@ -2,7 +2,6 @@ import { PERSONS } from "@/lib/constants";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-
 export type ConfigStore = {
   [PERSONS.PERSON1]: string;
   [PERSONS.PERSON2]: string;

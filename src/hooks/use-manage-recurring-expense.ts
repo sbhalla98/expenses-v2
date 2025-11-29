@@ -29,7 +29,10 @@ export const useEditRecurringExpense = (id: string, onSuccess?: () => void) => {
 
   return useMutation({
     mutationFn: async (data: RecurringExpenseFormValues) => {
-      return await apiClient.put(API_ROUTES.RECURRING_EXPENSES, { ...data, id });
+      return await apiClient.put(API_ROUTES.RECURRING_EXPENSES, {
+        ...data,
+        id,
+      });
     },
     onError: () => {
       toast(TOAST_MESSAGES.GENERIC_ERROR);

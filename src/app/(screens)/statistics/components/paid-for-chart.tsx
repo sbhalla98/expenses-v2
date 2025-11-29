@@ -1,10 +1,10 @@
 "use client";
 
 import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
 } from "@/components/ui/chart";
 import { PERSONS } from "@/lib/constants";
 import { Expense } from "@/lib/types";

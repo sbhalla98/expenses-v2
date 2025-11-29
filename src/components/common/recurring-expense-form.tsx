@@ -4,18 +4,18 @@ import CustomFormField from "@/components/common/custom-form-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
-    useAddRecurringExpense,
-    useEditRecurringExpense,
+  useAddRecurringExpense,
+  useEditRecurringExpense,
 } from "@/hooks/use-manage-recurring-expense";
 import { useToast } from "@/hooks/use-toast";
 import {
-    EXPENSE_CATEGORY_OPTIONS,
-    EXPENSE_CATEGORY_VALUES,
-    PAID_BY_OPTIONS,
-    PAID_FOR_OPTIONS,
-    PERSONS,
-    RECURRING_FREQUENCY,
-    RECURRING_FREQUENCY_OPTIONS,
+  EXPENSE_CATEGORY_OPTIONS,
+  EXPENSE_CATEGORY_VALUES,
+  PAID_BY_OPTIONS,
+  PAID_FOR_OPTIONS,
+  PERSONS,
+  RECURRING_FREQUENCY,
+  RECURRING_FREQUENCY_OPTIONS,
 } from "@/lib/constants";
 import useConfigStore from "@/store/use-config-store";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { EXPENSE_CATEGORY_OPTIONS, EXPENSE_CATEGORY_VALUES } from "./categories";
+import {
+  EXPENSE_CATEGORY_OPTIONS,
+  EXPENSE_CATEGORY_VALUES,
+} from "./categories";
 import { PAID_BY_OPTIONS, PAID_FOR_OPTIONS, PERSONS } from "./persons";
 
 export type FormFieldType =

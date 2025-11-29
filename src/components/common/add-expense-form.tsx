@@ -95,7 +95,11 @@ export default function AddExpenseForm({
           );
         })}
 
-        <Button type="submit" className="w-full h-12 text-lg mt-6" disabled={isPending}>
+        <Button
+          type="submit"
+          className="w-full h-12 text-lg mt-6"
+          disabled={isPending}
+        >
           {isEdit ? "Save Changes" : "Add Expense"}
           <CheckCheck className="ml-2 h-5 w-5" />
         </Button>

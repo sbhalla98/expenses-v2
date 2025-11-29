@@ -1,10 +1,10 @@
 import {
-    ChartColumnBig,
-    Edit,
-    ListCollapse,
-    Repeat,
-    Search,
-    SquarePlus,
+  ChartColumnBig,
+  Edit,
+  ListCollapse,
+  Repeat,
+  Search,
+  SquarePlus,
 } from "lucide-react";
 
 export const APP_ROUTES = {

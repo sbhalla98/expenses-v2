@@ -9,7 +9,9 @@ export const useSearchExpenses = (query: string) => {
 
   const fetchExpenses = async () => {
     try {
-      const response = await apiClient.get(`${API_ROUTES.SEARCH_EXPENSES}?query=${query}`);
+      const response = await apiClient.get(
+        `${API_ROUTES.SEARCH_EXPENSES}?query=${query}`,
+      );
       return response.data.data;
     } catch (err) {
       toast(TOAST_MESSAGES.GENERIC_ERROR);

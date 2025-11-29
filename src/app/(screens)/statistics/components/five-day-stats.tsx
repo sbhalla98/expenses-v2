@@ -1,10 +1,10 @@
 "use client";
 
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Expense } from "@/lib/types";
 import { getAmountLabel, getExpenseAmount } from "@/lib/utils";

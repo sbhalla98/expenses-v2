@@ -45,7 +45,9 @@ const CustomFormField = ({
         <FormLabel>{label}</FormLabel>
         <FormControl>
           <>
-            {type === "text" && <Input {...formField} className="h-12 text-base" />}
+            {type === "text" && (
+              <Input {...formField} className="h-12 text-base" />
+            )}
 
             {type === "textarea" && (
               <Textarea {...formField} className="min-h-[100px] text-base" />
