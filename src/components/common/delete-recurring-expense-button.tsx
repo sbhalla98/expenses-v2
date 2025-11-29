@@ -9,47 +9,25 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useToast } from "@/hooks/use-toast";
-import apiClient from "@/lib/axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDeleteRecurringExpense } from "@/hooks/use-manage-recurring-expense";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
-type DeleteRecurringExpenseButtonProps = {
+interface DeleteRecurringExpenseButtonProps {
   id: string;
-};
+}
 
 const DeleteRecurringExpenseButton = ({
   id,
 }: DeleteRecurringExpenseButtonProps) => {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleDelete = async () => {
-    await apiClient.delete(`/api/recurring-expenses?id=${id}`);
-  };
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: handleDelete,
-    onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recurring-expenses"] });
-      setOpen(false);
-      toast({
-        title: "Recurring expense deleted!",
-        description: "Your recurring expense has been deleted successfully.",
-      });
-    },
+  const deleteMutation = useDeleteRecurringExpense(() => {
+    setIsOpen(false);
   });
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         <Button
           variant="ghost"
@@ -61,19 +39,19 @@ const DeleteRecurringExpenseButton = ({
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+          <DrawerTitle>Are you sure?</DrawerTitle>
           <DrawerDescription>
-            This action cannot be undone. This will permanently delete this
-            recurring expense configuration.
+            This action cannot be undone. This will permanently delete the
+            recurring expense.
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
           <Button
-            onClick={() => mutate()}
-            disabled={isPending}
             variant="destructive"
+            onClick={() => deleteMutation.mutate(id)}
+            disabled={deleteMutation.isPending}
           >
-            Continue
+            {deleteMutation.isPending ? "Deleting..." : "Continue"}
           </Button>
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>

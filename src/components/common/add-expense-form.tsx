@@ -3,12 +3,11 @@
 import CustomFormField from "@/components/common/custom-form-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { useAddExpense, useEditExpense } from "@/hooks/use-manage-expense";
 import { useToast } from "@/hooks/use-toast";
-import apiClient from "@/lib/axios";
 import { FORM_FIELDS, FormFieldNameType, PERSONS } from "@/lib/constants";
-import useConfigStore, { Expense } from "@/store/use-config-store";
+import useConfigStore from "@/store/use-config-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { CheckCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -41,31 +40,18 @@ export default function AddExpenseForm({
 
   const isEdit = !!id;
 
-  const handleAddExpense = async (expense: Expense) => {
+  const addMutation = useAddExpense(onSuccess);
+  const editMutation = useEditExpense(id || "", onSuccess);
+
+  const isPending = addMutation.isPending || editMutation.isPending;
+
+  const onSubmit = (data: AddExpensesFormValues) => {
     if (isEdit) {
-      return await apiClient.post(`/api/edit-expense`, { ...expense, id });
+      editMutation.mutate(data);
+    } else {
+      addMutation.mutate(data);
     }
-    return await apiClient.post("/api/add-expense", expense);
   };
-  const { mutate, isPending } = useMutation<unknown, Error, Expense>({
-    mutationFn: handleAddExpense,
-    onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
-    },
-    onSuccess: () => {
-      if (!isEdit) {
-        form.reset();
-      }
-      toast({
-        title: `Expense ${isEdit ? "updated" : "added"}!`,
-        description: `Your expense has been ${isEdit ? "updated" : "added"} successfully.`,
-      });
-      onSuccess?.();
-    },
-  });
 
   const form = useForm<AddExpensesFormValues>({
     resolver: zodResolver(formSchema),
@@ -81,9 +67,6 @@ export default function AddExpenseForm({
     },
   });
 
-  const onSubmit = (data: AddExpensesFormValues) => {
-    mutate(data as Expense);
-  };
 
   const getLabel = (label: string) => {
     if (label === PERSONS.PERSON1 || label === PERSONS.PERSON2) {

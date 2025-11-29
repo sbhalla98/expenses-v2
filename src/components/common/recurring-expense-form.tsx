@@ -3,8 +3,11 @@
 import CustomFormField from "@/components/common/custom-form-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import {
+    useAddRecurringExpense,
+    useEditRecurringExpense,
+} from "@/hooks/use-manage-recurring-expense";
 import { useToast } from "@/hooks/use-toast";
-import apiClient from "@/lib/axios";
 import {
     EXPENSE_CATEGORY_OPTIONS,
     EXPENSE_CATEGORY_VALUES,
@@ -16,7 +19,6 @@ import {
 } from "@/lib/constants";
 import useConfigStore from "@/store/use-config-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CheckCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -51,40 +53,19 @@ export default function RecurringExpenseForm({
 }: RecurringExpenseFormProps) {
   const { toast } = useToast();
   const configStore = useConfigStore();
-  const queryClient = useQueryClient();
-
   const isEdit = !!id;
+  const addMutation = useAddRecurringExpense(onSuccess);
+  const editMutation = useEditRecurringExpense(id || "", onSuccess);
 
-  const handleSave = async (data: RecurringExpenseFormValues) => {
-    const payload = { ...data };
+  const isPending = addMutation.isPending || editMutation.isPending;
+
+  const onSubmit = (data: RecurringExpenseFormValues) => {
     if (isEdit) {
-      return await apiClient.put(`/api/recurring-expenses`, { ...payload, id });
+      editMutation.mutate(data);
+    } else {
+      addMutation.mutate(data);
     }
-    return await apiClient.post("/api/recurring-expenses", payload);
   };
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: handleSave,
-    onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
-    },
-    onSuccess: () => {
-      if (!isEdit) {
-        form.reset();
-      }
-      queryClient.invalidateQueries({ queryKey: ["recurring-expenses"] });
-      toast({
-        title: `Recurring expense ${isEdit ? "updated" : "added"}!`,
-        description: `Your recurring expense has been ${
-          isEdit ? "updated" : "added"
-        } successfully.`,
-      });
-      onSuccess?.();
-    },
-  });
 
   const form = useForm<RecurringExpenseFormValues>({
     resolver: zodResolver(formSchema),
@@ -100,9 +81,6 @@ export default function RecurringExpenseForm({
     },
   });
 
-  const onSubmit = (data: RecurringExpenseFormValues) => {
-    mutate(data);
-  };
 
   const getLabel = (label: string) => {
     if (label === PERSONS.PERSON1 || label === PERSONS.PERSON2) {

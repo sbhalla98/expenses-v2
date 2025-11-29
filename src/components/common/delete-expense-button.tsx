@@ -1,6 +1,4 @@
 import { useToast } from "@/hooks/use-toast";
-import apiClient from "@/lib/axios";
-import { useMutation } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 
@@ -14,6 +12,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { useDeleteExpense } from "@/hooks/use-manage-expense";
+import { useState } from "react";
 
 type DeleteExpenseButtonProps = {
   id: string;
@@ -21,28 +21,15 @@ type DeleteExpenseButtonProps = {
 };
 const DeleteExpenseButton = ({ id, onSuccess }: DeleteExpenseButtonProps) => {
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
-  const handleAddExpense = async () => {
-    return await apiClient.post(`/api/delete-expense`, { id });
-  };
-  const { mutate, isPending } = useMutation<unknown, Error>({
-    mutationFn: handleAddExpense,
-    onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
-    },
-    onSuccess: () => {
-      toast({
-        title: `Expense deleted!`,
-        description: `Your expense has been deleted successfully.`,
-      });
-      onSuccess?.();
-    },
+  const deleteMutation = useDeleteExpense(() => {
+    setOpen(false);
+    onSuccess?.();
   });
+
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <div className="px-4">
           <Button variant="destructive" className="w-full">
@@ -60,11 +47,11 @@ const DeleteExpenseButton = ({ id, onSuccess }: DeleteExpenseButtonProps) => {
         </DrawerHeader>
         <DrawerFooter>
           <Button
-            onClick={() => mutate()}
-            disabled={isPending}
+            onClick={() => deleteMutation.mutate(id)}
+            disabled={deleteMutation.isPending}
             variant="destructive"
           >
-            Continue
+            {deleteMutation.isPending ? "Deleting..." : "Continue"}
           </Button>
           <DrawerClose>Cancel</DrawerClose>
         </DrawerFooter>

@@ -10,26 +10,17 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
-import apiClient from "@/lib/axios";
+import { useRecurringExpenses } from "@/hooks/use-recurring-expenses";
 import { PERSONS } from "@/lib/constants";
 import useConfigStore from "@/store/use-config-store";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function RecurringExpensesPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const queryClient = useQueryClient();
   const configStore = useConfigStore();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["recurring-expenses"],
-    queryFn: async () => {
-      const response = await apiClient.get("/api/recurring-expenses");
-      return response.data.data;
-    },
-  });
+  const { data, isLoading } = useRecurringExpenses();
 
 
   const getLabel = (label: string) => {

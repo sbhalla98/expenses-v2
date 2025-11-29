@@ -110,7 +110,7 @@ const CustomFormField = ({
               <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full mt-2">
-                    {formField.value
+                    {formField.value && !isNaN(new Date(formField.value).getTime())
                       ? format(formField.value, "dd/MM/yyyy")
                       : `Select ${label}`}
                   </Button>
