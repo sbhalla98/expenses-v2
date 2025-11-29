@@ -2,6 +2,8 @@ import Bottombar from "@/components/common/bottom-bar";
 import Header from "@/components/common/header";
 import { Toaster } from "@/components/ui/toaster";
 import ReactQueryProvider from "@/lib/utils/react-query-provider";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -34,6 +36,8 @@ export default function RootLayout({
             <Bottombar />
           </main>
           <Toaster />
+          <SpeedInsights />
+          <Analytics />
         </ReactQueryProvider>
       </body>
     </html>
