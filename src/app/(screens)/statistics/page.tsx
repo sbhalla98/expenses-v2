@@ -83,13 +83,13 @@ export default function Statistics() {
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-4">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 p-2">
               <CardTitle className="text-sm font-medium">
                 Daily Average
               </CardTitle>
               <CalendarDays className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-2">
               <div className="text-2xl font-bold">
                 {getAmountLabel(dailyAverage)}
               </div>
@@ -99,11 +99,11 @@ export default function Statistics() {
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 p-2">
               <CardTitle className="text-sm font-medium">Top Category</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-2">
               <div className="text-2xl font-bold truncate">
                 {highestCategory ? highestCategory.title : "N/A"}
               </div>

@@ -20,6 +20,16 @@ export const APP_ROUTES = {
 
 export const BOTTOM_BAR_LINKS = [
   {
+    route: APP_ROUTES.SEARCH,
+    title: "Search",
+    icon: Search,
+  },
+  {
+    route: APP_ROUTES.RECURRING_EXPENSES,
+    title: "Recurring",
+    icon: Repeat,
+  },
+  {
     route: APP_ROUTES.ADD_EXPENSE,
     title: "Add Expense",
     icon: SquarePlus,
@@ -39,15 +49,5 @@ export const BOTTOM_BAR_LINKS = [
     title: "Edit Expense",
     icon: Edit,
     hidden: true,
-  },
-  {
-    route: APP_ROUTES.RECURRING_EXPENSES,
-    title: "Recurring",
-    icon: Repeat,
-  },
-  {
-    route: APP_ROUTES.SEARCH,
-    title: "Search",
-    icon: Search,
   },
 ];

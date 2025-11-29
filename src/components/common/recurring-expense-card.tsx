@@ -7,6 +7,7 @@ import { getAmountLabel } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
 import { format } from "date-fns";
 import { Pencil } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface RecurringExpenseCardProps {
   expense: RecurringExpense;
@@ -29,11 +30,19 @@ export default function RecurringExpenseCard({
   };
 
   const nextPaymentDate = new Date(expense.nextPaymentDate);
-  const daysUntil = Math.ceil(
-    (nextPaymentDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
-  );
+  const [daysUntil, setDaysUntil] = useState<number | null>(null);
 
-  const getDueColor = (days: number) => {
+  useEffect(() => {
+    setDaysUntil(
+      Math.ceil(
+        (nextPaymentDate.getTime() - new Date().getTime()) /
+          (1000 * 60 * 60 * 24)
+      )
+    );
+  }, [nextPaymentDate]);
+
+  const getDueColor = (days: number | null) => {
+    if (days === null) return "text-muted-foreground";
     if (days <= 3) return "text-red-500 font-bold";
     if (days <= 7) return "text-orange-500 font-medium";
     return "text-muted-foreground";
@@ -44,7 +53,7 @@ export default function RecurringExpenseCard({
       <div className="absolute top-0 left-0 bg-secondary/50 text-secondary-foreground text-[10px] px-2 py-0.5 rounded-br-lg">
         #{index + 1}
       </div>
-      <div className="flex justify-between items-start mt-1">
+      <div className="flex justify-between items-start mt-3">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="text-xs font-normal">
@@ -69,7 +78,11 @@ export default function RecurringExpenseCard({
         </span>
         <span className="text-muted-foreground">•</span>
         <span className="text-muted-foreground text-xs">
-          ({daysUntil > 0 ? `in ${daysUntil} days` : "Today/Overdue"})
+          {daysUntil !== null ? (
+            `(${daysUntil > 0 ? `in ${daysUntil} days` : "Today/Overdue"})`
+          ) : (
+            <span className="opacity-0">Loading...</span>
+          )}
         </span>
       </div>
 
