@@ -30,6 +30,7 @@ const Header = () => {
       title: "Config updated!",
     });
     setSheetOpen(false);
+    window.location.reload();
   };
 
   return (
