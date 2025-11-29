@@ -44,7 +44,9 @@ const EditExpense = () => {
       </div>
 
       <div className="flex-1">
-        {expense?.data && <AddExpenseForm initialValues={initialValues} id={id} />}
+        {expense?.data && (
+          <AddExpenseForm initialValues={initialValues} id={id} />
+        )}
       </div>
     </div>
   );

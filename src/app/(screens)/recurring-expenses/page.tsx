@@ -4,14 +4,15 @@ import DeleteRecurringExpenseButton from "@/components/common/delete-recurring-e
 import RecurringExpenseForm from "@/components/common/recurring-expense-form";
 import { Button } from "@/components/ui/button";
 import {
-    Drawer,
-    DrawerContent,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useRecurringExpenses } from "@/hooks/use-recurring-expenses";
 import { PERSONS } from "@/lib/constants";
+import { getAmountLabel } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
 import { format } from "date-fns";
 import { Loader2, Plus } from "lucide-react";
@@ -21,7 +22,6 @@ export default function RecurringExpensesPage() {
   const [isOpen, setIsOpen] = useState(false);
   const configStore = useConfigStore();
   const { data, isLoading } = useRecurringExpenses();
-
 
   const getLabel = (label: string) => {
     if (label === PERSONS.PERSON1 || label === PERSONS.PERSON2) {
@@ -72,14 +72,18 @@ export default function RecurringExpensesPage() {
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-semibold text-lg">{expense.description}</h3>
+                  <h3 className="font-semibold text-lg">
+                    {expense.description}
+                  </h3>
                   <p className="text-sm text-muted-foreground">
                     {expense.frequency} • Next:{" "}
                     {format(new Date(expense.nextPaymentDate), "PPP")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-lg">₹{expense.amount}</p>
+                  <p className="font-bold text-lg">
+                    {getAmountLabel(expense.amount)}
+                  </p>
                   <span className="text-xs px-2 py-1 rounded-full bg-secondary text-secondary-foreground">
                     {expense.category}
                   </span>

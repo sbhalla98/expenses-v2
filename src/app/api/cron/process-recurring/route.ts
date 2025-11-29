@@ -54,14 +54,16 @@ export async function GET(request: Request) {
             newNextPaymentDate.setMonth(newNextPaymentDate.getMonth() + 1);
             break;
           case RECURRING_FREQUENCY.YEARLY:
-            newNextPaymentDate.setFullYear(newNextPaymentDate.getFullYear() + 1);
+            newNextPaymentDate.setFullYear(
+              newNextPaymentDate.getFullYear() + 1,
+            );
             break;
         }
 
         // Update recurring expense
         await recurringCollection.updateOne(
           { id: expense.id },
-          { $set: { nextPaymentDate: newNextPaymentDate.toISOString() } }
+          { $set: { nextPaymentDate: newNextPaymentDate.toISOString() } },
         );
 
         processed.push({
@@ -80,8 +82,12 @@ export async function GET(request: Request) {
   } catch (e) {
     console.error("Error processing recurring expenses:", e);
     return NextResponse.json(
-      { success: false, message: "Error processing recurring expenses", error: e },
-      { status: 500 }
+      {
+        success: false,
+        message: "Error processing recurring expenses",
+        error: e,
+      },
+      { status: 500 },
     );
   }
 }

@@ -1,9 +1,9 @@
 import {
-    ChartColumnBig,
-    Edit,
-    ListCollapse,
-    Repeat,
-    SquarePlus,
+  ChartColumnBig,
+  Edit,
+  ListCollapse,
+  Repeat,
+  SquarePlus,
 } from "lucide-react";
 import { z } from "zod";
 

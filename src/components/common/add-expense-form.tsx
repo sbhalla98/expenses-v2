@@ -67,7 +67,6 @@ export default function AddExpenseForm({
     },
   });
 
-
   const getLabel = (label: string) => {
     if (label === PERSONS.PERSON1 || label === PERSONS.PERSON2) {
       return configStore[label];

@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     console.error("Error fetching recurring expenses:", e);
     return NextResponse.json(
       { success: false, message: "Error fetching recurring expenses" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     console.error("Error creating recurring expense:", e);
     return NextResponse.json(
       { success: false, message: "Error creating recurring expense" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -55,12 +55,15 @@ export async function PUT(request: Request) {
 
     await collection.updateOne({ id }, { $set: updateData });
 
-    return NextResponse.json({ success: true, message: "Updated successfully" });
+    return NextResponse.json({
+      success: true,
+      message: "Updated successfully",
+    });
   } catch (e) {
     console.error("Error updating recurring expense:", e);
     return NextResponse.json(
       { success: false, message: "Error updating recurring expense" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -73,7 +76,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json(
         { success: false, message: "ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -83,12 +86,15 @@ export async function DELETE(request: Request) {
 
     await collection.deleteOne({ id });
 
-    return NextResponse.json({ success: true, message: "Deleted successfully" });
+    return NextResponse.json({
+      success: true,
+      message: "Deleted successfully",
+    });
   } catch (e) {
     console.error("Error deleting recurring expense:", e);
     return NextResponse.json(
       { success: false, message: "Error deleting recurring expense" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
