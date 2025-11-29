@@ -1,4 +1,4 @@
-import { Expense } from "@/store/use-config-store";
+import { Expense } from "@/lib/types";
 import React from "react";
 import { ExpenseItem } from "./expense-item";
 

@@ -1,14 +1,15 @@
 "use client";
 
 import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
+    ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
 } from "@/components/ui/chart";
 import { PERSONS } from "@/lib/constants";
+import { Expense } from "@/lib/types";
 import { getGroupedByKey } from "@/lib/utils";
-import useConfigStore, { Expense } from "@/store/use-config-store";
+import useConfigStore from "@/store/use-config-store";
 import { Bar, BarChart, XAxis } from "recharts";
 
 type PaidForChartProps = {

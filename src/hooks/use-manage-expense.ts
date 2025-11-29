@@ -1,6 +1,7 @@
 import { AddExpensesFormValues } from "@/components/common/add-expense-form";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
+import { API_ROUTES, TOAST_MESSAGES } from "@/lib/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useAddExpense = (onSuccess?: () => void) => {
@@ -9,20 +10,14 @@ export const useAddExpense = (onSuccess?: () => void) => {
 
   return useMutation({
     mutationFn: async (data: AddExpensesFormValues) => {
-      return await apiClient.post("/api/add-expense", data);
+      return await apiClient.post(API_ROUTES.ADD_EXPENSE, data);
     },
     onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
-      toast({
-        title: "Expense added!",
-        description: "Your expense has been added successfully.",
-      });
+      toast(TOAST_MESSAGES.EXPENSE_ADDED);
       onSuccess?.();
     },
   });
@@ -34,21 +29,15 @@ export const useEditExpense = (id: string, onSuccess?: () => void) => {
 
   return useMutation({
     mutationFn: async (data: AddExpensesFormValues) => {
-      return await apiClient.post(`/api/edit-expense`, { ...data, id });
+      return await apiClient.post(API_ROUTES.EDIT_EXPENSE, { ...data, id });
     },
     onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
       queryClient.invalidateQueries({ queryKey: ["expense", id] });
-      toast({
-        title: "Expense updated!",
-        description: "Your expense has been updated successfully.",
-      });
+      toast(TOAST_MESSAGES.EXPENSE_UPDATED);
       onSuccess?.();
     },
   });
@@ -60,20 +49,14 @@ export const useDeleteExpense = (onSuccess?: () => void) => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      return await apiClient.post(`/api/delete-expense`, { id });
+      return await apiClient.post(API_ROUTES.DELETE_EXPENSE, { id });
     },
     onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
-      toast({
-        title: "Expense deleted!",
-        description: "Your expense has been deleted successfully.",
-      });
+      toast(TOAST_MESSAGES.EXPENSE_DELETED);
       onSuccess?.();
     },
   });

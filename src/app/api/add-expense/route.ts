@@ -1,3 +1,4 @@
+import { COLLECTIONS, DB_NAME, HEADERS } from "@/lib/constants";
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -7,10 +8,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     const body = await request.json();
     const client = await clientPromise;
 
-    const db = client.db("expenses-v2");
-    const collection = db.collection("expenses");
+    const db = client.db(DB_NAME);
+    const collection = db.collection(COLLECTIONS.EXPENSES);
     const id = uuidv4();
-    const userId = request.headers.get("user-id");
+    const userId = request.headers.get(HEADERS.USER_ID);
 
     const data = await collection.insertOne({ ...body, id, userId });
     return NextResponse.json({ success: true, data });

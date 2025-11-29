@@ -1,3 +1,4 @@
+import { COLLECTIONS, DB_NAME, HEADERS } from "@/lib/constants";
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -5,10 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 export async function GET(request: Request) {
   try {
     const client = await clientPromise;
-    const db = client.db("expenses-v2");
-    const collection = db.collection("recurring-expenses");
+    const db = client.db(DB_NAME);
+    const collection = db.collection(COLLECTIONS.RECURRING_EXPENSES);
 
-    const userId = request.headers.get("user-id");
+    const userId = request.headers.get(HEADERS.USER_ID);
     const query = userId ? { userId } : {};
 
     const recurringExpenses = await collection.find(query).toArray();
@@ -27,10 +28,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const client = await clientPromise;
-    const db = client.db("expenses-v2");
-    const collection = db.collection("recurring-expenses");
+    const db = client.db(DB_NAME);
+    const collection = db.collection(COLLECTIONS.RECURRING_EXPENSES);
     const id = uuidv4();
-    const userId = request.headers.get("user-id");
+    const userId = request.headers.get(HEADERS.USER_ID);
 
     const recurringExpense = { ...body, id, userId };
     await collection.insertOne(recurringExpense);
@@ -50,8 +51,8 @@ export async function PUT(request: Request) {
     const body = await request.json();
     const { id, ...updateData } = body;
     const client = await clientPromise;
-    const db = client.db("expenses-v2");
-    const collection = db.collection("recurring-expenses");
+    const db = client.db(DB_NAME);
+    const collection = db.collection(COLLECTIONS.RECURRING_EXPENSES);
 
     await collection.updateOne({ id }, { $set: updateData });
 
@@ -81,8 +82,8 @@ export async function DELETE(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db("expenses-v2");
-    const collection = db.collection("recurring-expenses");
+    const db = client.db(DB_NAME);
+    const collection = db.collection(COLLECTIONS.RECURRING_EXPENSES);
 
     await collection.deleteOne({ id });
 

@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Expense } from "@/lib/types";
 import { getAmountLabel, getExpenseAmount } from "@/lib/utils";
-import { Expense } from "@/store/use-config-store";
 import PaidForStats from "./paid-for-stats";
 
 type FiveDayStatsProps = {

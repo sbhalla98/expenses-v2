@@ -1,6 +1,7 @@
 import { RecurringExpenseFormValues } from "@/components/common/recurring-expense-form";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
+import { API_ROUTES, TOAST_MESSAGES } from "@/lib/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useAddRecurringExpense = (onSuccess?: () => void) => {
@@ -9,20 +10,14 @@ export const useAddRecurringExpense = (onSuccess?: () => void) => {
 
   return useMutation({
     mutationFn: async (data: RecurringExpenseFormValues) => {
-      return await apiClient.post("/api/recurring-expenses", data);
+      return await apiClient.post(API_ROUTES.RECURRING_EXPENSES, data);
     },
     onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recurring-expenses"] });
-      toast({
-        title: "Recurring expense added!",
-        description: "Your recurring expense has been added successfully.",
-      });
+      toast(TOAST_MESSAGES.EXPENSE_ADDED);
       onSuccess?.();
     },
   });
@@ -34,20 +29,14 @@ export const useEditRecurringExpense = (id: string, onSuccess?: () => void) => {
 
   return useMutation({
     mutationFn: async (data: RecurringExpenseFormValues) => {
-      return await apiClient.put(`/api/recurring-expenses`, { ...data, id });
+      return await apiClient.put(API_ROUTES.RECURRING_EXPENSES, { ...data, id });
     },
     onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recurring-expenses"] });
-      toast({
-        title: "Recurring expense updated!",
-        description: "Your recurring expense has been updated successfully.",
-      });
+      toast(TOAST_MESSAGES.EXPENSE_UPDATED);
       onSuccess?.();
     },
   });
@@ -59,20 +48,14 @@ export const useDeleteRecurringExpense = (onSuccess?: () => void) => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await apiClient.delete(`/api/recurring-expenses?id=${id}`);
+      await apiClient.delete(`${API_ROUTES.RECURRING_EXPENSES}?id=${id}`);
     },
     onError: () => {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again later.",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recurring-expenses"] });
-      toast({
-        title: "Recurring expense deleted!",
-        description: "Your recurring expense has been deleted successfully.",
-      });
+      toast(TOAST_MESSAGES.EXPENSE_DELETED);
       onSuccess?.();
     },
   });

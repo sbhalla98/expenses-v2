@@ -1,8 +1,8 @@
 "use client";
 
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
+import { Expense } from "@/lib/types";
 import { getExpenseAmount, getGroupedByKey } from "@/lib/utils";
-import { Expense } from "@/store/use-config-store";
 import CategoryChart from "./category-chart";
 
 type CategoryStatsProps = {

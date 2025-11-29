@@ -2,8 +2,9 @@ import DeleteRecurringExpenseButton from "@/components/common/delete-recurring-e
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PERSONS } from "@/lib/constants";
+import { RecurringExpense } from "@/lib/types";
 import { getAmountLabel } from "@/lib/utils";
-import useConfigStore, { RecurringExpense } from "@/store/use-config-store";
+import useConfigStore from "@/store/use-config-store";
 import { format } from "date-fns";
 import { Pencil } from "lucide-react";
 

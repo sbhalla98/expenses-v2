@@ -2,8 +2,9 @@
 
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
 import { PERSONS } from "@/lib/constants";
+import { Expense } from "@/lib/types";
 import { getExpenseAmount, getGroupedByKey } from "@/lib/utils";
-import useConfigStore, { Expense } from "@/store/use-config-store";
+import useConfigStore from "@/store/use-config-store";
 
 type PaidByStatsProps = {
   expenses: Expense[];

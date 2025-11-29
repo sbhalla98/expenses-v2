@@ -8,7 +8,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
-import { BOTTOM_BAR_LINKS } from "@/lib/constants";
+import { BOTTOM_BAR_LINKS, TOAST_MESSAGES } from "@/lib/constants";
 import { Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -26,9 +26,7 @@ const Header = () => {
     ) ?? {};
 
   const onSubmitForm = () => {
-    toast({
-      title: "Config updated!",
-    });
+    toast(TOAST_MESSAGES.CONFIG_UPDATED);
     setSheetOpen(false);
     window.location.reload();
   };

@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/drawer";
 import { useRecurringExpenses } from "@/hooks/use-recurring-expenses";
 import { PERSONS } from "@/lib/constants";
-import useConfigStore, { RecurringExpense } from "@/store/use-config-store";
+import { RecurringExpense } from "@/lib/types";
+import useConfigStore from "@/store/use-config-store";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 

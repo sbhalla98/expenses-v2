@@ -1,4 +1,4 @@
-import { Expense } from "@/store/use-config-store";
+import { Expense } from "@/lib/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

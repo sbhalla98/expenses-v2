@@ -1,6 +1,7 @@
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
-import { Expense } from "@/store/use-config-store";
+import { API_ROUTES, TOAST_MESSAGES } from "@/lib/constants";
+import { Expense } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 
 export const useSearchExpenses = (query: string) => {
@@ -8,13 +9,10 @@ export const useSearchExpenses = (query: string) => {
 
   const fetchExpenses = async () => {
     try {
-      const response = await apiClient.get(`/api/search-expenses?query=${query}`);
+      const response = await apiClient.get(`${API_ROUTES.SEARCH_EXPENSES}?query=${query}`);
       return response.data.data;
     } catch (err) {
-      toast({
-        title: "An error occurred",
-        description: "Failed to search expenses",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
       throw err;
     }
   };

@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { PERSONS } from "@/lib/constants";
+import { Expense } from "@/lib/types";
 import { getAmountLabel } from "@/lib/utils";
-import useConfigStore, { Expense } from "@/store/use-config-store";
+import useConfigStore from "@/store/use-config-store";
 import { format } from "date-fns";
 import { Repeat } from "lucide-react";
 import Link from "next/link";

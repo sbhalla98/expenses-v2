@@ -1,12 +1,13 @@
+import { COLLECTIONS, DB_NAME, HEADERS } from "@/lib/constants";
 import clientPromise from "@/lib/mongodb";
-import { Expense } from "@/store/use-config-store";
+import { Expense } from "@/lib/types";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("query");
-    const userId = request.headers.get("user-id");
+    const userId = request.headers.get(HEADERS.USER_ID);
 
     if (!userId) {
       return NextResponse.json(
@@ -20,8 +21,8 @@ export async function GET(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db("expenses-v2");
-    const collection = db.collection("expenses");
+    const db = client.db(DB_NAME);
+    const collection = db.collection(COLLECTIONS.EXPENSES);
 
     const expenses = await collection
       .find({

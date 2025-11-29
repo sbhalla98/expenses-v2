@@ -1,6 +1,6 @@
 import { RECURRING_FREQUENCY } from "@/lib/constants";
 import clientPromise from "@/lib/mongodb";
-import { RecurringExpense } from "@/store/use-config-store";
+import { RecurringExpense } from "@/lib/types";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 

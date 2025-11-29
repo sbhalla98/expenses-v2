@@ -1,5 +1,6 @@
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
+import { API_ROUTES, TOAST_MESSAGES } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 
 export const useExpenses = () => {
@@ -7,13 +8,10 @@ export const useExpenses = () => {
 
   const fetchExpenses = async () => {
     try {
-      const response = await apiClient.get("/api/get-expenses");
+      const response = await apiClient.get(API_ROUTES.GET_EXPENSES);
       return response.data;
     } catch (err) {
-      toast({
-        title: "An error occurred",
-        description: "Failed to fetch expenses",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
       throw err;
     }
   };

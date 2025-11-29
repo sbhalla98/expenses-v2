@@ -1,6 +1,7 @@
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
-import { RecurringExpense } from "@/store/use-config-store";
+import { API_ROUTES, TOAST_MESSAGES } from "@/lib/constants";
+import { RecurringExpense } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 
 export const useRecurringExpenses = () => {
@@ -8,13 +9,10 @@ export const useRecurringExpenses = () => {
 
   const fetchRecurringExpenses = async () => {
     try {
-      const response = await apiClient.get("/api/recurring-expenses");
+      const response = await apiClient.get(API_ROUTES.RECURRING_EXPENSES);
       return response.data.data;
     } catch (err) {
-      toast({
-        title: "An error occurred",
-        description: "Failed to fetch recurring expenses",
-      });
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
       throw err;
     }
   };
