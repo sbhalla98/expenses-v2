@@ -3,8 +3,8 @@
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
 import MonthSelector from "@/components/common/month-selector";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useExpenses } from "@/hooks/use-expenses";
 import { useToast } from "@/hooks/use-toast";
-import apiClient from "@/lib/axios";
 import {
   getAmountLabel,
   getCurrentMonthExpenses,
@@ -12,7 +12,6 @@ import {
   getGroupedByDate,
 } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
-import { useQuery } from "@tanstack/react-query";
 
 export default function MyExpenses() {
   const { toast } = useToast();
@@ -25,21 +24,7 @@ export default function MyExpenses() {
     setCurrentMonth(newDate.toISOString());
   };
 
-  const fetchExpenses = async () => {
-    try {
-      const response = await apiClient.get("/api/get-expenses");
-      return response.data;
-    } catch (err) {
-      toast({
-        title: "An error occurred",
-        description: "Failed to fetch expenses",
-      });
-    }
-  };
-  const { isLoading, data } = useQuery({
-    queryKey: ["expenses"],
-    queryFn: fetchExpenses,
-  });
+  const { isLoading, data } = useExpenses();
 
   const allExpenses = data?.data ?? [];
   const visibleExpenses = getCurrentMonthExpenses(allExpenses, currentDate);

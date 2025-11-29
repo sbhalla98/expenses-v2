@@ -4,15 +4,14 @@ import MonthSelector from "@/components/common/month-selector";
 import { useState } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useExpenses } from "@/hooks/use-expenses";
 import { useToast } from "@/hooks/use-toast";
-import apiClient from "@/lib/axios";
 import {
   getAmountLabel,
   getCurrentMonthExpenses,
   getExpenseAmount,
 } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
-import { useQuery } from "@tanstack/react-query";
 import CategorySelector from "./components/category-selector";
 import CategoryStats from "./components/category-stats";
 import FiveDayStats from "./components/five-day-stats";
@@ -42,21 +41,7 @@ export default function Statistics() {
     setCurrentMonth(newDate.toISOString());
   };
 
-  const fetchExpenses = async () => {
-    try {
-      const response = await apiClient.get("/api/get-expenses");
-      return response.data;
-    } catch (err) {
-      toast({
-        title: "An error occurred",
-        description: "Failed to fetch expenses",
-      });
-    }
-  };
-  const { isLoading, data } = useQuery({
-    queryKey: ["expenses"],
-    queryFn: fetchExpenses,
-  });
+  const { isLoading, data } = useExpenses();
 
   const allExpenses = data?.data ?? [];
   const visibleExpenses = getCurrentMonthExpenses(allExpenses, currentDate);
