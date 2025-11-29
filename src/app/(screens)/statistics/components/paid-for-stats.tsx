@@ -1,6 +1,7 @@
 "use client";
 
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PERSONS } from "@/lib/constants";
 import { Expense } from "@/lib/types";
 import { getExpenseAmount, getGroupedByKey } from "@/lib/utils";
@@ -64,12 +65,17 @@ export default function PaidForStats({
     }));
 
   return (
-    <>
-      {showChart && <PaidForChart expenses={processExpensesResult} />}
-      <GroupedExpenseList
-        groupedExpenses={sortedGroupedData}
-        expandedView={expandedView}
-      />
-    </>
+    <Card>
+      <CardHeader>
+        <CardTitle>Individual Expense Breakdown</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {showChart && <PaidForChart expenses={processExpensesResult} />}
+        <GroupedExpenseList
+          groupedExpenses={sortedGroupedData}
+          expandedView={expandedView}
+        />
+      </CardContent>
+    </Card>
   );
 }

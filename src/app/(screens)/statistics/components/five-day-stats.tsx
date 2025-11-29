@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Expense } from "@/lib/types";
 import { getAmountLabel, getExpenseAmount } from "@/lib/utils";
 import PaidForStats from "./paid-for-stats";
@@ -78,26 +79,55 @@ const getSections = (expenses: Expense[]) => {
 export default function FiveDayStats({ expenses }: FiveDayStatsProps) {
   const sections = getSections(expenses);
 
+  // Calculate last 5 days and group expenses by day
+  const today = new Date();
+  const last5Days: Date[] = [];
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    last5Days.push(d);
+  }
+
+  const groupedData = last5Days.map((date) => {
+    const dateString = date.toDateString();
+    const expensesForDay = expenses.filter(
+      (expense) => new Date(expense.date).toDateString() === dateString,
+    );
+    return {
+      title: dateString,
+      data: expensesForDay,
+      amount: getExpenseAmount(expensesForDay),
+    };
+  }).filter(group => group.data.length > 0); // Only include days with expenses
+
   return (
-    <div>
-      {sections.map((section, index) => (
-        <Accordion type="single" collapsible defaultValue="item-1" key={index}>
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="px-4 ">
-              <h3 className="text-md font-semibold">
-                {section.title} {getAmountLabel(section.amount)}
-              </h3>
-            </AccordionTrigger>
-            <AccordionContent>
-              <PaidForStats
-                expenses={section.data}
-                expandedView={false}
-                showChart={false}
-              />
-            </AccordionContent>
-          </AccordionItem>
+    <Card>
+      <CardHeader>
+        <CardTitle>Last 5 Days Breakdown</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Accordion type="single" collapsible className="w-full">
+          {groupedData.map((dayGroup) => {
+            const dateString = dayGroup.title;
+
+            return (
+              <AccordionItem value={dateString} key={dateString}>
+                <AccordionTrigger>
+                  <div className="flex justify-between w-full pr-4">
+                    <span>{dateString}</span>
+                    <span>
+                      {getAmountLabel(dayGroup.amount)}
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <PaidForStats expenses={dayGroup.data} />
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
         </Accordion>
-      ))}
-    </div>
+      </CardContent>
+    </Card>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Expense } from "@/lib/types";
 import { getExpenseAmount, getGroupedByKey } from "@/lib/utils";
 import CategoryChart from "./category-chart";
@@ -21,9 +22,14 @@ export default function CategoryStats({ expenses }: CategoryStatsProps) {
   }));
 
   return (
-    <>
-      <CategoryChart chartData={chartData} />
-      <GroupedExpenseList groupedExpenses={sortedGroupedData} />
-    </>
+    <Card>
+      <CardHeader>
+        <CardTitle>Category Breakdown</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <CategoryChart chartData={chartData} />
+        <GroupedExpenseList groupedExpenses={sortedGroupedData} />
+      </CardContent>
+    </Card>
   );
 }

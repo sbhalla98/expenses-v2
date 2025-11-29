@@ -1,10 +1,12 @@
 "use client";
 
 import GroupedExpenseList from "@/components/common/grouped-expense-list";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PERSONS } from "@/lib/constants";
 import { Expense } from "@/lib/types";
 import { getExpenseAmount, getGroupedByKey } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
+import CategoryChart from "./category-chart";
 
 type PaidByStatsProps = {
   expenses: Expense[];
@@ -28,5 +30,20 @@ export default function PaidByStats({ expenses }: PaidByStatsProps) {
       title: getTitle(group.title),
     }));
 
-  return <GroupedExpenseList groupedExpenses={sortedGroupedData} />;
+  const chartData = sortedGroupedData.map((group) => ({
+    title: group.title,
+    amount: getExpenseAmount(group.data),
+  }));
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Spent By Breakdown</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <CategoryChart chartData={chartData} />
+        <GroupedExpenseList groupedExpenses={sortedGroupedData} />
+      </CardContent>
+    </Card>
+  );
 }
