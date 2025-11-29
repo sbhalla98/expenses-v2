@@ -1,5 +1,6 @@
 import { RECURRING_FREQUENCY } from "@/lib/constants";
 import clientPromise from "@/lib/mongodb";
+import { RecurringExpense } from "@/store/use-config-store";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
@@ -17,7 +18,9 @@ export async function GET(request: Request) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const recurringExpenses = await recurringCollection.find({}).toArray();
+    const recurringExpenses = (await recurringCollection
+      .find({})
+      .toArray()) as unknown as RecurringExpense[];
     const processed = [];
 
     for (const expense of recurringExpenses) {

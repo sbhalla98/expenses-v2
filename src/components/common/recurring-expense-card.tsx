@@ -1,4 +1,5 @@
 import DeleteRecurringExpenseButton from "@/components/common/delete-recurring-expense-button";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PERSONS } from "@/lib/constants";
 import { getAmountLabel } from "@/lib/utils";
@@ -26,35 +27,73 @@ export default function RecurringExpenseCard({
     return label;
   };
 
+  const nextPaymentDate = new Date(expense.nextPaymentDate);
+  const daysUntil = Math.ceil(
+    (nextPaymentDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
+  );
+
+  const getDueColor = (days: number) => {
+    if (days <= 3) return "text-red-500 font-bold";
+    if (days <= 7) return "text-orange-500 font-medium";
+    return "text-muted-foreground";
+  };
+
   return (
-    <div className="flex flex-col gap-2 rounded-lg border p-4 shadow-sm bg-card">
-      <div className="flex justify-between items-start">
-        <div className="flex gap-3">
-          <span className="font-bold text-lg text-muted-foreground min-w-[20px]">
-            {index + 1}.
-          </span>
-          <div>
-            <h3 className="font-semibold text-lg">{expense.description}</h3>
-            <p className="text-sm text-muted-foreground">
-              {expense.frequency} • Next:{" "}
-              {format(new Date(expense.nextPaymentDate), "PPP")}
-            </p>
+    <div className="flex flex-col gap-3 rounded-xl border p-5 shadow-sm bg-card hover:shadow-md transition-shadow duration-200 relative overflow-hidden">
+      <div className="absolute top-0 left-0 bg-secondary/50 text-secondary-foreground text-[10px] px-2 py-0.5 rounded-br-lg">
+        #{index + 1}
+      </div>
+      <div className="flex justify-between items-start mt-2">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-xs font-normal">
+              {expense.category}
+            </Badge>
+            <Badge variant="outline" className="text-xs font-normal">
+              {expense.frequency}
+            </Badge>
           </div>
+          <h3 className="font-bold text-xl mt-1">{expense.description}</h3>
         </div>
         <div className="text-right">
-          <p className="font-bold text-lg">{getAmountLabel(expense.amount)}</p>
-          <span className="text-xs px-2 py-1 rounded-full bg-secondary text-secondary-foreground">
-            {expense.category}
-          </span>
+          <p className="font-bold text-2xl text-primary">
+            {getAmountLabel(expense.amount)}
+          </p>
         </div>
       </div>
-      <div className="flex justify-between items-center mt-2 pt-2 border-t">
-        <div className="text-xs text-muted-foreground">
-          Paid by: {getLabel(expense.paidBy)} • For:{" "}
-          {getLabel(expense.paidFor)}
+
+      <div className="flex items-center gap-2 text-sm mt-1">
+        <span className={getDueColor(daysUntil)}>
+          Due {format(nextPaymentDate, "PPP")}
+        </span>
+        <span className="text-muted-foreground">•</span>
+        <span className="text-muted-foreground text-xs">
+          ({daysUntil > 0 ? `in ${daysUntil} days` : "Today/Overdue"})
+        </span>
+      </div>
+
+      <div className="flex justify-between items-center mt-3 pt-3 border-t border-dashed">
+        <div className="flex flex-col text-xs text-muted-foreground gap-0.5">
+          <div className="flex gap-1">
+            <span>Paid by:</span>
+            <span className="font-medium text-foreground">
+              {getLabel(expense.paidBy)}
+            </span>
+          </div>
+          <div className="flex gap-1">
+            <span>For:</span>
+            <span className="font-medium text-foreground">
+              {getLabel(expense.paidFor)}
+            </span>
+          </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="ghost" size="icon" onClick={() => onEdit(expense)}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => onEdit(expense)}
+          >
             <Pencil className="h-4 w-4" />
           </Button>
           <DeleteRecurringExpenseButton id={expense.id} />
