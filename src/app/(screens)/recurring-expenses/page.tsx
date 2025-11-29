@@ -1,6 +1,6 @@
 "use client";
 
-import DeleteRecurringExpenseButton from "@/components/common/delete-recurring-expense-button";
+import RecurringExpenseCard from "@/components/common/recurring-expense-card";
 import RecurringExpenseForm from "@/components/common/recurring-expense-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,14 +12,13 @@ import {
 } from "@/components/ui/drawer";
 import { useRecurringExpenses } from "@/hooks/use-recurring-expenses";
 import { PERSONS } from "@/lib/constants";
-import { getAmountLabel } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
-import { format } from "date-fns";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function RecurringExpensesPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const [editingExpense, setEditingExpense] = useState<any>(null);
   const configStore = useConfigStore();
   const { data, isLoading } = useRecurringExpenses();
 
@@ -28,6 +27,16 @@ export default function RecurringExpensesPage() {
       return configStore[label];
     }
     return label;
+  };
+
+  const handleEdit = (expense: any) => {
+    setEditingExpense(expense);
+    setIsOpen(true);
+  };
+
+  const handleAddNew = () => {
+    setEditingExpense(null);
+    setIsOpen(true);
   };
 
   if (isLoading) {
@@ -44,16 +53,33 @@ export default function RecurringExpensesPage() {
         <h1 className="text-2xl font-bold">Recurring Expenses</h1>
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
           <DrawerTrigger asChild>
-            <Button size="sm">
+            <Button size="sm" onClick={handleAddNew}>
               <Plus className="mr-2 h-4 w-4" /> Add New
             </Button>
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle>Add Recurring Expense</DrawerTitle>
+              <DrawerTitle>
+                {editingExpense
+                  ? "Edit Recurring Expense"
+                  : "Add Recurring Expense"}
+              </DrawerTitle>
             </DrawerHeader>
             <div className="overflow-y-auto max-h-[80vh] px-4 pb-8">
-              <RecurringExpenseForm onSuccess={() => setIsOpen(false)} />
+              <RecurringExpenseForm
+                initialValues={
+                  editingExpense
+                    ? {
+                        ...editingExpense,
+                        nextPaymentDate: new Date(
+                          editingExpense.nextPaymentDate,
+                        ),
+                      }
+                    : undefined
+                }
+                id={editingExpense?.id}
+                onSuccess={() => setIsOpen(false)}
+              />
             </div>
           </DrawerContent>
         </Drawer>
@@ -65,39 +91,20 @@ export default function RecurringExpensesPage() {
             No recurring expenses found.
           </div>
         ) : (
-          data?.map((expense: any) => (
-            <div
-              key={expense.id}
-              className="flex flex-col gap-2 rounded-lg border p-4 shadow-sm bg-card"
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-semibold text-lg">
-                    {expense.description}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {expense.frequency} • Next:{" "}
-                    {format(new Date(expense.nextPaymentDate), "PPP")}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-lg">
-                    {getAmountLabel(expense.amount)}
-                  </p>
-                  <span className="text-xs px-2 py-1 rounded-full bg-secondary text-secondary-foreground">
-                    {expense.category}
-                  </span>
-                </div>
-              </div>
-              <div className="flex justify-between items-center mt-2 pt-2 border-t">
-                <div className="text-xs text-muted-foreground">
-                  Paid by: {getLabel(expense.paidBy)} • For:{" "}
-                  {getLabel(expense.paidFor)}
-                </div>
-                <DeleteRecurringExpenseButton id={expense.id} />
-              </div>
-            </div>
-          ))
+          data
+            ?.sort(
+              (a: any, b: any) =>
+                new Date(b.nextPaymentDate).getTime() -
+                new Date(a.nextPaymentDate).getTime(),
+            )
+            .map((expense: any, index: number) => (
+              <RecurringExpenseCard
+                key={expense.id}
+                expense={expense}
+                index={index}
+                onEdit={handleEdit}
+              />
+            ))
         )}
       </div>
     </div>
