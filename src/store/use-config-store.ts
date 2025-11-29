@@ -23,6 +23,7 @@ export type RecurringExpense = {
   frequency: string;
   nextPaymentDate: string;
   userId: string;
+  vpa?: string;
 };
 
 export type ConfigStore = {

@@ -88,6 +88,20 @@ export default function RecurringExpenseCard({
           </div>
         </div>
         <div className="flex gap-2">
+          {expense.vpa && (
+            <Button
+              variant="default"
+              size="sm"
+              className="h-8 px-3 bg-blue-600 hover:bg-blue-700"
+              onClick={() => {
+                const upiParams = `&pa=${expense.vpa}&pn=${encodeURIComponent(expense.description)}&am=${expense.amount}&cu=INR`;
+                const url = `gpay://upi/pay?${upiParams.substring(1)}`;
+                window.open(url, "_blank");
+              }}
+            >
+              Pay
+            </Button>
+          )}
           <Button
             variant="outline"
             size="sm"

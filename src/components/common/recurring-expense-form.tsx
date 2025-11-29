@@ -36,6 +36,7 @@ const formSchema = z.object({
     required_error: "Please select a start date",
     invalid_type_error: "Invalid date",
   }),
+  vpa: z.string().optional(),
 });
 
 export type RecurringExpenseFormValues = z.infer<typeof formSchema>;
@@ -77,6 +78,7 @@ export default function RecurringExpenseForm({
       paidFor: PERSONS.BOTH,
       frequency: RECURRING_FREQUENCY.MONTHLY,
       nextPaymentDate: new Date(),
+      vpa: "",
       ...initialValues,
     },
   });
@@ -135,6 +137,12 @@ export default function RecurringExpenseForm({
           name="amount"
           label="Amount"
           type="number"
+          control={form.control}
+        />
+        <CustomFormField
+          name="vpa"
+          label="UPI ID / VPA (Optional)"
+          type="text"
           control={form.control}
         />
         <CustomFormField
