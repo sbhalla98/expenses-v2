@@ -56,7 +56,7 @@ export default function RecurringExpenseForm({
   const isEdit = !!id;
 
   const handleSave = async (data: RecurringExpenseFormValues) => {
-    const payload = { ...data, userId: configStore.userId };
+    const payload = { ...data };
     if (isEdit) {
       return await apiClient.put(`/api/recurring-expenses`, { ...payload, id });
     }

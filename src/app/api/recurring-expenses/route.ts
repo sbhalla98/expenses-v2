@@ -8,7 +8,10 @@ export async function GET(request: Request) {
     const db = client.db("expenses-v2");
     const collection = db.collection("recurring-expenses");
 
-    const recurringExpenses = await collection.find({}).toArray();
+    const userId = request.headers.get("user-id");
+    const query = userId ? { userId } : {};
+
+    const recurringExpenses = await collection.find(query).toArray();
 
     return NextResponse.json({ success: true, data: recurringExpenses });
   } catch (e) {
@@ -27,8 +30,9 @@ export async function POST(request: Request) {
     const db = client.db("expenses-v2");
     const collection = db.collection("recurring-expenses");
     const id = uuidv4();
+    const userId = request.headers.get("user-id");
 
-    const recurringExpense = { ...body, id };
+    const recurringExpense = { ...body, id, userId };
     await collection.insertOne(recurringExpense);
 
     return NextResponse.json({ success: true, data: recurringExpense });
