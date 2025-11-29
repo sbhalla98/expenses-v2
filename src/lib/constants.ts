@@ -1,4 +1,10 @@
-import { ChartColumnBig, Edit, ListCollapse, SquarePlus } from "lucide-react";
+import {
+    ChartColumnBig,
+    Edit,
+    ListCollapse,
+    Repeat,
+    SquarePlus,
+} from "lucide-react";
 import { z } from "zod";
 
 export enum PERSONS {
@@ -36,6 +42,20 @@ export enum EXPENSE_CATEGORY_VALUES {
   MARRIAGE = "Marriage",
   OTHER = "Other",
 }
+
+export enum RECURRING_FREQUENCY {
+  DAILY = "Daily",
+  WEEKLY = "Weekly",
+  MONTHLY = "Monthly",
+  YEARLY = "Yearly",
+}
+
+export const RECURRING_FREQUENCY_OPTIONS = [
+  { value: RECURRING_FREQUENCY.DAILY, label: RECURRING_FREQUENCY.DAILY },
+  { value: RECURRING_FREQUENCY.WEEKLY, label: RECURRING_FREQUENCY.WEEKLY },
+  { value: RECURRING_FREQUENCY.MONTHLY, label: RECURRING_FREQUENCY.MONTHLY },
+  { value: RECURRING_FREQUENCY.YEARLY, label: RECURRING_FREQUENCY.YEARLY },
+];
 
 export const EXPENSE_CATEGORY_OPTIONS = [
   {
@@ -121,6 +141,11 @@ export const BOTTOM_BAR_LINKS = [
     title: "Edit Expense",
     icon: Edit,
     hidden: true,
+  },
+  {
+    route: "recurring-expenses",
+    title: "Recurring",
+    icon: Repeat,
   },
 ];
 

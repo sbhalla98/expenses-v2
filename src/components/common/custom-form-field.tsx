@@ -107,7 +107,7 @@ const CustomFormField = ({
             )}
 
             {type === "date" && (
-              <Popover>
+              <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full mt-2">
                     {formField.value
