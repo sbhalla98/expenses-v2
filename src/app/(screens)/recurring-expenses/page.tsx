@@ -51,7 +51,7 @@ export default function RecurringExpensesPage() {
   }
 
   return (
-    <div className="flex flex-col h-full p-4 pb-24 overflow-y-auto">
+    <div className="flex flex-col h-full p-2 pb-24 overflow-y-auto w-full">
       <div className="flex items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold">Recurring Expenses</h1>
         <Drawer open={isOpen} onOpenChange={setIsOpen}>

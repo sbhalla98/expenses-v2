@@ -40,11 +40,11 @@ export default function RecurringExpenseCard({
   };
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border p-5 shadow-sm bg-card hover:shadow-md transition-shadow duration-200 relative overflow-hidden">
+    <div className="flex flex-col gap-2 rounded-xl border p-3 shadow-sm bg-card hover:shadow-md transition-shadow duration-200 relative overflow-hidden">
       <div className="absolute top-0 left-0 bg-secondary/50 text-secondary-foreground text-[10px] px-2 py-0.5 rounded-br-lg">
         #{index + 1}
       </div>
-      <div className="flex justify-between items-start mt-2">
+      <div className="flex justify-between items-start mt-1">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="text-xs font-normal">
@@ -73,7 +73,7 @@ export default function RecurringExpenseCard({
         </span>
       </div>
 
-      <div className="flex justify-between items-center mt-3 pt-3 border-t border-dashed">
+      <div className="flex justify-between items-center mt-2 pt-2 border-t border-dashed">
         <div className="flex flex-col text-xs text-muted-foreground gap-0.5">
           <div className="flex gap-1">
             <span>Paid by:</span>

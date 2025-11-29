@@ -13,9 +13,9 @@ export default function SearchPage() {
   const { data: expenses, isLoading } = useSearchExpenses(debouncedQuery);
 
   return (
-    <div className="flex flex-col h-full w-full p-4 gap-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+    <div className="flex flex-col h-full w-full gap-4">
+      <div className="relative p-4">
+        <Search className="absolute left-7 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search expenses..."
           value={searchQuery}

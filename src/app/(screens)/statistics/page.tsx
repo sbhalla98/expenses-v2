@@ -6,15 +6,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useExpenses } from "@/hooks/use-expenses";
 import {
-    getAmountLabel,
-    getCurrentMonthExpenses,
-    getExpenseAmount,
-    getGroupedByKey,
+  getAmountLabel,
+  getCurrentMonthExpenses,
+  getExpenseAmount,
+  getGroupedByKey,
 } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
 import {
-    CalendarDays,
-    TrendingUp
+  CalendarDays,
+  TrendingUp
 } from "lucide-react";
 import CategoryStats from "./components/category-stats";
 import FiveDayStats from "./components/five-day-stats";
@@ -72,16 +72,14 @@ export default function Statistics() {
 
   return (
     <div className="size-full flex flex-col overflow-hidden bg-background">
-      <div className="p-4 pb-0">
-        <MonthSelector
-          date={currentDate}
-          changeMonth={changeMonth}
-          onDateChange={(date) => setCurrentMonth(date.toISOString())}
-          description={currentExpenseLabel}
-        />
-      </div>
+      <MonthSelector
+        date={currentDate}
+        changeMonth={changeMonth}
+        onDateChange={(date) => setCurrentMonth(date.toISOString())}
+        description={currentExpenseLabel}
+      />
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+      <div className="flex-1 overflow-y-auto p-2 space-y-6">
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-4">
           <Card>
