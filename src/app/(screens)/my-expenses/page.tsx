@@ -4,7 +4,6 @@ import GroupedExpenseList from "@/components/common/grouped-expense-list";
 import MonthSelector from "@/components/common/month-selector";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useExpenses } from "@/hooks/use-expenses";
-import { useToast } from "@/hooks/use-toast";
 import {
   getAmountLabel,
   getCurrentMonthExpenses,
@@ -14,7 +13,6 @@ import {
 import useConfigStore from "@/store/use-config-store";
 
 export default function MyExpenses() {
-  const { toast } = useToast();
   const { currentMonth: currentDateString, setCurrentMonth } = useConfigStore();
   const currentDate = new Date(currentDateString);
 
@@ -56,6 +54,7 @@ export default function MyExpenses() {
       <MonthSelector
         date={currentDate}
         changeMonth={changeMonth}
+        onDateChange={(date) => setCurrentMonth(date.toISOString())}
         description={currentExpense}
       />
       <div className="flex-1 overflow-y-auto pb-12">

@@ -6,15 +6,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useExpenses } from "@/hooks/use-expenses";
 import {
-  getAmountLabel,
-  getCurrentMonthExpenses,
-  getExpenseAmount,
-  getGroupedByKey,
+    getAmountLabel,
+    getCurrentMonthExpenses,
+    getExpenseAmount,
+    getGroupedByKey,
 } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
 import {
-  CalendarDays,
-  TrendingUp
+    CalendarDays,
+    TrendingUp
 } from "lucide-react";
 import CategoryStats from "./components/category-stats";
 import FiveDayStats from "./components/five-day-stats";
@@ -76,6 +76,7 @@ export default function Statistics() {
         <MonthSelector
           date={currentDate}
           changeMonth={changeMonth}
+          onDateChange={(date) => setCurrentMonth(date.toISOString())}
           description={currentExpenseLabel}
         />
       </div>
