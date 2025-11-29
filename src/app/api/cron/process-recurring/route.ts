@@ -1,4 +1,4 @@
-import { RECURRING_FREQUENCY } from "@/lib/constants";
+import { COLLECTIONS, DB_NAME, RECURRING_FREQUENCY } from "@/lib/constants";
 import clientPromise from "@/lib/mongodb";
 import { RecurringExpense } from "@/lib/types";
 import { NextResponse } from "next/server";
@@ -11,9 +11,9 @@ export async function GET(request: Request) {
     // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) { ... }
 
     const client = await clientPromise;
-    const db = client.db("expenses-v2");
-    const recurringCollection = db.collection("recurring-expenses");
-    const expensesCollection = db.collection("expenses");
+    const db = client.db(DB_NAME);
+    const recurringCollection = db.collection(COLLECTIONS.RECURRING_EXPENSES);
+    const expensesCollection = db.collection(COLLECTIONS.EXPENSES);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
