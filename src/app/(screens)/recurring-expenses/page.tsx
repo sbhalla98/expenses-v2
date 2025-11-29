@@ -1,5 +1,6 @@
 "use client";
 
+import DeleteRecurringExpenseButton from "@/components/common/delete-recurring-expense-button";
 import RecurringExpenseForm from "@/components/common/recurring-expense-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,9 +13,9 @@ import {
 import apiClient from "@/lib/axios";
 import { PERSONS } from "@/lib/constants";
 import useConfigStore from "@/store/use-config-store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Loader2, Plus, Trash2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function RecurringExpensesPage() {
@@ -30,14 +31,6 @@ export default function RecurringExpensesPage() {
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      await apiClient.delete(`/api/recurring-expenses?id=${id}`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recurring-expenses"] });
-    },
-  });
 
   const getLabel = (label: string) => {
     if (label === PERSONS.PERSON1 || label === PERSONS.PERSON2) {
@@ -106,18 +99,7 @@ export default function RecurringExpensesPage() {
                   Paid by: {getLabel(expense.paidBy)} • For:{" "}
                   {getLabel(expense.paidFor)}
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-destructive hover:text-destructive/90"
-                  onClick={() => {
-                    if (confirm("Are you sure you want to delete this?")) {
-                      deleteMutation.mutate(expense.id);
-                    }
-                  }}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <DeleteRecurringExpenseButton id={expense.id} />
               </div>
             </div>
           ))

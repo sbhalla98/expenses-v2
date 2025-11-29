@@ -5,11 +5,12 @@ import DeleteExpenseButton from "@/components/common/delete-expense-button";
 import { useToast } from "@/hooks/use-toast";
 import apiClient from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function EditExpense() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -46,7 +47,7 @@ function EditExpense() {
   return (
     <div className="size-full flex flex-col overflow-y-auto pb-12">
       <AddExpenseForm initialValues={initialValues} id={id} />
-      <DeleteExpenseButton id={id} />
+      <DeleteExpenseButton id={id} onSuccess={() => router.push("/my-expenses")} />
     </div>
   );
 }
