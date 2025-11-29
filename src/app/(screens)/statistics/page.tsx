@@ -22,6 +22,8 @@ import PaidByStats from "./components/paid-by-stats";
 import PaidForStats from "./components/paid-for-stats";
 import SettlementStats from "./components/settlement-stats";
 import SplitStats from "./components/split-stats";
+import TopExpensesStats from "./components/top-expenses-stats";
+import WeeklyStats from "./components/weekly-stats";
 
 export default function Statistics() {
   const { currentMonth: currentDateString, setCurrentMonth } = useConfigStore();
@@ -117,36 +119,42 @@ export default function Statistics() {
         </div>
 
         {/* Tabs for detailed stats */}
-        <Tabs defaultValue="category" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 h-auto gap-2">
-            <TabsTrigger value="category">Cat.</TabsTrigger>
-            <TabsTrigger value="paidBy">Who</TabsTrigger>
-            <TabsTrigger value="paidFor">For</TabsTrigger>
-            <TabsTrigger value="recent">Days</TabsTrigger>
-            <TabsTrigger value="settlement">Settle</TabsTrigger>
-            <TabsTrigger value="split">Split</TabsTrigger>
-          </TabsList>
-          <div className="mt-4">
-            <TabsContent value="category">
-              <CategoryStats expenses={visibleExpenses} />
-            </TabsContent>
-            <TabsContent value="paidBy">
-              <PaidByStats expenses={visibleExpenses} />
-            </TabsContent>
-            <TabsContent value="paidFor">
-              <PaidForStats expenses={visibleExpenses} />
-            </TabsContent>
-            <TabsContent value="recent">
-              <FiveDayStats expenses={visibleExpenses} />
-            </TabsContent>
-            <TabsContent value="settlement">
-              <SettlementStats expenses={visibleExpenses} />
-            </TabsContent>
-            <TabsContent value="split">
-              <SplitStats expenses={visibleExpenses} />
-            </TabsContent>
-          </div>
-        </Tabs>
+    <Tabs defaultValue="category" className="w-full">
+      <TabsList className="grid w-full grid-cols-3 h-auto gap-2 mb-2">
+        <TabsTrigger value="category">Cat.</TabsTrigger>
+        <TabsTrigger value="paidBy">Who</TabsTrigger>
+        <TabsTrigger value="paidFor">For</TabsTrigger>
+        <TabsTrigger value="weekly">Weekly</TabsTrigger>
+        <TabsTrigger value="top">Top</TabsTrigger>
+        <TabsTrigger value="settlement">Settle</TabsTrigger>
+      </TabsList>
+      <div className="mt-4">
+        <TabsContent value="category">
+          <CategoryStats expenses={visibleExpenses} />
+        </TabsContent>
+        <TabsContent value="paidBy">
+          <PaidByStats expenses={visibleExpenses} />
+        </TabsContent>
+        <TabsContent value="paidFor">
+          <PaidForStats expenses={visibleExpenses} />
+        </TabsContent>
+        <TabsContent value="recent">
+          <FiveDayStats expenses={visibleExpenses} />
+        </TabsContent>
+        <TabsContent value="weekly">
+          <WeeklyStats expenses={visibleExpenses} />
+        </TabsContent>
+        <TabsContent value="top">
+          <TopExpensesStats expenses={visibleExpenses} />
+        </TabsContent>
+        <TabsContent value="settlement">
+          <SettlementStats expenses={visibleExpenses} />
+        </TabsContent>
+        <TabsContent value="split">
+          <SplitStats expenses={visibleExpenses} />
+        </TabsContent>
+      </div>
+    </Tabs>
       </div>
     </div>
   );
