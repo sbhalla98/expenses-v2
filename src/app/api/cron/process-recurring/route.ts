@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     const expensesCollection = db.collection(COLLECTIONS.EXPENSES);
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     const recurringExpenses = (await recurringCollection
       .find({})
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
 
     for (const expense of recurringExpenses) {
       const nextPaymentDate = new Date(expense.nextPaymentDate);
-      nextPaymentDate.setHours(0, 0, 0, 0);
+      nextPaymentDate.setUTCHours(0, 0, 0, 0);
 
       if (nextPaymentDate <= today) {
         // Create new expense
@@ -48,17 +48,17 @@ export async function GET(request: Request) {
         const newNextPaymentDate = new Date(nextPaymentDate);
         switch (expense.frequency) {
           case RECURRING_FREQUENCY.DAILY:
-            newNextPaymentDate.setDate(newNextPaymentDate.getDate() + 1);
+            newNextPaymentDate.setUTCDate(newNextPaymentDate.getUTCDate() + 1);
             break;
           case RECURRING_FREQUENCY.WEEKLY:
-            newNextPaymentDate.setDate(newNextPaymentDate.getDate() + 7);
+            newNextPaymentDate.setUTCDate(newNextPaymentDate.getUTCDate() + 7);
             break;
           case RECURRING_FREQUENCY.MONTHLY:
-            newNextPaymentDate.setMonth(newNextPaymentDate.getMonth() + 1);
+            newNextPaymentDate.setUTCMonth(newNextPaymentDate.getUTCMonth() + 1);
             break;
           case RECURRING_FREQUENCY.YEARLY:
-            newNextPaymentDate.setFullYear(
-              newNextPaymentDate.getFullYear() + 1,
+            newNextPaymentDate.setUTCFullYear(
+              newNextPaymentDate.getUTCFullYear() + 1,
             );
             break;
         }
