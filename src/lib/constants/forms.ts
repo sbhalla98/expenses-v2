@@ -76,7 +76,7 @@ export const FORM_FIELDS: FormField[] = [
     label: "Category",
     type: "select",
     options: EXPENSE_CATEGORY_OPTIONS,
-    defaultValue: EXPENSE_CATEGORY_VALUES.FOOD,
+    defaultValue: EXPENSE_CATEGORY_VALUES.GROCERY,
     validation: z.enum(
       EXPENSE_CATEGORY_OPTIONS.map((item) => item.value) as [
         string,
