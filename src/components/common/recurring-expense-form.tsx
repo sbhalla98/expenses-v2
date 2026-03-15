@@ -72,7 +72,7 @@ export default function RecurringExpenseForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 0,
-      category: EXPENSE_CATEGORY_VALUES.FOOD,
+      category: EXPENSE_CATEGORY_VALUES.GROCERY,
       description: "",
       paidBy: PERSONS.PERSON1,
       paidFor: PERSONS.BOTH,
