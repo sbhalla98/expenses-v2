@@ -6,4 +6,6 @@ export const API_ROUTES = {
   DELETE_EXPENSE: "/api/delete-expense",
   RECURRING_EXPENSES: "/api/recurring-expenses",
   SEARCH_EXPENSES: "/api/search-expenses",
+  NET_WORTH_ASSETS: "/api/net-worth/assets",
+  NET_WORTH_SNAPSHOTS: "/api/net-worth/snapshots",
 } as const;

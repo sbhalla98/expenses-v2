@@ -5,6 +5,7 @@ import {
   Repeat,
   Search,
   SquarePlus,
+  Wallet,
 } from "lucide-react";
 
 export const APP_ROUTES = {
@@ -16,6 +17,7 @@ export const APP_ROUTES = {
   RECURRING_EXPENSES: "/recurring-expenses",
   SEARCH: "/search",
   BILLS: "/bills",
+  NET_WORTH: "/net-worth",
 } as const;
 
 export const BOTTOM_BAR_LINKS = [
@@ -33,6 +35,11 @@ export const BOTTOM_BAR_LINKS = [
     route: APP_ROUTES.ADD_EXPENSE,
     title: "Add Expense",
     icon: SquarePlus,
+  },
+  {
+    route: APP_ROUTES.NET_WORTH,
+    title: "Net Worth",
+    icon: Wallet,
   },
   {
     route: APP_ROUTES.MY_EXPENSES,

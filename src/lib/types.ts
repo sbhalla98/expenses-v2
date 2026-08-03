@@ -21,3 +21,46 @@ export type RecurringExpense = {
   userId: string;
   vpa?: string;
 };
+
+export type AssetCategory =
+  | "saving"
+  | "fixed_deposit"
+  | "gold"
+  | "retirement"
+  | "equity"
+  | "mutual_funds"
+  | "property"
+  | "vehicles"
+  | "other";
+
+export type NetWorthAsset = {
+  id: string;
+  userId: string;
+  name: string;
+  category: AssetCategory;
+  trackingType: "value" | "quantity" | "fd";
+  quantity?: number;
+  unitLabel?: string;
+  principal?: number;
+  interestRate?: number;
+  startDate?: string;
+  maturityDate?: string;
+  owner?: "PERSON1" | "PERSON2" | "Both";
+  notes?: string;
+  createdAt: string;
+};
+
+export type NetWorthSnapshot = {
+  id: string;
+  userId: string;
+  date: string;
+  goldPricePerGram?: number; // kept for legacy / general fallback
+  values: {
+    [assetId: string]: number;
+  };
+  unitPrices?: {
+    [assetId: string]: number;
+  };
+  createdAt: string;
+};
+
