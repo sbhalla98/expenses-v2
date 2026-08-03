@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import useConfigStore from "@/store/use-config-store";
-import { PERSONS } from "@/lib/constants";
+import { PERSONS, sortAssets } from "@/lib/constants";
 import {
   Area,
   AreaChart,
@@ -48,7 +48,7 @@ export default function NetWorthPage() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "grid" | "assets">(
     "dashboard",
   );
-  const [ownerFilter, setOwnerFilter] = useState<"All" | "PERSON1" | "PERSON2" | "Both">("All");
+  const [ownerFilter, setOwnerFilter] = useState<string>("ALL");
 
   const config = useConfigStore();
   const person1Name = config[PERSONS.PERSON1] || "Person 1";
@@ -81,6 +81,7 @@ export default function NetWorthPage() {
       ...asset,
       startDate: asset.startDate ? new Date(asset.startDate) : undefined,
       maturityDate: asset.maturityDate ? new Date(asset.maturityDate) : undefined,
+      acquiredDate: asset.acquiredDate ? new Date(asset.acquiredDate) : undefined,
     });
     setIsAssetDrawerOpen(true);
   };
@@ -497,90 +498,127 @@ export default function NetWorthPage() {
         </div>
       )}
 
-      {activeTab === "assets" && (
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-              Asset Configuration
-            </h3>
-            <Button size="sm" variant="outline" onClick={handleAddNewAsset}>
-              <Plus className="h-3.5 w-3.5 mr-1" /> New Asset
-            </Button>
-          </div>
+      {activeTab === "assets" && (() => {
+        const sortedFilteredAssets = sortAssets(filteredAssets);
+        const assetSections = [
+          {
+            id: "PERSON1",
+            title: `${person1Name}'s Assets`,
+            assets: sortedFilteredAssets.filter((a) => a.owner === "PERSON1"),
+          },
+          {
+            id: "PERSON2",
+            title: `${person2Name}'s Assets`,
+            assets: sortedFilteredAssets.filter((a) => a.owner === "PERSON2"),
+          },
+          {
+            id: "Both",
+            title: "Joint / Both Assets",
+            assets: sortedFilteredAssets.filter((a) => a.owner === "Both" || !a.owner),
+          },
+        ];
 
-          {filteredAssets.length === 0 ? (
-            <div className="text-center py-10 border border-dashed rounded-xl text-muted-foreground p-4 text-xs">
-              No assets configured. Add your first asset (e.g. Stocks, FD, Gold) using the &quot;New Asset&quot; button.
+        return (
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                Asset Configuration
+              </h3>
+              <Button size="sm" variant="outline" onClick={handleAddNewAsset}>
+                <Plus className="h-3.5 w-3.5 mr-1" /> New Asset
+              </Button>
             </div>
-          ) : (
-            <div className="space-y-2">
-              {filteredAssets.map((asset) => (
-                <div
-                  key={asset.id}
-                  className="flex items-start justify-between p-3 border border-gray-100 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="flex-1 min-w-0 pr-1">
-                    <div className="flex flex-wrap items-center gap-1.5 matches-owner">
-                      <span className="font-semibold text-sm text-gray-900 truncate">
-                        {asset.name}
-                      </span>
-                      <Badge className="text-[9px] py-0 px-1.5 capitalize bg-gray-100 text-gray-600 border-none">
-                        {asset.category.replace("_", " ")}
-                      </Badge>
-                      <Badge className="text-[9px] py-0 px-1.5 bg-blue-50 text-blue-600 border-none font-bold">
-                        {asset.owner === "PERSON1"
-                          ? person1Name
-                          : asset.owner === "PERSON2"
-                          ? person2Name
-                          : "Joint"}
-                      </Badge>
-                    </div>
-                    {asset.trackingType === "quantity" && asset.quantity && (
-                      <p className="text-xxs text-muted-foreground mt-0.5 font-medium">
-                        Quantity: {asset.quantity} {asset.unitLabel || "units"}
-                      </p>
-                    )}
-                    {asset.trackingType === "fd" && asset.principal && (
-                      <p className="text-xxs text-muted-foreground mt-0.5 font-medium">
-                        Principal: ₹{asset.principal.toLocaleString("en-IN")} |{" "}
-                        {asset.interestRate}% Interest
-                      </p>
-                    )}
-                    {asset.notes && (
-                      <p className="text-xxxs text-gray-500 italic mt-1 bg-gray-50 p-1.5 rounded-lg border border-gray-100/70 flex items-start gap-1">
-                        <Info className="h-2.5 w-2.5 mt-0.5 text-gray-400 shrink-0" />
-                        <span>{asset.notes}</span>
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex gap-1 shrink-0 ml-1">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => handleEditAsset(asset)}
-                      className="text-gray-500 hover:text-black h-8 text-xxs px-2"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => {
-                        if (confirm(`Are you sure you want to delete ${asset.name}?`)) {
-                          deleteAssetMutation.mutate(asset.id);
-                        }
-                      }}
-                      className="text-gray-400 hover:text-rose-600 h-8 w-8"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+
+            {filteredAssets.length === 0 ? (
+              <div className="text-center py-10 border border-dashed rounded-xl text-muted-foreground p-4 text-xs">
+                No assets configured. Add your first asset (e.g. Stocks, FD, Gold) using the &quot;New Asset&quot; button.
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {assetSections.map(
+                  (sec) =>
+                    sec.assets.length > 0 && (
+                      <div key={sec.id} className="space-y-2">
+                        <div className="flex items-center justify-between bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
+                          <span className="text-xs font-bold text-gray-700 uppercase tracking-wide">
+                            {sec.title}
+                          </span>
+                          <Badge className="text-[10px] py-0 px-2 bg-gray-200 text-gray-700 border-none font-semibold">
+                            {sec.assets.length} {sec.assets.length === 1 ? "asset" : "assets"}
+                          </Badge>
+                        </div>
+
+                        <div className="space-y-2">
+                          {sec.assets.map((asset) => (
+                            <div
+                              key={asset.id}
+                              className="flex items-start justify-between p-3 border border-gray-100 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                            >
+                              <div className="flex-1 min-w-0 pr-1">
+                                <div className="flex flex-wrap items-center gap-1.5">
+                                  <span className="font-semibold text-sm text-gray-900 truncate">
+                                    {asset.name}
+                                  </span>
+                                  <Badge className="text-[9px] py-0 px-1.5 capitalize bg-gray-100 text-gray-600 border-none">
+                                    {asset.category.replace("_", " ")}
+                                  </Badge>
+                                  {asset.acquiredDate && (
+                                    <Badge className="text-[9px] py-0 px-1.5 bg-amber-50 text-amber-700 border-none font-medium">
+                                      Acquired: {format(new Date(asset.acquiredDate), "dd-MM-yyyy")}
+                                    </Badge>
+                                  )}
+                                </div>
+                                {asset.trackingType === "quantity" && asset.quantity && (
+                                  <p className="text-xxs text-muted-foreground mt-0.5 font-medium">
+                                    Quantity: {asset.quantity} {asset.unitLabel || "units"}
+                                  </p>
+                                )}
+                                {asset.trackingType === "fd" && asset.principal && (
+                                  <p className="text-xxs text-muted-foreground mt-0.5 font-medium">
+                                    Principal: ₹{asset.principal.toLocaleString("en-IN")} |{" "}
+                                    {asset.interestRate}% Interest
+                                  </p>
+                                )}
+                                {asset.notes && (
+                                  <p className="text-xxxs text-gray-500 italic mt-1 bg-gray-50 p-1.5 rounded-lg border border-gray-100/70 flex items-start gap-1">
+                                    <Info className="h-2.5 w-2.5 mt-0.5 text-gray-400 shrink-0" />
+                                    <span>{asset.notes}</span>
+                                  </p>
+                                )}
+                              </div>
+                              <div className="flex gap-1 shrink-0 ml-1">
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => handleEditAsset(asset)}
+                                  className="text-gray-500 hover:text-black h-8 text-xxs px-2"
+                                >
+                                  Edit
+                                </Button>
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    if (confirm(`Are you sure you want to delete ${asset.name}?`)) {
+                                      deleteAssetMutation.mutate(asset.id);
+                                    }
+                                  }}
+                                  className="text-gray-400 hover:text-rose-600 h-8 w-8"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Asset Drawer */}
       <Drawer open={isAssetDrawerOpen} onOpenChange={setIsAssetDrawerOpen}>

@@ -45,6 +45,7 @@ export type NetWorthAsset = {
   interestRate?: number;
   startDate?: string;
   maturityDate?: string;
+  acquiredDate?: string;
   owner?: "PERSON1" | "PERSON2" | "Both";
   notes?: string;
   createdAt: string;

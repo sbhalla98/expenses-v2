@@ -33,6 +33,7 @@ const formSchema = z.object({
     .optional(),
   startDate: z.date().optional(),
   maturityDate: z.date().optional(),
+  acquiredDate: z.date().optional(),
   notes: z.string().optional(),
 });
 
@@ -73,6 +74,16 @@ const getFormDefaults = (vals: Partial<any> = {}): NetWorthAssetFormValues => {
     return new Date();
   };
 
+  const parseOptionalDate = (d: any) => {
+    if (!d) return undefined;
+    if (d instanceof Date && !isNaN(d.getTime())) return d;
+    if (typeof d === "string") {
+      const parsed = new Date(d);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+    return undefined;
+  };
+
   return {
     name: vals.name || "",
     category: vals.category || "saving",
@@ -84,6 +95,7 @@ const getFormDefaults = (vals: Partial<any> = {}): NetWorthAssetFormValues => {
     interestRate: vals.interestRate ?? 0,
     startDate: parseDate(vals.startDate),
     maturityDate: parseDate(vals.maturityDate),
+    acquiredDate: parseOptionalDate(vals.acquiredDate),
     notes: vals.notes || "",
   };
 };
@@ -142,6 +154,7 @@ export default function NetWorthAssetForm({
       trackingType: data.trackingType,
       owner: data.owner,
       notes: data.notes || "",
+      acquiredDate: data.acquiredDate ? data.acquiredDate.toISOString() : null,
     };
 
     if (data.trackingType === "quantity") {
@@ -208,6 +221,14 @@ export default function NetWorthAssetForm({
           name="notes"
           label="Notes (e.g. app, bank name, credentials)"
           type="text"
+          control={form.control}
+        />
+
+        {/* Acquired Date */}
+        <CustomFormField
+          name="acquiredDate"
+          label="Date of Acquisition (Optional)"
+          type="date"
           control={form.control}
         />
 

@@ -2,6 +2,7 @@ export * from "./api";
 export * from "./categories";
 export * from "./forms";
 export * from "./navigation";
+export * from "./net-worth";
 export * from "./persons";
 export * from "./recurring";
 export * from "./server";
