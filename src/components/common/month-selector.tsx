@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, CalendarIcon } from "lucide-react";
@@ -116,7 +116,7 @@ export default function MonthSelector({
                     date.getMonth() === index &&
                       date.getFullYear() === viewDate.getFullYear()
                       ? "bg-primary text-primary-foreground"
-                      : ""
+                      : "",
                   )}
                   onClick={() => handleMonthSelect(index)}
                 >

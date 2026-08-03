@@ -1,10 +1,10 @@
 "use client";
 
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Expense } from "@/lib/types";
@@ -17,18 +17,21 @@ type DailyStatsProps = {
 
 export default function DailyStats({ expenses }: DailyStatsProps) {
   // Group expenses by date
-  const groupedData = expenses.reduce((acc, expense) => {
-    const dateString = new Date(expense.date).toDateString();
-    if (!acc[dateString]) {
-      acc[dateString] = [];
-    }
-    acc[dateString].push(expense);
-    return acc;
-  }, {} as Record<string, Expense[]>);
+  const groupedData = expenses.reduce(
+    (acc, expense) => {
+      const dateString = new Date(expense.date).toDateString();
+      if (!acc[dateString]) {
+        acc[dateString] = [];
+      }
+      acc[dateString].push(expense);
+      return acc;
+    },
+    {} as Record<string, Expense[]>,
+  );
 
   // Sort dates descending
   const sortedDates = Object.keys(groupedData).sort(
-    (a, b) => new Date(b).getTime() - new Date(a).getTime()
+    (a, b) => new Date(b).getTime() - new Date(a).getTime(),
   );
 
   return (

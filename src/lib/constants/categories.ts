@@ -18,8 +18,9 @@ export enum EXPENSE_CATEGORY_VALUES {
   OTHER = "Other",
 }
 
-export const EXPENSE_CATEGORY_OPTIONS = 
-Object.values(EXPENSE_CATEGORY_VALUES).map((value) => ({
+export const EXPENSE_CATEGORY_OPTIONS = Object.values(
+  EXPENSE_CATEGORY_VALUES,
+).map((value) => ({
   value,
   label: value,
 }));

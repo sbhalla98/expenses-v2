@@ -36,8 +36,8 @@ export default function RecurringExpenseCard({
     setDaysUntil(
       Math.ceil(
         (nextPaymentDate.getTime() - new Date().getTime()) /
-          (1000 * 60 * 60 * 24)
-      )
+          (1000 * 60 * 60 * 24),
+      ),
     );
   }, [nextPaymentDate]);
 

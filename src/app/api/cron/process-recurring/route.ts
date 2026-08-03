@@ -54,7 +54,9 @@ export async function GET(request: Request) {
             newNextPaymentDate.setUTCDate(newNextPaymentDate.getUTCDate() + 7);
             break;
           case RECURRING_FREQUENCY.MONTHLY:
-            newNextPaymentDate.setUTCMonth(newNextPaymentDate.getUTCMonth() + 1);
+            newNextPaymentDate.setUTCMonth(
+              newNextPaymentDate.getUTCMonth() + 1,
+            );
             break;
           case RECURRING_FREQUENCY.YEARLY:
             newNextPaymentDate.setUTCFullYear(

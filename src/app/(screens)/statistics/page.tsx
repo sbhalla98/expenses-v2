@@ -12,10 +12,7 @@ import {
   getGroupedByKey,
 } from "@/lib/utils";
 import useConfigStore from "@/store/use-config-store";
-import {
-  CalendarDays,
-  TrendingUp
-} from "lucide-react";
+import { CalendarDays, TrendingUp } from "lucide-react";
 import CategoryStats from "./components/category-stats";
 import FiveDayStats from "./components/five-day-stats";
 import PaidByStats from "./components/paid-by-stats";
@@ -102,7 +99,9 @@ export default function Statistics() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 p-2">
-              <CardTitle className="text-sm font-medium">Top Category</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Top Category
+              </CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent className="p-2">
@@ -119,42 +118,42 @@ export default function Statistics() {
         </div>
 
         {/* Tabs for detailed stats */}
-    <Tabs defaultValue="category" className="w-full">
-      <TabsList className="grid w-full grid-cols-3 h-auto gap-2 mb-2">
-        <TabsTrigger value="category">Cat.</TabsTrigger>
-        <TabsTrigger value="paidBy">Who</TabsTrigger>
-        <TabsTrigger value="paidFor">For</TabsTrigger>
-        <TabsTrigger value="weekly">Weekly</TabsTrigger>
-        <TabsTrigger value="top">Top</TabsTrigger>
-        <TabsTrigger value="settlement">Settle</TabsTrigger>
-      </TabsList>
-      <div className="mt-4">
-        <TabsContent value="category">
-          <CategoryStats expenses={visibleExpenses} />
-        </TabsContent>
-        <TabsContent value="paidBy">
-          <PaidByStats expenses={visibleExpenses} />
-        </TabsContent>
-        <TabsContent value="paidFor">
-          <PaidForStats expenses={visibleExpenses} />
-        </TabsContent>
-        <TabsContent value="recent">
-          <FiveDayStats expenses={visibleExpenses} />
-        </TabsContent>
-        <TabsContent value="weekly">
-          <WeeklyStats expenses={visibleExpenses} />
-        </TabsContent>
-        <TabsContent value="top">
-          <TopExpensesStats expenses={visibleExpenses} />
-        </TabsContent>
-        <TabsContent value="settlement">
-          <SettlementStats expenses={visibleExpenses} />
-        </TabsContent>
-        <TabsContent value="split">
-          <SplitStats expenses={visibleExpenses} />
-        </TabsContent>
-      </div>
-    </Tabs>
+        <Tabs defaultValue="category" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 h-auto gap-2 mb-2">
+            <TabsTrigger value="category">Cat.</TabsTrigger>
+            <TabsTrigger value="paidBy">Who</TabsTrigger>
+            <TabsTrigger value="paidFor">For</TabsTrigger>
+            <TabsTrigger value="weekly">Weekly</TabsTrigger>
+            <TabsTrigger value="top">Top</TabsTrigger>
+            <TabsTrigger value="settlement">Settle</TabsTrigger>
+          </TabsList>
+          <div className="mt-4">
+            <TabsContent value="category">
+              <CategoryStats expenses={visibleExpenses} />
+            </TabsContent>
+            <TabsContent value="paidBy">
+              <PaidByStats expenses={visibleExpenses} />
+            </TabsContent>
+            <TabsContent value="paidFor">
+              <PaidForStats expenses={visibleExpenses} />
+            </TabsContent>
+            <TabsContent value="recent">
+              <FiveDayStats expenses={visibleExpenses} />
+            </TabsContent>
+            <TabsContent value="weekly">
+              <WeeklyStats expenses={visibleExpenses} />
+            </TabsContent>
+            <TabsContent value="top">
+              <TopExpensesStats expenses={visibleExpenses} />
+            </TabsContent>
+            <TabsContent value="settlement">
+              <SettlementStats expenses={visibleExpenses} />
+            </TabsContent>
+            <TabsContent value="split">
+              <SplitStats expenses={visibleExpenses} />
+            </TabsContent>
+          </div>
+        </Tabs>
       </div>
     </div>
   );
