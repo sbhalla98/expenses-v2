@@ -125,6 +125,7 @@ export const useSaveNetWorthSnapshot = (onSuccess?: () => void) => {
       goldPricePerGram?: number;
       values: { [assetId: string]: number };
       unitPrices?: { [assetId: string]: number };
+      quantities?: { [assetId: string]: number };
     }) => {
       const response = await apiClient.post(API_ROUTES.NET_WORTH_SNAPSHOTS, data);
       return response.data.data;

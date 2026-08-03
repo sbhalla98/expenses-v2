@@ -61,6 +61,9 @@ export type NetWorthSnapshot = {
   unitPrices?: {
     [assetId: string]: number;
   };
+  quantities?: {
+    [assetId: string]: number;
+  };
   createdAt: string;
 };
 

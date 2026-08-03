@@ -67,12 +67,17 @@ export default function NetWorthSnapshotForm({
     {},
   );
 
+  const [assetQuantities, setAssetQuantities] = useState<{ [assetId: string]: number }>(
+    {},
+  );
+
   // Load initial values on open or date change
   useEffect(() => {
     if (editingSnapshot) {
       setDate(editingSnapshot.date);
       setAssetValues(editingSnapshot.values || {});
       setUnitPrices(editingSnapshot.unitPrices || {});
+      setAssetQuantities(editingSnapshot.quantities || {});
     } else {
       // Find the most recent snapshot prior to the selected date to prefill values
       const recentSnapshot = [...snapshots]
@@ -83,17 +88,20 @@ export default function NetWorthSnapshotForm({
 
       const initialValues: { [assetId: string]: number } = {};
       const initialPrices: { [assetId: string]: number } = {};
+      const initialQuantities: { [assetId: string]: number } = {};
 
       assets.forEach((asset) => {
         if (asset.trackingType === "fd") {
           initialValues[asset.id] = computeFDValue(asset, date);
         } else if (asset.trackingType === "quantity") {
-          // Fetch previous unit price if available, else default to some sensible values
+          // Fetch previous unit price & quantity if available, else default to some sensible values
           const prevPrice = recentSnapshot?.unitPrices?.[asset.id] || 
             (asset.category === "gold" ? 7200 : 100); // 7200/g for gold, 100 per unit for others like mutual funds
+          const prevQty = recentSnapshot?.quantities?.[asset.id] ?? asset.quantity ?? 0;
           
           initialPrices[asset.id] = prevPrice;
-          initialValues[asset.id] = Math.round((asset.quantity || 0) * prevPrice);
+          initialQuantities[asset.id] = prevQty;
+          initialValues[asset.id] = Math.round(prevQty * prevPrice);
         } else {
           // Direct value tracking
           initialValues[asset.id] = recentSnapshot?.values?.[asset.id] || 0;
@@ -102,6 +110,7 @@ export default function NetWorthSnapshotForm({
 
       setAssetValues(initialValues);
       setUnitPrices(initialPrices);
+      setAssetQuantities(initialQuantities);
     }
   }, [editingSnapshot, date, assets, snapshots]);
 
@@ -112,6 +121,20 @@ export default function NetWorthSnapshotForm({
       [assetId]: price,
     }));
     
+    // Auto-calculate resulting total amount value
+    setAssetValues((prev) => ({
+      ...prev,
+      [assetId]: Math.round(price * qty),
+    }));
+  };
+
+  // Handle changing quantity for a specific asset
+  const handleQuantityChange = (assetId: string, qty: number, price: number) => {
+    setAssetQuantities((prev) => ({
+      ...prev,
+      [assetId]: qty,
+    }));
+
     // Auto-calculate resulting total amount value
     setAssetValues((prev) => ({
       ...prev,
@@ -151,6 +174,7 @@ export default function NetWorthSnapshotForm({
       )?.[1] || 7200,
       values: assetValues,
       unitPrices,
+      quantities: assetQuantities,
     });
   };
 
@@ -208,11 +232,6 @@ export default function NetWorthSnapshotForm({
                           <p className="text-sm font-bold text-gray-900 truncate">
                             {asset.name}
                           </p>
-                          {asset.trackingType === "quantity" && (
-                            <p className="text-[10px] text-muted-foreground font-semibold uppercase">
-                              Qty: {asset.quantity} {asset.unitLabel}
-                            </p>
-                          )}
                           {asset.trackingType === "fd" && asset.principal && (
                             <p className="text-xxs text-muted-foreground mt-0.5">
                               Principal: ₹{asset.principal.toLocaleString("en-IN")} | Mat:{" "}
@@ -226,9 +245,27 @@ export default function NetWorthSnapshotForm({
 
                       <div className="flex items-center gap-3 justify-between">
                         {asset.trackingType === "quantity" ? (
-                          <div className="flex-1 flex items-center min-w-0">
-                            <span className="text-xxs text-muted-foreground font-bold mr-1">Rate:</span>
-                            <span className="text-gray-400 mr-0.5 text-xs">₹</span>
+                          <div className="flex-1 flex items-center min-w-0 gap-1.5 flex-wrap">
+                            <span className="text-xxs text-muted-foreground font-bold shrink-0">Qty:</span>
+                            <Input
+                              type="number"
+                              step="any"
+                              value={assetQuantities[asset.id] ?? 0}
+                              onChange={(e) =>
+                                handleQuantityChange(
+                                  asset.id,
+                                  Number(e.target.value),
+                                  unitPrices[asset.id] ?? 0,
+                                )
+                              }
+                              className="h-8 w-16 text-xs font-medium px-1.5 text-center"
+                              placeholder="Qty"
+                            />
+                            <span className="text-[10px] text-muted-foreground font-bold shrink-0">
+                              {asset.unitLabel || "units"}
+                            </span>
+                            <span className="text-xxs text-muted-foreground font-bold ml-1 shrink-0">Rate:</span>
+                            <span className="text-gray-400 text-xs">₹</span>
                             <Input
                               type="number"
                               value={currentPrice}
@@ -236,11 +273,11 @@ export default function NetWorthSnapshotForm({
                                 handleUnitPriceChange(
                                   asset.id,
                                   Number(e.target.value),
-                                  asset.quantity || 0,
+                                  assetQuantities[asset.id] ?? 0,
                                 )
                               }
-                              className="h-8 w-24 text-xs font-medium"
-                              placeholder="Price / Unit"
+                              className="h-8 w-16 text-xs font-medium px-1.5 text-center"
+                              placeholder="Price"
                             />
                           </div>
                         ) : (
@@ -254,6 +291,7 @@ export default function NetWorthSnapshotForm({
                           <Input
                             type="number"
                             value={currentValue}
+                            disabled={asset.trackingType === "quantity" || asset.trackingType === "fd"}
                             onChange={(e) =>
                               handleValueChange(asset.id, Number(e.target.value))
                             }

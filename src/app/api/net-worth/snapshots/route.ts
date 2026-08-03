@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     const collection = db.collection(COLLECTIONS.NET_WORTH_SNAPSHOTS);
     const userId = request.headers.get(HEADERS.USER_ID);
 
-    const { date, goldPricePerGram, values, unitPrices } = body;
+    const { date, goldPricePerGram, values, unitPrices, quantities } = body;
 
     if (!date || !values) {
       return NextResponse.json(
@@ -48,11 +48,11 @@ export async function POST(request: Request) {
     if (existing) {
       await collection.updateOne(
         { id: existing.id },
-        { $set: { goldPricePerGram, values, unitPrices } },
+        { $set: { goldPricePerGram, values, unitPrices, quantities } },
       );
       return NextResponse.json({
         success: true,
-        data: { ...existing, goldPricePerGram, values, unitPrices },
+        data: { ...existing, goldPricePerGram, values, unitPrices, quantities },
       });
     } else {
       const id = uuidv4();
@@ -63,6 +63,7 @@ export async function POST(request: Request) {
         goldPricePerGram,
         values,
         unitPrices,
+        quantities,
         createdAt: new Date().toISOString(),
       };
       await collection.insertOne(snapshot);

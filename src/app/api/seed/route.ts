@@ -81,6 +81,9 @@ export async function GET(request: Request) {
         unitPrices: {
           "asset-gold": 7000,
         },
+        quantities: {
+          "asset-gold": 0,
+        },
       },
       {
         id: "snap-2025-11-01",
@@ -104,6 +107,9 @@ export async function GET(request: Request) {
         },
         unitPrices: {
           "asset-gold": 7000,
+        },
+        quantities: {
+          "asset-gold": 0,
         },
       },
       {
@@ -129,6 +135,9 @@ export async function GET(request: Request) {
         unitPrices: {
           "asset-gold": 7000,
         },
+        quantities: {
+          "asset-gold": 96,
+        },
       },
       {
         id: "snap-2026-05-01",
@@ -153,6 +162,9 @@ export async function GET(request: Request) {
         unitPrices: {
           "asset-gold": 7000,
         },
+        quantities: {
+          "asset-gold": 96,
+        },
       },
       {
         id: "snap-2026-08-01",
@@ -176,6 +188,9 @@ export async function GET(request: Request) {
         },
         unitPrices: {
           "asset-gold": 7000,
+        },
+        quantities: {
+          "asset-gold": 96,
         },
       },
     ].map((snap) => ({
