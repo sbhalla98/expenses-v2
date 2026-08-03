@@ -61,3 +61,41 @@ export const useDeleteExpense = (onSuccess?: () => void) => {
     },
   });
 };
+
+export const useBulkEditExpenses = (onSuccess?: () => void) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: { ids: string[]; updates: Partial<AddExpensesFormValues> }) => {
+      return await apiClient.post(API_ROUTES.BULK_EDIT_EXPENSES, data);
+    },
+    onError: () => {
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      toast(TOAST_MESSAGES.EXPENSES_UPDATED);
+      onSuccess?.();
+    },
+  });
+};
+
+export const useBulkDeleteExpenses = (onSuccess?: () => void) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (ids: string[]) => {
+      return await apiClient.post(API_ROUTES.BULK_DELETE_EXPENSES, { ids });
+    },
+    onError: () => {
+      toast(TOAST_MESSAGES.GENERIC_ERROR);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      toast(TOAST_MESSAGES.EXPENSES_DELETED);
+      onSuccess?.();
+    },
+  });
+};

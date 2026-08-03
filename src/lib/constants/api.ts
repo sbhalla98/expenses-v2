@@ -8,4 +8,6 @@ export const API_ROUTES = {
   SEARCH_EXPENSES: "/api/search-expenses",
   NET_WORTH_ASSETS: "/api/net-worth/assets",
   NET_WORTH_SNAPSHOTS: "/api/net-worth/snapshots",
+  BULK_EDIT_EXPENSES: "/api/bulk-edit-expenses",
+  BULK_DELETE_EXPENSES: "/api/bulk-delete-expenses",
 } as const;

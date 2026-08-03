@@ -25,7 +25,18 @@ const GroupedExpenseList: React.FC<{
     data: Expense[];
   }[];
   expandedView?: boolean;
-}> = ({ groupedExpenses, expandedView = true }) => {
+  isSelectionMode?: boolean;
+  selectedIds?: string[];
+  onToggleSelect?: (id: string) => void;
+  onStartSelectionMode?: (id: string) => void;
+}> = ({
+  groupedExpenses,
+  expandedView = true,
+  isSelectionMode = false,
+  selectedIds = [],
+  onToggleSelect,
+  onStartSelectionMode,
+}) => {
   return (
     <div className="flex flex-col">
       {groupedExpenses.length > 0 ? (
@@ -43,7 +54,13 @@ const GroupedExpenseList: React.FC<{
                   </h3>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ExpenseList expenses={group.data} />
+                  <ExpenseList
+                    expenses={group.data}
+                    isSelectionMode={isSelectionMode}
+                    selectedIds={selectedIds}
+                    onToggleSelect={onToggleSelect}
+                    onStartSelectionMode={onStartSelectionMode}
+                  />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

@@ -15,6 +15,14 @@ export const TOAST_MESSAGES = {
     title: "Expense deleted!",
     description: "Your expense has been deleted successfully.",
   },
+  EXPENSES_UPDATED: {
+    title: "Expenses updated!",
+    description: "Selected expenses have been updated successfully.",
+  },
+  EXPENSES_DELETED: {
+    title: "Expenses deleted!",
+    description: "Selected expenses have been deleted successfully.",
+  },
   CONFIG_UPDATED: {
     title: "Config updated!",
   },
