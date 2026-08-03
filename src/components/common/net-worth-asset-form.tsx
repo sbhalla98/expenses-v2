@@ -9,7 +9,7 @@ import { PERSONS } from "@/lib/constants";
 import useConfigStore from "@/store/use-config-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCheck } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -62,6 +62,32 @@ interface NetWorthAssetFormProps {
   onSuccess?: () => void;
 }
 
+const getFormDefaults = (vals: Partial<any> = {}): NetWorthAssetFormValues => {
+  const parseDate = (d: any) => {
+    if (!d) return new Date();
+    if (d instanceof Date && !isNaN(d.getTime())) return d;
+    if (typeof d === "string") {
+      const parsed = new Date(d);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+    return new Date();
+  };
+
+  return {
+    name: vals.name || "",
+    category: vals.category || "saving",
+    trackingType: vals.trackingType || "value",
+    owner: vals.owner || "Both",
+    quantity: vals.quantity ?? 0,
+    unitLabel: vals.unitLabel || "units",
+    principal: vals.principal ?? 0,
+    interestRate: vals.interestRate ?? 0,
+    startDate: parseDate(vals.startDate),
+    maturityDate: parseDate(vals.maturityDate),
+    notes: vals.notes || "",
+  };
+};
+
 export default function NetWorthAssetForm({
   initialValues = {},
   id,
@@ -75,21 +101,16 @@ export default function NetWorthAssetForm({
 
   const form = useForm<NetWorthAssetFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      category: "saving",
-      trackingType: "value",
-      owner: "Both",
-      quantity: 0,
-      unitLabel: "units",
-      principal: 0,
-      interestRate: 0,
-      startDate: new Date(),
-      maturityDate: new Date(),
-      notes: "",
-      ...initialValues,
-    },
+    defaultValues: getFormDefaults(initialValues),
   });
+
+  const prevIdRef = useRef(id);
+  useEffect(() => {
+    if (prevIdRef.current !== id) {
+      prevIdRef.current = id;
+      form.reset(getFormDefaults(initialValues));
+    }
+  }, [id, initialValues, form]);
 
   const selectedCategory = form.watch("category");
   const selectedTrackingType = form.watch("trackingType");

@@ -592,6 +592,7 @@ export default function NetWorthPage() {
               </DrawerTitle>
             </DrawerHeader>
             <NetWorthAssetForm
+              key={editingAsset?.id || "new-asset"}
               id={editingAsset?.id}
               initialValues={editingAsset || undefined}
               onSuccess={() => setIsAssetDrawerOpen(false)}

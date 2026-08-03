@@ -1,3 +1,4 @@
+import { DatePickerInput } from "./date-picker-input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -110,26 +111,10 @@ const CustomFormField = ({
         );
       case "date":
         return (
-          <Popover modal={true}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="w-full mt-2 h-12 text-base justify-start text-left font-normal"
-              >
-                {formField.value && !isNaN(new Date(formField.value).getTime())
-                  ? format(formField.value, "PPP")
-                  : `Select ${label}`}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Calendar
-                mode="single"
-                selected={formField.value}
-                onSelect={formField.onChange}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+          <DatePickerInput
+            value={formField.value}
+            onChange={formField.onChange}
+          />
         );
       default:
         return null;
