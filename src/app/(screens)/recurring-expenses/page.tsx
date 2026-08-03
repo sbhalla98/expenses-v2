@@ -94,11 +94,11 @@ export default function RecurringExpensesPage() {
             No recurring expenses found.
           </div>
         ) : (
-          data
-            ?.sort(
+          [...(data ?? [])]
+            .sort(
               (a: RecurringExpense, b: RecurringExpense) =>
-                new Date(b.nextPaymentDate).getTime() -
-                new Date(a.nextPaymentDate).getTime(),
+                new Date(a.nextPaymentDate).getTime() -
+                new Date(b.nextPaymentDate).getTime(),
             )
             .map((expense: RecurringExpense, index: number) => (
               <RecurringExpenseCard
