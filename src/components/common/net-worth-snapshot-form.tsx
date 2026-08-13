@@ -1,8 +1,11 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSaveNetWorthSnapshot } from "@/hooks/use-net-worth";
+import { PERSONS } from "@/lib/constants";
 import { NetWorthAsset, NetWorthSnapshot } from "@/lib/types";
+import useConfigStore from "@/store/use-config-store";
 import { format } from "date-fns";
 import { CheckCheck } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -53,6 +56,38 @@ export default function NetWorthSnapshotForm({
   onSuccess,
 }: NetWorthSnapshotFormProps) {
   const saveMutation = useSaveNetWorthSnapshot(onSuccess);
+  const { PERSON1, PERSON2 } = useConfigStore();
+
+  const getOwnerBadge = (owner?: string) => {
+    if (owner === PERSONS.PERSON1) {
+      return (
+        <Badge
+          variant="outline"
+          className="text-[10px] py-0 px-1.5 bg-blue-50 text-blue-700 border-blue-200 font-medium shrink-0"
+        >
+          {PERSON1}
+        </Badge>
+      );
+    }
+    if (owner === PERSONS.PERSON2) {
+      return (
+        <Badge
+          variant="outline"
+          className="text-[10px] py-0 px-1.5 bg-pink-50 text-pink-700 border-pink-200 font-medium shrink-0"
+        >
+          {PERSON2}
+        </Badge>
+      );
+    }
+    return (
+      <Badge
+        variant="outline"
+        className="text-[10px] py-0 px-1.5 bg-purple-50 text-purple-700 border-purple-200 font-medium shrink-0"
+      >
+        Joint
+      </Badge>
+    );
+  };
 
   // States
   const [date, setDate] = useState<string>(
@@ -229,9 +264,12 @@ export default function NetWorthSnapshotForm({
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-bold text-gray-900 truncate">
-                            {asset.name}
-                          </p>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="text-sm font-bold text-gray-900 truncate">
+                              {asset.name}
+                            </p>
+                            {getOwnerBadge(asset.owner)}
+                          </div>
                           {asset.trackingType === "fd" && asset.principal && (
                             <p className="text-xxs text-muted-foreground mt-0.5">
                               Principal: ₹{asset.principal.toLocaleString("en-IN")} | Mat:{" "}
