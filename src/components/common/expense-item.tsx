@@ -79,7 +79,7 @@ export function ExpenseItem({
     <div
       {...longPressHandlers}
       onContextMenu={(e) => e.preventDefault()}
-      className="cursor-pointer select-none touch-none"
+      className="cursor-pointer select-none"
     >
       <Card
         className={`hover:shadow-md transition-all duration-200 border-l-4 border-l-primary/50 relative overflow-hidden ${getBgColor()}`}
